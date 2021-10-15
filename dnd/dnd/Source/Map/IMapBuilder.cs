@@ -6,6 +6,6 @@ namespace dnd.Source.Map
 {
     public interface IMapBuilder
     {
-        IMap FromString(string content);
+        IMap FromCSV(string content);
     }
 }

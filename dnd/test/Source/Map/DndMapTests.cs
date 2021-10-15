@@ -31,5 +31,46 @@ namespace test.Source.Map
             IMap map = new DndMap(10, 10, TerrainTypes.Grass);
             Assert.AreEqual(expected, map.GetCellType(i, j));
         }
+
+        [Test]
+        public void CheckTerramorphSingleCell()
+        {
+            IMap map = new DndMap(10, 10, TerrainTypes.Grass);
+            map.SetCell(5, 5, TerrainTypes.Water);
+            Assert.AreEqual(TerrainTypes.Water, map.GetCellType(5, 5));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(5, 6));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(6, 5));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 5));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(5, 4));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 6));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(6, 4));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(6, 6));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 4));
+        }
+
+        [Test]
+        public void CheckTerramorphMultipleCells()
+        {
+            IMap map = new DndMap(10, 10, TerrainTypes.Grass);
+            map.SetCells(5, 5, 2, 2, TerrainTypes.Water);
+            Assert.AreEqual(TerrainTypes.Water, map.GetCellType(5, 5));
+            Assert.AreEqual(TerrainTypes.Water, map.GetCellType(5, 6));
+            Assert.AreEqual(TerrainTypes.Water, map.GetCellType(6, 5));
+            Assert.AreEqual(TerrainTypes.Water, map.GetCellType(6, 6));
+            
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 4));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(5, 4));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(6, 4));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(7, 4));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 5));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(5, 7));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 6));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(6, 7));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(4, 7));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(5, 7));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(6, 7));
+            Assert.AreEqual(TerrainTypes.Grass, map.GetCellType(7, 7));
+
+        }
     }
 }

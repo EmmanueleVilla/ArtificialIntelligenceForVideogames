@@ -6,9 +6,9 @@ namespace dnd.Source.Map
 {
     public enum TerrainTypes
     {
-       Void,
-       Grass,
-       Water,
-       Rock
+       Void = 0,
+       Grass = 1,
+       Water = 2,
+       Rock = 3
     }
 }
