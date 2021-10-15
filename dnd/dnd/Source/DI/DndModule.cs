@@ -1,4 +1,5 @@
-﻿using dnd.Source.Utils.Log;
+﻿using dnd.Source.Map;
+using dnd.Source.Utils.Log;
 using Splat;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using ILogger = dnd.Source.Utils.Log.ILogger;
 
 namespace dnd.Source.DI
 {
-    class DndModule
+    public class DndModule
     {
         public void RegisterRules()
         {
@@ -17,6 +18,9 @@ namespace dnd.Source.DI
 
             // Registering log handlers
             Locator.CurrentMutable.RegisterConstant(new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
+
+            // Map builder provider
+            Locator.CurrentMutable.Register(() => new MapBuilder(), typeof(IMapBuilder));
         }
     }
 }
