@@ -9,7 +9,7 @@ namespace dnd.Source.Map
         public readonly int Width;
         public readonly int Height;
         public readonly TerrainTypes DefaultTerrain;
-        private Dictionary<Tuple<int, int>, TerrainTypes> delta = new Dictionary<Tuple<int, int>, TerrainTypes>();
+        private Dictionary<int, TerrainTypes> delta = new Dictionary<int, TerrainTypes>();
 
         public DndMap(int width, int height, TerrainTypes defaultTerrain)
         {
@@ -23,7 +23,7 @@ namespace dnd.Source.Map
             if (x >= 0 && x < Width && y >= 0 && y < Height)
             {
                 TerrainTypes terrain;
-                delta.TryGetValue(new Tuple<int,int>(x,y), out terrain);
+                delta.TryGetValue(x * Width + y, out terrain);
                 if(terrain == TerrainTypes.Void)
                 {
                     return DefaultTerrain;
@@ -41,13 +41,13 @@ namespace dnd.Source.Map
 
         public void SetCells(int x, int y, int width, int height, TerrainTypes terrainType)
         {
-            var keys = new List<Tuple<int, int>>();
+            var keys = new List<int>();
             var maxX = x + width;
             var maxY = y + height;
             for (int i = x; i < maxX; i++)  {
                 for (int j = y; j < maxY; j++)
                 {
-                    keys.Add(new Tuple<int,int>(i, j));
+                    keys.Add(i * Width + j);
                 }
             }
 

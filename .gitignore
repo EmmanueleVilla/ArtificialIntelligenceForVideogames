@@ -3,3 +3,6 @@ dnd/test/obj/
 dnd/test/bin/
 dnd/.vs/
 dnd/dnd/bin
+dnd/console/BenchmarkDotNet.Artifacts/
+dnd/console/bin/
+dnd/console/obj/
