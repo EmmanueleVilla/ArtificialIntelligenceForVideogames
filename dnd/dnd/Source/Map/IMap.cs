@@ -6,8 +6,8 @@ namespace dnd.Source.Map
 {
     public interface IMap
     {
-        TerrainTypes GetCellType(int x, int y);
-        void SetCells(int x, int y, int width, int height, TerrainTypes terrainType);
-        void SetCell(int x, int y, TerrainTypes terrainType);
+        CellInfo GetCellInfo(int x, int y);
+        void SetCellTerrain(int x, int y, TerrainTypes terrainType);
+        void SetCellHeight(int x, int y, int height);
     }
 }

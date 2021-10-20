@@ -20,7 +20,7 @@ namespace dnd.Source.DI
             Locator.CurrentMutable.RegisterConstant(new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
 
             // Map builder provider
-            Locator.CurrentMutable.Register(() => new MapBuilder(), typeof(IMapBuilder));
+            Locator.CurrentMutable.Register(() => new CsvMapBuilder(), typeof(IMapBuilder));
         }
     }
 }

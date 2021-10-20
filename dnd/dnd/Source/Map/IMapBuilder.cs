@@ -6,6 +6,10 @@ namespace dnd.Source.Map
 {
     public interface IMapBuilder
     {
-        IMap FromCSV(string content);
+        IMapBuilder WithTerrains(string content);
+
+        IMapBuilder WithHeights(string content);
+
+        IMap Build();
     }
 }

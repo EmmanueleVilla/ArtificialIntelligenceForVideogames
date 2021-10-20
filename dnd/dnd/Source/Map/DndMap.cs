@@ -9,7 +9,10 @@ namespace dnd.Source.Map
         public readonly int Width;
         public readonly int Height;
         public readonly TerrainTypes DefaultTerrain;
-        private Dictionary<int, TerrainTypes> delta = new Dictionary<int, TerrainTypes>();
+        private Dictionary<int, TerrainTypes> terrainDelta = new Dictionary<int, TerrainTypes>();
+
+        public readonly int DefaultHeight;
+        private Dictionary<int, int> heightDelta = new Dictionary<int, int>();
 
         public DndMap(int width, int height, TerrainTypes defaultTerrain)
         {
@@ -18,63 +21,51 @@ namespace dnd.Source.Map
             this.DefaultTerrain = defaultTerrain;
         }
 
-        public TerrainTypes GetCellType(int x, int y)
+        public CellInfo GetCellInfo(int x, int y)
         {
             if (x >= 0 && x < Width && y >= 0 && y < Height)
             {
                 TerrainTypes terrain;
-                delta.TryGetValue(x * Width + y, out terrain);
-                if(terrain == TerrainTypes.Void)
+                int height = 0;
+                terrainDelta.TryGetValue(x * Width + y, out terrain);
+                heightDelta.TryGetValue(x * Width + y, out height);
+                if (terrain == TerrainTypes.Void)
                 {
-                    return DefaultTerrain;
+                    terrain = DefaultTerrain;
+                    height = int.MaxValue;
                 }
-                return terrain;
+                return new CellInfo(terrain, height);
             }
-
-            return TerrainTypes.Void;
+            else
+            {
+                return new CellInfo(TerrainTypes.Void, int.MaxValue);
+            }
         }
 
-        public void SetCell(int x, int y, TerrainTypes terrainType)
+        public void SetCellHeight(int x, int y, int height)
         {
-            SetCells(x, y, 1, 1, terrainType);
-        }
+            var key = x * Width + y;
+            heightDelta.Remove(key);
 
-        public void SetCells(int x, int y, int width, int height, TerrainTypes terrainType)
-        {
-            var keys = new List<int>();
-            var maxX = x + width;
-            var maxY = y + height;
-            for (int i = x; i < maxX; i++)  {
-                for (int j = y; j < maxY; j++)
-                {
-                    keys.Add(i * Width + j);
-                }
-            }
-
-            keys.ForEach(k => delta.Remove(k));
-
-            if(terrainType == DefaultTerrain)
+            if (height == DefaultHeight)
             {
                 return;
             }
 
-            keys.ForEach(k => delta.Add(k, terrainType));
+            heightDelta.Add(key, height);
         }
 
-        public string ToCSV()
+        public void SetCellTerrain(int x, int y, TerrainTypes terrainType)
         {
-            var builder = new StringBuilder();
-            for (int i = 0; i < Height; i++)
+            var key = x * Width + y;
+            terrainDelta.Remove(key);
+
+            if (terrainType == DefaultTerrain)
             {
-                var row = new List<int>();
-                for (int j = 0; j < Width; j++)
-                {
-                    row.Add((int)GetCellType(j, i));
-                }
-                builder.AppendLine(string.Join(",", row));
+                return;
             }
 
-            return builder.ToString().Substring(0, builder.Length - 2).Replace("\r", "");
+            terrainDelta.Add(key, terrainType);
         }
     }
 }
