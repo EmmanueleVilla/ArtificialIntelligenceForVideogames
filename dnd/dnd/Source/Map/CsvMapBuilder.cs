@@ -7,67 +7,28 @@ namespace dnd.Source.Map
 {
     class CsvMapBuilder : IMapBuilder
     {
-        private int width;
-        private int height;
-        private TerrainTypes defaultTerrain;
-        private IOrderedEnumerable<IGrouping<TerrainTypes, KeyValuePair<Tuple<int, int>, TerrainTypes>>> terrainList;
-        private int defaultHeight;
-        private IOrderedEnumerable<IGrouping<int, KeyValuePair<Tuple<int, int>, int>>> heightsList;
-
-        public IMap Build()
-        {
-            if(terrainList == null)
-            {
-                throw new Exception("Error building map, terrain not initialized");
-            }
-
-            var m = new DndMap(width, height, defaultTerrain);
-
-            terrainList.Where(c => c.Key != defaultTerrain).ToList().ForEach(t =>
-            {
-                t.ToList().ForEach(c => m.SetCellTerrain(c.Key.Item1, c.Key.Item2, t.Key));
-            });
-
-            return m;
-        }
-
-
-        public IMapBuilder WithHeights(string content)
+        public IMap FromCsv(string content)
         {
             var rows = content.Split('\n');
-            var map = new Dictionary<Tuple<int, int>, int>();
             var y = 0;
             var x = 0;
+            var width = 0;
+            var height = 0;
+            var terrains = new Dictionary<Tuple<int, int>, string>();
+            var heights = new Dictionary<Tuple<int, int>, int>();
             foreach (var row in rows)
             {
                 var columns = row.Split(',');
                 foreach (var column in columns)
                 {
-                    map.Add(new Tuple<int, int>(y, x), int.Parse(column));
-                    y++;
-                }
-                x++;
-                y = 0;
-            }
-            heightsList = map.GroupBy(c => c.Value).OrderByDescending(c => c.Count());
-            defaultHeight = heightsList.First().Key;
-            return this;
-        }
-
-        public IMapBuilder WithTerrains(string content)
-        {
-            var rows = content.Split('\n');
-            var y = 0;
-            var x = 0;
-            width = 0;
-            height = 0;
-            var map = new Dictionary<Tuple<int, int>, TerrainTypes>();
-            foreach (var row in rows)
-            {
-                var columns = row.Split(',');
-                foreach (var column in columns)
-                {
-                    map.Add(new Tuple<int, int>(y, x), (TerrainTypes)int.Parse(column));
+                    var terrainType = column.Substring(0, 1);
+                    var terrainHeight = 0;
+                    if (column.Length > 1)
+                    {
+                        terrainHeight = int.Parse(column.Substring(1, column.Length - 1));
+                    }
+                    terrains.Add(new Tuple<int, int>(y, x), terrainType);
+                    heights.Add(new Tuple<int, int>(y, x), terrainHeight);
                     y++;
                     width = Math.Max(width, y);
                 }
@@ -76,10 +37,24 @@ namespace dnd.Source.Map
             }
             height = Math.Max(height, x);
 
-            terrainList = map.GroupBy(c => c.Value).OrderByDescending(c => c.Count());
-            defaultTerrain = terrainList.First().Key;
+            var terrainList = terrains.GroupBy(c => c.Value).OrderByDescending(c => c.Count());
+            var defaultTerrain = terrainList.First().Key;
+            var heightsList = heights.GroupBy(c => c.Value).OrderByDescending(c => c.Count());
+            var defaultHeight = heightsList.First().Key;
 
-            return this;
+            var m = new DndMap(width, height, defaultTerrain, defaultHeight);
+
+            terrainList.Where(c => c.Key != defaultTerrain).ToList().ForEach(t =>
+            {
+                t.ToList().ForEach(c => m.SetCellTerrain(c.Key.Item1, c.Key.Item2, t.Key));
+            });
+            heightsList.Where(c => c.Key != defaultHeight).ToList().ForEach(t =>
+            {
+                t.ToList().ForEach(c => m.SetCellHeight(c.Key.Item1, c.Key.Item2, t.Key));
+            });
+
+            return m;
         }
+
     }
 }

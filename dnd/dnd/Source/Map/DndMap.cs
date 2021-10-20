@@ -8,37 +8,32 @@ namespace dnd.Source.Map
     {
         public readonly int Width;
         public readonly int Height;
-        public readonly TerrainTypes DefaultTerrain;
-        private Dictionary<int, TerrainTypes> terrainDelta = new Dictionary<int, TerrainTypes>();
-
+        public readonly string DefaultTerrain;
         public readonly int DefaultHeight;
+        private Dictionary<int, string> terrainDelta = new Dictionary<int, string>();
         private Dictionary<int, int> heightDelta = new Dictionary<int, int>();
 
-        public DndMap(int width, int height, TerrainTypes defaultTerrain)
+        public DndMap(int width, int height, string defaultTerrain, int defaultHeight)
         {
-            this.Width = width;
-            this.Height = height;
-            this.DefaultTerrain = defaultTerrain;
+            Width = width;
+            Height = height;
+            DefaultTerrain = defaultTerrain;
+            DefaultHeight = defaultHeight;
         }
 
         public CellInfo GetCellInfo(int x, int y)
         {
             if (x >= 0 && x < Width && y >= 0 && y < Height)
             {
-                TerrainTypes terrain;
-                int height = 0;
+                string terrain;
+                int height;
                 terrainDelta.TryGetValue(x * Width + y, out terrain);
                 heightDelta.TryGetValue(x * Width + y, out height);
-                if (terrain == TerrainTypes.Void)
-                {
-                    terrain = DefaultTerrain;
-                    height = int.MaxValue;
-                }
-                return new CellInfo(terrain, height);
+                return new CellInfo(terrain ?? DefaultTerrain, height);
             }
             else
             {
-                return new CellInfo(TerrainTypes.Void, int.MaxValue);
+                return new CellInfo(null, int.MaxValue);
             }
         }
 
@@ -55,7 +50,7 @@ namespace dnd.Source.Map
             heightDelta.Add(key, height);
         }
 
-        public void SetCellTerrain(int x, int y, TerrainTypes terrainType)
+        public void SetCellTerrain(int x, int y, String terrainType)
         {
             var key = x * Width + y;
             terrainDelta.Remove(key);

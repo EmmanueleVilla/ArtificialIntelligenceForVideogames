@@ -6,3 +6,8 @@ dnd/dnd/bin
 dnd/console/BenchmarkDotNet.Artifacts/
 dnd/console/bin/
 dnd/console/obj/
+unity/DnD/.vscode/
+unity/DnD/.vs/
+unity/DnD/Library/
+unity/DnD/obj/
+unity/DnD/Temp/

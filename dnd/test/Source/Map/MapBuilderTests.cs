@@ -22,22 +22,25 @@ namespace test.Source.Map
 
         [Test]
         [TestCase("" +
-            "1,2,3,1,1,1\n" +
-            "1,1,1,1,1,1\n" +
-            "1,1,1,1,1,1", TerrainTypes.Grass)]
+            "G,H,I,L,M,N\n" +
+            "G,G,G,G,G,G\n" +
+            "G,G,G,G,G,G", "G")]
         [TestCase("" +
-            "1,2,3,2,2,2\n" +
-            "2,2,2,2,2,2\n" +
-            "2,2,2,2,2,2", TerrainTypes.Water)]
-        public void CheckBuildMapFromStringAndUsesCorrectDefaultTerrainToSaveSpace(string csv, TerrainTypes expectedDefault)
+            "G,H,I,L,M,N\n" +
+            "H,H,H,H,H,H\n" +
+            "H,H,H,H,H,H", "H")]
+        public void CheckBuildMapFromStringAndUsesCorrectDefaultTerrainToSaveSpace(string csv, string expectedDefault)
         {
-            var map = builder.WithTerrains(csv).Build() as DndMap;
+            var map = builder.FromCsv(csv) as DndMap;
             Assert.AreEqual(6, map.Width);
             Assert.AreEqual(3, map.Height);
             Assert.AreEqual(expectedDefault, map.DefaultTerrain);
-            Assert.AreEqual(TerrainTypes.Grass, map.GetCellInfo(0, 0).Terrain);
-            Assert.AreEqual(TerrainTypes.Water, map.GetCellInfo(1, 0).Terrain);
-            Assert.AreEqual(TerrainTypes.Rock, map.GetCellInfo(2, 0).Terrain);
+            Assert.AreEqual("G", map.GetCellInfo(0, 0).Terrain);
+            Assert.AreEqual("H", map.GetCellInfo(1, 0).Terrain);
+            Assert.AreEqual("I", map.GetCellInfo(2, 0).Terrain);
+            Assert.AreEqual("L", map.GetCellInfo(3, 0).Terrain);
+            Assert.AreEqual("M", map.GetCellInfo(4, 0).Terrain);
+            Assert.AreEqual("N", map.GetCellInfo(5, 0).Terrain);
         }
 
     }
