@@ -11,3 +11,13 @@ unity/DnD/.vs/
 unity/DnD/Library/
 unity/DnD/obj/
 unity/DnD/Temp/
+test/obj/
+test/bin/
+Temp/
+obj/
+Logs/
+Library/
+dnd/bin/
+console/bin/
+console/BenchmarkDotNet.Artifacts/
+.vs/
