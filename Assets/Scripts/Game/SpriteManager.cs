@@ -9,6 +9,6 @@ public class SpriteManager : MonoBehaviour
 
     void OnMouseDown()
     {
-        Destroy(gameObject);
+        Debug.Log(string.Format("Clicked {0}:{1}", X, Y));
     }
 }
