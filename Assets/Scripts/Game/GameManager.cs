@@ -1,7 +1,5 @@
-﻿using Assets.Scripts.Tests;
-using dnd.Source.DI;
-using dnd.Source.Map;
-using System.IO;
+﻿using Core.DI;
+using Core.Map;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -23,9 +21,6 @@ public class GameManager : MonoBehaviour
         menuCamera.gameObject.SetActive(true);
         gameCamera.gameObject.SetActive(false);
         DndModule.RegisterRules();
-#if DEBUG
-        Tests.Execute();
-#endif
     }
 
     void Update()

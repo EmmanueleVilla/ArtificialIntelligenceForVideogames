@@ -21,3 +21,5 @@ dnd/bin/
 console/bin/
 console/BenchmarkDotNet.Artifacts/
 .vs/
+DndCore/Tests/bin/
+DndCore/Logic/bin/

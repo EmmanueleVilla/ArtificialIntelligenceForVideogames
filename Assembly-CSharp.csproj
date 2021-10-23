@@ -36,24 +36,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Core\DI\DndModule.cs" />
-     <Compile Include="Assets\Scripts\Core\Map\CellInfo.cs" />
-     <Compile Include="Assets\Scripts\Core\Map\CsvMapBuilder.cs" />
-     <Compile Include="Assets\Scripts\Core\Map\DndMap.cs" />
-     <Compile Include="Assets\Scripts\Core\Map\IMap.cs" />
-     <Compile Include="Assets\Scripts\Core\Map\IMapBuilder.cs" />
-     <Compile Include="Assets\Scripts\Core\Utils\Log\ConsoleLogger.cs" />
-     <Compile Include="Assets\Scripts\Core\Utils\Log\FileLogger.cs" />
-     <Compile Include="Assets\Scripts\Core\Utils\Log\ILogger.cs" />
-     <Compile Include="Assets\Scripts\Core\Utils\Log\MultiLogger.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\SpriteManager.cs" />
-     <Compile Include="Assets\Scripts\Tests\ATestClass.cs" />
-     <Compile Include="Assets\Scripts\Tests\DndMapTests.cs" />
-     <Compile Include="Assets\Scripts\Tests\ITestClass.cs" />
-     <Compile Include="Assets\Scripts\Tests\MapBuilderTests.cs" />
-     <Compile Include="Assets\Scripts\Tests\TestAttribute.cs" />
-     <Compile Include="Assets\Scripts\Tests\Tests.cs" />
      <None Include="Assets\Assets_DevilsWorkShop\Low_Poly_Pixel_2D_Blocks_DevilsWorkShop_v04\License.txt" />
      <None Include="Assets\Maps\river.txt" />
     <Reference Include="UnityEngine">
@@ -238,6 +222,9 @@
     </Reference>
     <Reference Include="UnityEditor">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.20f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Logic">
+        <HintPath>H:/dnd/Assets/Logic.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.20f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
