@@ -1,20 +1,27 @@
 ﻿using Core.Map;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Logic.Core.Map
 {
-    class FullDndMap : IMap
+    public class DictionaryDndMap : IMap
     {
         public readonly int Width;
         public readonly int Height;
         private Dictionary<int, CellInfo> cells = new Dictionary<int, CellInfo>();
 
-        public FullDndMap(int width, int height)
+        int IMap.Width => Width;
+        int IMap.Height => Height;
+        public DictionaryDndMap(int width, int height, CellInfo defaultInfo)
         {
             Width = width;
             Height = height;
+            for(int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    SetCell(i, j, CellInfo.Copy(defaultInfo));
+                }
+            }
         }
 
         public CellInfo GetCellInfo(int x, int y)
@@ -29,16 +36,6 @@ namespace Logic.Core.Map
             var key = x * Width + y;
             cells.Remove(key);
             cells.Add(key, info);
-        }
-
-        public void SetCellTerrain(int x, int y, string terrainType)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void SetCellHeight(int x, int y, int height)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

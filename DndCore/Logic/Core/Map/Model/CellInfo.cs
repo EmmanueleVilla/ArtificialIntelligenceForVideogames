@@ -4,15 +4,25 @@ using System.Text;
 
 namespace Core.Map
 {
-    public class CellInfo
+    public struct CellInfo
     {
-        public string Terrain { get; private set; }
-        public int Height { get; private set; }
+        public char Terrain;
+        public byte Height;
 
-        public CellInfo(string terrain, int heigth)
+        public CellInfo(char terrain, byte heigth)
         {
             Terrain = terrain;
             Height = heigth;
+        }
+
+        public static CellInfo Copy(CellInfo other)
+        {
+            return new CellInfo(other.Terrain, other.Height);
+        }
+
+        public static CellInfo Empty()
+        {
+            return new CellInfo(' ', 0);
         }
     }
 }

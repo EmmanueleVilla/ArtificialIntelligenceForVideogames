@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Benchmark.Core.Map.Impl;
+using BenchmarkDotNet.Running;
+using System;
 
 namespace benchmark
 {
@@ -6,7 +8,8 @@ namespace benchmark
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var summary = BenchmarkRunner.Run<DndMapBenchmark>();
+            Console.ReadLine();
         }
     }
 }

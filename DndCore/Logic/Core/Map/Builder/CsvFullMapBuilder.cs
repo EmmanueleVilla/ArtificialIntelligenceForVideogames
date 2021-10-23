@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Logic.Core.Map
 {
-    class CsvFullMapBuilder : IMapBuilder
+    public class CsvFullMapBuilder : IMapBuilder
     {
         public IMap FromCsv(string content)
         {
@@ -21,11 +21,11 @@ namespace Logic.Core.Map
                 var columns = row.Split(',');
                 foreach (var column in columns)
                 {
-                    var terrainType = column.Substring(0, 1);
-                    var terrainHeight = 0;
+                    var terrainType = column[0];
+                    byte terrainHeight = 0;
                     if (column.Length > 1)
                     {
-                        terrainHeight = int.Parse(column.Substring(1, column.Length - 1));
+                        terrainHeight = byte.Parse(column.Substring(1, column.Length - 1));
                     }
                     terrains.Add(new Tuple<int, int>(y, x), new CellInfo(terrainType, terrainHeight));
                     y++;
@@ -36,7 +36,7 @@ namespace Logic.Core.Map
             }
             height = Math.Max(height, x);
 
-            var m = new FullDndMap(width, height);
+            var m = new DictionaryDndMap(width, height, CellInfo.Empty());
 
             terrains.ToList().ForEach(t =>
             {

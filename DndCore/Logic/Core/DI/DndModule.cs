@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Core.Utils.Log;
+using Logic.Core.Map;
 using System;
 using System.Collections.Generic;
 using ConsoleLogger = Core.Utils.Log.ConsoleLogger;
@@ -16,7 +17,7 @@ namespace Core.DI
         {
             singletons.Add(typeof(Random), new Random());
             factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
-            factories.Add(typeof(IMapBuilder), () => new CsvDeltaMapBuilder());
+            factories.Add(typeof(IMapBuilder), () => new CsvFullMapBuilder());
         }
 
         public static T Get<T>() where T: class

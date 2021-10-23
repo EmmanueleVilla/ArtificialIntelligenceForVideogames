@@ -7,5 +7,7 @@ namespace Core.Map
     public interface IMap
     {
         CellInfo GetCellInfo(int x, int y);
+        int Width { get; }
+        int Height { get; }
     }
 }

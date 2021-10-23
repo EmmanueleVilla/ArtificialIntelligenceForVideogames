@@ -1,5 +1,6 @@
 ﻿using Core.DI;
 using Core.Map;
+using Logic.Core.Map;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,23 @@ namespace test.Source.Map
     [TestFixture]
     class MapBuilderTests
     {
-        CsvDeltaMapBuilder builder = new CsvDeltaMapBuilder();
+        CsvFullMapBuilder builder = new CsvFullMapBuilder();
 
         [Test]
-        [TestCase("" +
+        public void CheckBuildMapFromString() {
+            var csv =
             "G,H,I,L,M,N\n" +
             "G,G,G,G,G,G\n" +
-            "G,G,G,G,G,G", "G")]
-        [TestCase("" +
-            "G,H,I,L,M,N\n" +
-            "H,H,H,H,H,H\n" +
-            "H,H,H,H,H,H", "H")]
-        public void CheckBuildMapFromStringAndUsesCorrectDefaultTerrainToSaveSpace(string csv, string expectedDefault)
-        {
-            var map = builder.FromCsv(csv) as DeltaDndMap;
+            "G,G,G,G,G,G";
+            var map = builder.FromCsv(csv) as DictionaryDndMap;
             Assert.AreEqual(6, map.Width);
             Assert.AreEqual(3, map.Height);
-            Assert.AreEqual(expectedDefault, map.DefaultTerrain);
-            Assert.AreEqual("G", map.GetCellInfo(0, 0).Terrain);
-            Assert.AreEqual("H", map.GetCellInfo(1, 0).Terrain);
-            Assert.AreEqual("I", map.GetCellInfo(2, 0).Terrain);
-            Assert.AreEqual("L", map.GetCellInfo(3, 0).Terrain);
-            Assert.AreEqual("M", map.GetCellInfo(4, 0).Terrain);
-            Assert.AreEqual("N", map.GetCellInfo(5, 0).Terrain);
+            Assert.AreEqual('G', map.GetCellInfo(0, 0).Terrain);
+            Assert.AreEqual('H', map.GetCellInfo(1, 0).Terrain);
+            Assert.AreEqual('I', map.GetCellInfo(2, 0).Terrain);
+            Assert.AreEqual('L', map.GetCellInfo(3, 0).Terrain);
+            Assert.AreEqual('M', map.GetCellInfo(4, 0).Terrain);
+            Assert.AreEqual('N', map.GetCellInfo(5, 0).Terrain);
         }
 
     }
