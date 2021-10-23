@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 422694}
   - component: {fileID: 21232618}
   - component: {fileID: 6503969395053392549}
-  - component: {fileID: 2597422706864117671}
+  - component: {fileID: 2295265352130911030}
   m_Layer: 0
-  m_Name: isometric_0010
+  m_Name: A_RIVER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ CircleCollider2D:
   m_Offset: {x: -0.12, y: 2.48}
   serializedVersion: 2
   m_Radius: 2.5
---- !u!114 &2597422706864117671
+--- !u!114 &2295265352130911030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 158120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6ef89311fbf31746b26059f766ff7ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 76527acd54bddc34ea0c477f1f620776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   X: 0

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 490178}
   - component: {fileID: 21240216}
   - component: {fileID: 7570023112905333718}
-  - component: {fileID: 3348402749428902939}
+  - component: {fileID: 4210917135144225004}
   m_Layer: 0
-  m_Name: isometric_0014
+  m_Name: A_GRASS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ CircleCollider2D:
   m_Offset: {x: -0.08, y: 2.09}
   serializedVersion: 2
   m_Radius: 2.5
---- !u!114 &3348402749428902939
+--- !u!114 &4210917135144225004
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 113452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6ef89311fbf31746b26059f766ff7ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 76527acd54bddc34ea0c477f1f620776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   X: 0

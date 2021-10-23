@@ -1,5 +1,9 @@
-﻿using Core.DI;
+﻿using Assets.Scripts.Jobs;
+using Core.DI;
 using Core.Map;
+using System.Collections;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -21,8 +25,38 @@ public class GameManager : MonoBehaviour
         menuCamera.gameObject.SetActive(true);
         gameCamera.gameObject.SetActive(false);
         DndModule.RegisterRules();
+        this.StartCoroutine(StartJob());
     }
 
+    IEnumerator StartJob()
+    {
+        NativeArray<int> result = new NativeArray<int>(1, Allocator.TempJob);
+
+        // Set up the job data
+        var jobData = new VeryTimeConsumingJob
+        {
+            result = result
+        };
+
+        // Schedule the job
+        JobHandle handle = jobData.Schedule();
+
+        while (!handle.IsCompleted)
+        {
+            yield return null;
+        }
+
+        handle.Complete();
+
+        // All copies of the NativeArray point to the same memory, you can access the result in "your" copy of the NativeArray
+        int res = result[0];
+
+        Debug.Log("Result is " + res);
+
+        // Free the memory allocated by the result array
+        result.Dispose();
+    }
+    
     void Update()
     {
         
