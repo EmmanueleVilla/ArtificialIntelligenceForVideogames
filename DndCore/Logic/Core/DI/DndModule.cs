@@ -16,7 +16,7 @@ namespace Core.DI
         {
             singletons.Add(typeof(Random), new Random());
             factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
-            factories.Add(typeof(IMapBuilder), () => new CsvMapBuilder());
+            factories.Add(typeof(IMapBuilder), () => new CsvDeltaMapBuilder());
         }
 
         public static T Get<T>() where T: class

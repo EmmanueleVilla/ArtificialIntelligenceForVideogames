@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Map
 {
-    public class DndMap : IMap
+    public class DeltaDndMap : IMap
     {
         public readonly int Width;
         public readonly int Height;
@@ -13,17 +13,13 @@ namespace Core.Map
         private Dictionary<int, string> terrainDelta = new Dictionary<int, string>();
         private Dictionary<int, int> heightDelta = new Dictionary<int, int>();
 
-        public DndMap(int width, int height, string defaultTerrain, int defaultHeight)
+        public DeltaDndMap(int width, int height, string defaultTerrain, int defaultHeight)
         {
             Width = width;
             Height = height;
             DefaultTerrain = defaultTerrain;
             DefaultHeight = defaultHeight;
         }
-
-        int IMap.Height => Height;
-
-        int IMap.Width => Width;
 
         public CellInfo GetCellInfo(int x, int y)
         {

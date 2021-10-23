@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{8259FE0A-9A17-4FF4-82CE-557832FB01FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{8259FE0A-9A17-4FF4-82CE-557832FB01FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{461BC923-05E1-4A81-8A77-0751E8AB47F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{461BC923-05E1-4A81-8A77-0751E8AB47F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "benchmark\Benchmark.csproj", "{F41BAE5E-ECA9-4A03-8140-6B32EA2F629A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{461BC923-05E1-4A81-8A77-0751E8AB47F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{461BC923-05E1-4A81-8A77-0751E8AB47F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{461BC923-05E1-4A81-8A77-0751E8AB47F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F41BAE5E-ECA9-4A03-8140-6B32EA2F629A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F41BAE5E-ECA9-4A03-8140-6B32EA2F629A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F41BAE5E-ECA9-4A03-8140-6B32EA2F629A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F41BAE5E-ECA9-4A03-8140-6B32EA2F629A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

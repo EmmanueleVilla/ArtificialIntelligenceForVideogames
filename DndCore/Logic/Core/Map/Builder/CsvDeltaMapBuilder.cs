@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Core.Map
 {
-    public class CsvMapBuilder : IMapBuilder
+    public class CsvDeltaMapBuilder : IMapBuilder
     {
         public IMap FromCsv(string content)
         {
@@ -43,7 +43,7 @@ namespace Core.Map
             var heightsList = heights.GroupBy(c => c.Value).OrderByDescending(c => c.Count());
             var defaultHeight = heightsList.First().Key;
 
-            var m = new DndMap(width, height, defaultTerrain, defaultHeight);
+            var m = new DeltaDndMap(width, height, defaultTerrain, defaultHeight);
 
             terrainList.Where(c => c.Key != defaultTerrain).ToList().ForEach(t =>
             {

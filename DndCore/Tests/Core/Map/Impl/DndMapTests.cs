@@ -18,14 +18,14 @@ namespace Core.Map
         [Parallelizable(ParallelScope.All)]
         public void CheckGetCorrectTerrainType(int i, int j, string expected)
         {
-            var map = new DndMap(10, 10, "G", 0);
+            var map = new DeltaDndMap(10, 10, "G", 0);
             Assert.AreEqual(expected, map.GetCellInfo(i, j).Terrain);
         }
 
         [Test]
         public void CheckTerramorphSingleCell()
         {
-            var map = new DndMap(10, 10, "G", 0);
+            var map = new DeltaDndMap(10, 10, "G", 0);
             map.SetCellTerrain(5, 5, "W");
             Assert.AreEqual("W", map.GetCellInfo(5, 5).Terrain);
             Assert.AreEqual("G", map.GetCellInfo(5, 6).Terrain);

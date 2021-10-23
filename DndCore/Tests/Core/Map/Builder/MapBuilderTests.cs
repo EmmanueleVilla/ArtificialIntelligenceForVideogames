@@ -10,7 +10,7 @@ namespace test.Source.Map
     [TestFixture]
     class MapBuilderTests
     {
-        CsvMapBuilder builder = new CsvMapBuilder();
+        CsvDeltaMapBuilder builder = new CsvDeltaMapBuilder();
 
         [Test]
         [TestCase("" +
@@ -23,7 +23,7 @@ namespace test.Source.Map
             "H,H,H,H,H,H", "H")]
         public void CheckBuildMapFromStringAndUsesCorrectDefaultTerrainToSaveSpace(string csv, string expectedDefault)
         {
-            var map = builder.FromCsv(csv) as DndMap;
+            var map = builder.FromCsv(csv) as DeltaDndMap;
             Assert.AreEqual(6, map.Width);
             Assert.AreEqual(3, map.Height);
             Assert.AreEqual(expectedDefault, map.DefaultTerrain);
