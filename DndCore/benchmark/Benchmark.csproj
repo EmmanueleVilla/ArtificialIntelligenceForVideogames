@@ -13,10 +13,4 @@
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Maps\river.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
