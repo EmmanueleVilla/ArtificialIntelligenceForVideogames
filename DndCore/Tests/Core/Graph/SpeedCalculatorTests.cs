@@ -22,7 +22,7 @@ namespace Tests.Core.Graph
         {
             var character = new Orc();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace Tests.Core.Graph
         {
             var character = new SeaHag();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Tests.Core.Graph
         {
             var character = new Behir();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
         }
 
         // MOVEMENT TO A SWIMMING SPEED CELL ---------------------------------------------------------
@@ -48,7 +48,7 @@ namespace Tests.Core.Graph
         {
             var character = new Orc();
             var to = new CellInfo('R', 0);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to));
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Tests.Core.Graph
         {
             var character = new SeaHag();
             var to = new CellInfo('R', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Tests.Core.Graph
         {
             var character = new Behir();
             var to = new CellInfo('R', 0);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to));
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
         }
 
         // MOVEMENT TO A +1 HIGHER CELL ---------------------------------------------------------
@@ -75,7 +75,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 1);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 1);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 1);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A +2 HIGHER CELL ---------------------------------------------------------
@@ -104,7 +104,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 2);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 2);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 2);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A +3 HIGHER CELL ---------------------------------------------------------
@@ -133,7 +133,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 3);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 3);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 3);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A +4 HIGHER CELL ---------------------------------------------------------
@@ -162,7 +162,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 4);
-            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 4);
-            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 4);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A +5 HIGHER CELL ---------------------------------------------------------
@@ -191,7 +191,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 5);
-            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -200,7 +200,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 5);
-            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 5);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A +6 HIGHER CELL ---------------------------------------------------------
@@ -220,7 +220,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 6);
-            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 6);
-            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -238,7 +238,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 6);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A -1 LOWER CELL ---------------------------------------------------------
@@ -249,7 +249,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -267,7 +267,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A -2 LOWER CELL ---------------------------------------------------------
@@ -278,7 +278,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
         }
 
         // MOVEMENT TO A -3 LOWER CELL ---------------------------------------------------------
@@ -307,7 +307,7 @@ namespace Tests.Core.Graph
             var character = new Orc();
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(-1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(character, from, to));
         }
 
         [Test]
@@ -316,7 +316,7 @@ namespace Tests.Core.Graph
             var character = new SeaHag();
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(-1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(character, from, to));
         }
 
         [Test]
@@ -325,7 +325,7 @@ namespace Tests.Core.Graph
             var character = new Behir();
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(-1, speedCalculator.GetNeededSpeed(character, from, to));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(character, from, to));
         }
     }
 }
