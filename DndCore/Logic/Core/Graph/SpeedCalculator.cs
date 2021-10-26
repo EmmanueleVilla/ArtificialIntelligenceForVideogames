@@ -57,7 +57,13 @@ namespace Logic.Core.Graph
                  break;
             }
 
-            return new Edge(CellInfo.Copy(to), amount, damage, to.Creature == null);
+            var occupied = to.Creature != null;
+            if(occupied)
+            {
+                amount++;
+            }
+
+            return new Edge(CellInfo.Copy(to), amount, damage, !occupied);
         }
     }
 }
