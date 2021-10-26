@@ -54,7 +54,7 @@ namespace Tests.Core.Graph
             var creature = new SizedCreature(mySize, Loyalties.Ally);
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 0, new SizedCreature(enemySize, Loyalties.Enemy));
-            var result = speedCalculator.GetNeededSpeed(creature, from, to, new OccupiedByEnemyMap(enemySize));
+            var result = speedCalculator.GetNeededSpeed(creature, from, to, new OccupiedMap(enemySize, Loyalties.Enemy));
             if (canPass)
             {
                 Assert.NotNull(result);

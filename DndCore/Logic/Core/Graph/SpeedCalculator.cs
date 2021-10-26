@@ -13,11 +13,8 @@ namespace Logic.Core.Graph
             if (to.Creature != null && to.Creature.Loyalty == Loyalties.Enemy)
             {
                 var fromSize = (int)creature.Size;
-                Console.WriteLine(fromSize);
                 var toSize = (int)to.Creature.Size;
-                Console.WriteLine(toSize);
                 var sizeDifference = Math.Abs(fromSize - toSize);
-                Console.WriteLine(sizeDifference);
                 if (sizeDifference < 2)
                 {
                     return null;
@@ -60,9 +57,7 @@ namespace Logic.Core.Graph
                  break;
             }
 
-            //TODO: calculate damage
-            //TODO: check if cell is occupied by ally
-            return new Edge(CellInfo.Copy(to), amount, damage, true);
+            return new Edge(CellInfo.Copy(to), amount, damage, to.Creature == null);
         }
     }
 }

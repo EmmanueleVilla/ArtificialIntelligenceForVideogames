@@ -9,13 +9,15 @@ using Tests.Core.Graph.Mocks.Creatures;
 
 namespace Tests.Core.Graph.Mocks
 {
-    class OccupiedByEnemyMap : IMap
+    class OccupiedMap : IMap
     {
-        Sizes EnemySize;
+        Sizes Size;
+        Loyalties Loyalty;
 
-        public OccupiedByEnemyMap(Sizes enemySize)
+        public OccupiedMap(Sizes size, Loyalties loyalty)
         {
-            EnemySize = enemySize;
+            Size = size;
+            Loyalty = loyalty;
         }
 
         public int Width => throw new NotImplementedException();
@@ -24,7 +26,7 @@ namespace Tests.Core.Graph.Mocks
 
         public CellInfo GetCellInfo(int x, int y)
         {
-            return new CellInfo('G', 0, new SizedCreature(EnemySize, Loyalties.Enemy));
+            return new CellInfo('G', 0, new SizedCreature(Size, Loyalty));
         }
     }
 }
