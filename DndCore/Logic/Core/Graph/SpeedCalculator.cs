@@ -29,14 +29,8 @@ namespace Logic.Core.Graph
                 return null;
             }
 
-            var heightDiff = to.Height - from.Height;
-
-            if (heightDiff < 0 && heightDiff < -2)
-            {
-                return null;
-            }
-
             var amount = 1;
+            var heightDiff = to.Height - from.Height;
 
             if (heightDiff > 1)
             {
@@ -51,6 +45,14 @@ namespace Logic.Core.Graph
                 }
             }
 
+            var damage = 0;
+
+            if(heightDiff < 0)
+            {
+                amount += -heightDiff - 1;
+                damage += -(heightDiff / 2) * 4;
+            }
+
             switch (to.Terrain)
             {
                 case 'R':
@@ -60,7 +62,7 @@ namespace Logic.Core.Graph
 
             //TODO: calculate damage
             //TODO: check if cell is occupied by ally
-            return new Edge(CellInfo.Copy(to), amount, 0, true);
+            return new Edge(CellInfo.Copy(to), amount, damage, true);
         }
     }
 }
