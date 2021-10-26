@@ -18,7 +18,7 @@ namespace Tests.Core.Graph
         public void DestinationMapIsEmpty()
         {
             var creature = new WalkerCreatureMock();
-            var to = new CellInfo('G', 0);
+            var to = new CellInfo('G', 0, null);
             Assert.AreEqual(true, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).CanEndMovementHere);
         }
 

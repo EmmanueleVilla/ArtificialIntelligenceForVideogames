@@ -27,7 +27,7 @@ namespace Logic.Core.Map
                     {
                         terrainHeight = byte.Parse(column.Substring(1, column.Length - 1));
                     }
-                    terrains.Add(new Tuple<int, int>(y, x), new CellInfo(terrainType, terrainHeight));
+                    terrains.Add(new Tuple<int, int>(y, x), new CellInfo(terrainType, terrainHeight, null));
                     y++;
                     width = Math.Max(width, y);
                 }

@@ -10,6 +10,11 @@ namespace Logic.Core.Graph
     {
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
+            if (to.Terrain == ' ')
+            {   
+                return null;
+            }
+
             if (to.Creature != null && to.Creature.Loyalty == Loyalties.Enemy)
             {
                 var fromSize = (int)creature.Size;
@@ -21,9 +26,30 @@ namespace Logic.Core.Graph
                 }
             }
 
-            if (to.Terrain == ' ')
-            {   
-                return null;
+            if (creature.Size > Sizes.Medium)
+            {
+
+                int sizeInCells = 0;
+                switch(creature.Size)
+                {
+                    case Sizes.Tiny:
+                        sizeInCells = 1;
+                        break;
+                    case Sizes.Medium:
+                        sizeInCells = 1;
+                        break;
+                    case Sizes.Large:
+                        sizeInCells = 2;
+                        break;
+                    case Sizes.Huge:
+                        sizeInCells = 3;
+                        break;
+                    case Sizes.Gargantuan:
+                        sizeInCells = 4;
+                        break;
+                }
+                //the "to" cell is always the top-left
+                //for(int x = from.) 
             }
 
             var amount = 1;

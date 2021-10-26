@@ -10,12 +10,16 @@ namespace Core.Map
         public char Terrain;
         public byte Height;
         public ICreature Creature;
+        public int X;
+        public int Y;
 
-        public CellInfo(char terrain, byte heigth, ICreature creature = null)
+        public CellInfo(char terrain, byte heigth, ICreature creature = null, int x = 0, int y = 0)
         {
             Terrain = terrain;
             Height = heigth;
             Creature = creature;
+            X = x;
+            Y = y;
         }
 
         public static CellInfo Copy(CellInfo other)

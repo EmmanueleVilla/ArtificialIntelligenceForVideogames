@@ -17,7 +17,7 @@ namespace Tests.Core.Graph.Mocks
                 new Speed(SpeedTypes.Swimming, 8)
             };
 
-        public Sizes Size => throw new System.NotImplementedException();
+        public Sizes Size => Sizes.Medium;
 
         public List<Attack> Attacks => throw new System.NotImplementedException();
 
