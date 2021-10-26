@@ -1,5 +1,5 @@
 ﻿using Core.Map;
-using Logic.Core.Characters;
+using Logic.Core.Creatures;
 using Logic.Core.Movements;
 using System.Linq;
 
@@ -7,7 +7,7 @@ namespace Logic.Core.Graph
 {
     public class SpeedCalculator
     {
-        public Edge GetNeededSpeed(ICharacter character, CellInfo from, CellInfo to)
+        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to)
         {
             //TODO: check if cell is occupied by enemy
 
@@ -27,7 +27,7 @@ namespace Logic.Core.Graph
 
             if (heightDiff > 1)
             {
-                var hasClimb = character.Movements.Any(x => x.Item1 == SpeedTypes.Climbing);
+                var hasClimb = creature.Movements.Any(x => x.Item1 == SpeedTypes.Climbing);
                 if(hasClimb)
                 {
                     amount += (heightDiff + 1) / 2 - 1;
@@ -41,7 +41,7 @@ namespace Logic.Core.Graph
             switch (to.Terrain)
             {
                 case 'R':
-                    amount += character.Movements.Any(x => x.Item1 == SpeedTypes.Swimming) ? 0 : 1;
+                    amount += creature.Movements.Any(x => x.Item1 == SpeedTypes.Swimming) ? 0 : 1;
                  break;
             }
 

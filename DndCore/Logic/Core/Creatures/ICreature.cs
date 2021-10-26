@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logic.Core.Characters
+namespace Logic.Core.Creatures
 {
-    public interface ICharacter
+    public interface ICreature
     {
         List<Speed> Movements { get; }
     }

@@ -6,7 +6,7 @@ namespace Logic.Core.Movements
 {
     public enum SpeedTypes
     {
-        Base,
+        Walking,
         Swimming,
         Climbing
     }

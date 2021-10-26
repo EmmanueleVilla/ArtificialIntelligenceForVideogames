@@ -1,15 +1,14 @@
-﻿using Logic.Core.Movements;
-using System;
+﻿using Logic.Core.Creatures;
+using Logic.Core.Movements;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Logic.Core.Characters
+namespace Tests.Core.Graph.Mocks
 {
-    public class Behir : ICharacter
+    class ClimberCreatureMock : ICreature
     {
         public List<Speed> Movements =>
             new List<Speed>() {
-                new Speed(SpeedTypes.Base, 10),
+                new Speed(SpeedTypes.Walking, 10),
                 new Speed(SpeedTypes.Climbing, 8)
             };
     }
