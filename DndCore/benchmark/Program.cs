@@ -8,7 +8,7 @@ namespace benchmark
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<DndMapBenchmark>();
+            //var summary = BenchmarkRunner.Run<DndMapBenchmark>();
             Console.ReadLine();
         }
     }

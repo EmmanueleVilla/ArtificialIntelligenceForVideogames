@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Core.Creatures;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,16 +9,18 @@ namespace Core.Map
     {
         public char Terrain;
         public byte Height;
+        public ICreature Creature;
 
-        public CellInfo(char terrain, byte heigth)
+        public CellInfo(char terrain, byte heigth, ICreature creature = null)
         {
             Terrain = terrain;
             Height = heigth;
+            Creature = creature;
         }
 
         public static CellInfo Copy(CellInfo other)
         {
-            return new CellInfo(other.Terrain, other.Height);
+            return new CellInfo(other.Terrain, other.Height, other.Creature);
         }
 
         public static CellInfo Empty()

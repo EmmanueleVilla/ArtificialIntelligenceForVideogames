@@ -1,6 +1,7 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
 using Logic.Core.Movements;
+using System;
 using System.Linq;
 
 namespace Logic.Core.Graph
@@ -9,7 +10,19 @@ namespace Logic.Core.Graph
     {
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
-            //TODO: check if cell is occupied by enemy
+            if (to.Creature != null && to.Creature.Loyalty == Loyalties.Enemy)
+            {
+                var fromSize = (int)creature.Size;
+                Console.WriteLine(fromSize);
+                var toSize = (int)to.Creature.Size;
+                Console.WriteLine(toSize);
+                var sizeDifference = Math.Abs(fromSize - toSize);
+                Console.WriteLine(sizeDifference);
+                if (sizeDifference < 2)
+                {
+                    return null;
+                }
+            }
 
             if (to.Terrain == ' ')
             {   
