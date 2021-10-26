@@ -1,4 +1,5 @@
-﻿using Logic.Core.Creatures;
+﻿using Logic.Core.Actions;
+using Logic.Core.Creatures;
 using Logic.Core.Movements;
 using System.Collections.Generic;
 
@@ -10,5 +11,9 @@ namespace Tests.Core.Graph.Mocks
             new List<Speed>() {
                 new Speed(SpeedTypes.Walking, 6)
             };
+
+        public Sizes Size => throw new System.NotImplementedException();
+
+        public List<Attack> Attacks => throw new System.NotImplementedException();
     }
 }
