@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Core.Graph.Mocks;
 
 namespace Tests.Core.Graph
 {
@@ -15,7 +16,7 @@ namespace Tests.Core.Graph
         public void NullWhenOutsideMap()
         {
             var to = new CellInfo(' ', 0);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(null, CellInfo.Empty(), to, null));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(new WalkerCreatureMock(), CellInfo.Empty(), to, null));
         }
     }
 }

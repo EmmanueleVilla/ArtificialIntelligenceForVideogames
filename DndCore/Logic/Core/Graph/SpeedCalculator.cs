@@ -2,6 +2,7 @@
 using Logic.Core.Creatures;
 using Logic.Core.Movements;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Logic.Core.Graph
@@ -10,11 +11,74 @@ namespace Logic.Core.Graph
     {
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
-            if (to.Terrain == ' ')
-            {   
+            // Check the creature size on the grid
+            int sizeInCells = 1;
+            switch (creature.Size)
+            {
+                case Sizes.Large:
+                    sizeInCells = 2;
+                    break;
+                case Sizes.Huge:
+                    sizeInCells = 3;
+                    break;
+                case Sizes.Gargantuan:
+                    sizeInCells = 4;
+                    break;
+            }            
+            
+            if(sizeInCells == 1)
+            {
+                // if size is 1, I don't waste time creating the cell list
+                return GetNeedSpeedInternal(creature, from, to, map);
+            }
+
+            var edges = new List<Edge>();
+
+            // otherwise I check every connection between the touched cells
+            for (int x = 0; x < sizeInCells; x++)
+            {
+                for (int y = 0; y < sizeInCells; y++)
+                {
+
+                    var newFrom = map.GetCellInfo(from.X + x, from.Y + y);
+                    var newTo = map.GetCellInfo(to.X + x, to.Y + y);
+
+                    // if the height of the destination square is different, I can't go there
+                    if(newTo.Height != to.Height)
+                    {
+                        return null;
+                    }
+
+                    // calculate the cost of a single cell
+                    edges.Add(GetNeedSpeedInternal(creature, newFrom, newTo, map));
+                }
+            }
+
+            // if one edge is null, the path is blocked somewhere
+            if(edges.Any(x => x == null))
+            {
                 return null;
             }
 
+            //return an edge with the worst case of every cell
+            var maxMov = edges.Max(x => x.Speed);
+            return new Edge(
+                to,
+                edges.Max(x => x.Speed),
+                edges.Max(x => x.Damage),
+                edges.All(x => x.CanEndMovementHere)
+                );
+        }
+
+        public Edge GetNeedSpeedInternal(ICreature creature, CellInfo from, CellInfo to, IMap map)
+        {
+            // check if terrain is outside the map
+            if (to.Terrain == ' ')
+            {
+                return null;
+            }
+
+            // check if there is an enemy creature and if I can pass through it
             if (to.Creature != null && to.Creature.Loyalty == Loyalties.Enemy)
             {
                 var fromSize = (int)creature.Size;
@@ -26,39 +90,17 @@ namespace Logic.Core.Graph
                 }
             }
 
-            if (creature.Size > Sizes.Medium)
-            {
-
-                int sizeInCells = 0;
-                switch(creature.Size)
-                {
-                    case Sizes.Tiny:
-                        sizeInCells = 1;
-                        break;
-                    case Sizes.Medium:
-                        sizeInCells = 1;
-                        break;
-                    case Sizes.Large:
-                        sizeInCells = 2;
-                        break;
-                    case Sizes.Huge:
-                        sizeInCells = 3;
-                        break;
-                    case Sizes.Gargantuan:
-                        sizeInCells = 4;
-                        break;
-                }
-                //the "to" cell is always the top-left
-                //for(int x = from.) 
-            }
-
+            // base amount
             var amount = 1;
+
+            // check height difference
             var heightDiff = to.Height - from.Height;
 
+            // I need to climb
             if (heightDiff > 1)
             {
                 var hasClimb = creature.Movements.Any(x => x.Item1 == SpeedTypes.Climbing);
-                if(hasClimb)
+                if (hasClimb)
                 {
                     amount += (heightDiff + 1) / 2 - 1;
                 }
@@ -70,7 +112,8 @@ namespace Logic.Core.Graph
 
             var damage = 0;
 
-            if(heightDiff < 0)
+            // I need to jump down
+            if (heightDiff < 0)
             {
                 amount += -heightDiff - 1;
                 damage += -(heightDiff / 2) * 4;
@@ -78,13 +121,15 @@ namespace Logic.Core.Graph
 
             switch (to.Terrain)
             {
+                // I need to swim
                 case 'R':
                     amount += creature.Movements.Any(x => x.Item1 == SpeedTypes.Swimming) ? 0 : 1;
-                 break;
+                    break;
             }
 
+            // Cell is occupied, I need 1 more speed and I can't stop here
             var occupied = to.Creature != null;
-            if(occupied)
+            if (occupied)
             {
                 amount++;
             }
