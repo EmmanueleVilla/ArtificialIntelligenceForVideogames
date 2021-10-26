@@ -13,7 +13,7 @@ namespace Tests.Core.Graph
         {
             var character = new WalkerCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace Tests.Core.Graph
         {
             var character = new SwimmerCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Tests.Core.Graph
         {
             var character = new ClimberCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to, new EmptyMap()).Speed);
         }
     }
 }

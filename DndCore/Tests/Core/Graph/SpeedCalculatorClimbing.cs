@@ -15,7 +15,7 @@ namespace Tests.Core.Graph
             var character = new WalkerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 1);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace Tests.Core.Graph
             var character = new SwimmerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 1);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace Tests.Core.Graph
             var character = new ClimberCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 1);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A +2 HIGHER CELL ---------------------------------------------------------
@@ -44,7 +44,7 @@ namespace Tests.Core.Graph
             var character = new WalkerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 2);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Tests.Core.Graph
             var character = new SwimmerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 2);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace Tests.Core.Graph
             var character = new ClimberCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 2);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A +3 HIGHER CELL ---------------------------------------------------------
@@ -73,7 +73,7 @@ namespace Tests.Core.Graph
             var character = new WalkerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 3);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Tests.Core.Graph
             var character = new SwimmerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 3);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Tests.Core.Graph
             var character = new ClimberCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 3);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A +4 HIGHER CELL ---------------------------------------------------------
@@ -102,7 +102,7 @@ namespace Tests.Core.Graph
             var character = new WalkerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 4);
-            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace Tests.Core.Graph
             var character = new SwimmerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 4);
-            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(4, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace Tests.Core.Graph
             var character = new ClimberCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 4);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A +5 HIGHER CELL ---------------------------------------------------------
@@ -131,7 +131,7 @@ namespace Tests.Core.Graph
             var character = new WalkerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 5);
-            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace Tests.Core.Graph
             var character = new SwimmerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 5);
-            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(5, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace Tests.Core.Graph
             var character = new ClimberCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 5);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A +6 HIGHER CELL ---------------------------------------------------------
@@ -160,7 +160,7 @@ namespace Tests.Core.Graph
             var character = new WalkerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 6);
-            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace Tests.Core.Graph
             var character = new SwimmerCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 6);
-            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace Tests.Core.Graph
             var character = new ClimberCreatureMock();
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 6);
-            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to).Speed);
+            Assert.AreEqual(3, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Logic.Core.Graph
 {
     public class SpeedCalculator
     {
-        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to)
+        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
             //TODO: check if cell is occupied by enemy
 
