@@ -51,10 +51,10 @@ namespace Tests.Core.Graph
         [TestCase(Sizes.Huge, Sizes.Gargantuan, false)]
         public void CheckIfCreatureCanPassThroughtEnemy(Sizes mySize, Sizes enemySize, bool canPass)
         {
-            var character = new SizedCreature(mySize, Loyalties.Ally);
+            var creature = new SizedCreature(mySize, Loyalties.Ally);
             var from = new CellInfo('G', 0);
             var to = new CellInfo('G', 0, new SizedCreature(enemySize, Loyalties.Enemy));
-            var result = speedCalculator.GetNeededSpeed(character, from, to, new OccupiedByEnemyMap(enemySize));
+            var result = speedCalculator.GetNeededSpeed(creature, from, to, new OccupiedByEnemyMap(enemySize));
             if (canPass)
             {
                 Assert.NotNull(result);

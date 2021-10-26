@@ -12,6 +12,7 @@ namespace Assets.Scripts.Jobs
     struct VeryTimeConsumingJob : IJob
     {
         public NativeArray<int> result;
+
         public void Execute()
         {
             var executor = new VeryTimeConsumingClass();

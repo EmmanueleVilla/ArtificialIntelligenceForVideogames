@@ -10,25 +10,25 @@ namespace Tests.Core.Graph
         [Test]
         public void SwimmingCell_OnlyNormalSpeed()
         {
-            var character = new WalkerCreatureMock();
+            var creature = new WalkerCreatureMock();
             var to = new CellInfo('R', 0);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to, new EmptyMap()).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
         }
 
         [Test]
         public void SwimmingCell_SwimmingSpeed()
         {
-            var character = new SwimmerCreatureMock();
+            var creature = new SwimmerCreatureMock();
             var to = new CellInfo('R', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
         }
 
         [Test]
         public void SwimmingCell_ClimbingSpeed()
         {
-            var character = new ClimberCreatureMock();
+            var creature = new ClimberCreatureMock();
             var to = new CellInfo('R', 0);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(character, CellInfo.Empty(), to, new EmptyMap()).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
         }
     }
 }

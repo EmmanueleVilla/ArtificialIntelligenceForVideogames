@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartJob()
     {
-        NativeArray<int> result = new NativeArray<int>(1, Allocator.TempJob);
+        NativeArray<int> result = new NativeArray<int>(1, Allocator.Persistent);
 
         // Set up the job data
         var jobData = new VeryTimeConsumingJob
@@ -82,13 +82,13 @@ public class GameManager : MonoBehaviour
                 GameObject go = null;
                 switch(cell.Terrain)
                 {
-                    case "G":
+                    case 'G':
                         go = Instantiate(GrassPrefab);
                         break;
-                    case "S":
+                    case 'S':
                         go = Instantiate(StonePrefab);
                         break;
-                    case "R":
+                    case 'R':
                         go = Instantiate(RiverPrefab);
                         break;
                 }
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
                     go.transform.localPosition += Vector3.up * 2.45f * y;
                     go.transform.localPosition += Vector3.right * 4.25f * y;
                     go.transform.localPosition += Vector3.up * cell.Height * 1.5f;
-                    if(cell.Height > 0 && cell.Terrain == "G")
+                    if(cell.Height > 0 && cell.Terrain == 'G')
                     {
                         var height = cell.Height - 1;
                         do

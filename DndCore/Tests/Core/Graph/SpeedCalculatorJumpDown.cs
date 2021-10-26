@@ -12,28 +12,28 @@ namespace Tests.Core.Graph
         [Test]
         public void OneLowerCell_OnlyNormalSpeed()
         {
-            var character = new WalkerCreatureMock();
+            var creature = new WalkerCreatureMock();
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
         public void OneLowerCell_SwimmingSpeed()
         {
-            var character = new SwimmerCreatureMock();
+            var creature = new SwimmerCreatureMock();
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
         public void OneLowerCell_ClimbingSpeed()
         {
-            var character = new ClimberCreatureMock();
+            var creature = new ClimberCreatureMock();
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A -2 LOWER CELL ---------------------------------------------------------
@@ -41,28 +41,28 @@ namespace Tests.Core.Graph
         [Test]
         public void TwoLowerCell_OnlyNormalSpeed()
         {
-            var character = new WalkerCreatureMock();
+            var creature = new WalkerCreatureMock();
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
         public void TwoLowerCell_SwimmingSpeed()
         {
-            var character = new SwimmerCreatureMock();
+            var creature = new SwimmerCreatureMock();
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
         }
 
         [Test]
         public void TwoLowerCell_ClimbingSpeed()
         {
-            var character = new ClimberCreatureMock();
+            var creature = new ClimberCreatureMock();
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
         }
 
         // MOVEMENT TO A -3 LOWER CELL ---------------------------------------------------------
@@ -70,28 +70,28 @@ namespace Tests.Core.Graph
         [Test]
         public void ThreeLowerCell_OnlyNormalSpeed()
         {
-            var character = new WalkerCreatureMock();
+            var creature = new WalkerCreatureMock();
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()));
         }
 
         [Test]
         public void ThreeLowerCell_SwimmingSpeed()
         {
-            var character = new SwimmerCreatureMock();
+            var creature = new SwimmerCreatureMock();
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()));
         }
 
         [Test]
         public void ThreeLowerCell_ClimbingSpeed()
         {
-            var character = new ClimberCreatureMock();
+            var creature = new ClimberCreatureMock();
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(character, from, to, new EmptyMap()));
+            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()));
         }
     }
 }
