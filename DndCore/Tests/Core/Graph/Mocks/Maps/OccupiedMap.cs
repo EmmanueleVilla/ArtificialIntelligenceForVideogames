@@ -44,7 +44,7 @@ namespace Tests.Core.Graph.Mocks
             return new MockedCreature(Size, Loyalty);
         }
 
-        public List<ICreature> IsLeavingThreateningArea(CellInfo start, CellInfo end)
+        public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
         {
             throw new NotImplementedException();
         }

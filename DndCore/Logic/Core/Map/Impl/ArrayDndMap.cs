@@ -145,9 +145,19 @@ namespace Logic.Core.Map.Impl
             return occupied.Select(c => GetCellInfo(c.X, c.Y)).ToList();
         }
 
-        public List<ICreature> IsLeavingThreateningArea(CellInfo start, CellInfo end)
+        public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
         {
-            throw new NotImplementedException();
+            var creatures = new List<ICreature>();
+            foreach (var area in threateningAreas)
+            {
+                var areaContainsStart = area.Item2.Any(x => x.X == start.X && x.Y == start.Y);
+                var areaContainsEnd = !area.Item2.Any(x => x.X == end.X && x.Y == end.Y);
+                if (areaContainsStart && areaContainsEnd && area.Item1.Loyalty != mover.Loyalty)
+                {
+                    creatures.Add(area.Item1);
+                }
+            }
+            return creatures;
         }
     }
 }
