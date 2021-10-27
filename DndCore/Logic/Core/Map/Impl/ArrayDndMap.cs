@@ -112,7 +112,7 @@ namespace Logic.Core.Map.Impl
                 {
                     for (int j = startJ; j < endJ; j++)
                     {
-                        Console.WriteLine(String.Format("{0},{1}", i, j));
+                        //Console.WriteLine(String.Format("{0},{1}", i, j));
                         cells.Add(GetCellInfo(i, j));
                     }
                 }

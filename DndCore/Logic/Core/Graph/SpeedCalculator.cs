@@ -166,9 +166,9 @@ namespace Logic.Core.Graph
                     {
                         damage += enemy.Attacks
                             .Where(x => x.Type == Actions.AttackTypes.WeaponMelee || x.Type == Actions.AttackTypes.WeaponMeleeReach)
-                            .OrderByDescending(x => x.Damage.OrderByDescending(xx => xx.AverageDamage).First())
+                            .OrderByDescending(x => x.Damage.Select(xx => xx.AverageDamage).Sum())
                             .First()
-                            .Damage.OrderByDescending(xx => xx.AverageDamage).First().AverageDamage;
+                            .Damage.Select(xx => xx.AverageDamage).Sum();
                     }
                 }
             }

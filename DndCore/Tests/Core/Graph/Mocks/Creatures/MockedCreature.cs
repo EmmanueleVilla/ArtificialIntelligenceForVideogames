@@ -14,12 +14,21 @@ namespace Tests.Core.Graph.Mocks.Creatures
         Sizes _size;
         Loyalties _loyalty;
         List<Attack> _attacks;
+        bool _disengaged;
+        bool _hasReactions;
 
-        public MockedCreature(Sizes size, Loyalties loyalty, List<Attack> attacks = null)
+        public MockedCreature(
+            Sizes size,
+            Loyalties loyalty,
+            List<Attack> attacks = null,
+            bool disengaged = false,
+            bool hasReactions = true)
         {
             _size = size;
             _loyalty = loyalty;
             _attacks = attacks ?? new List<Attack>();
+            _disengaged = disengaged;
+            _hasReactions = hasReactions;
         }
 
         public Loyalties Loyalty => _loyalty;
@@ -30,11 +39,11 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public List<Attack> Attacks => _attacks;
 
-        public bool Disangaged => false;
+        public bool Disangaged => _disengaged;
 
         public bool HasReaction()
         {
-            return true;
+            return _hasReactions;
         }
     }
 }
