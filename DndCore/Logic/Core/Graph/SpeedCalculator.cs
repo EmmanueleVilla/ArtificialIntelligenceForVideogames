@@ -93,10 +93,11 @@ namespace Logic.Core.Graph
             }
 
             // check if there is an enemy creature and if I can pass through it
-            if (to.Creature != null && to.Creature.Loyalty == Loyalties.Enemy)
+            var occupant = map.GetOccupantCreature(to.X, to.Y);
+            if (occupant != null && occupant.Loyalty == Loyalties.Enemy)
             {
                 var fromSize = (int)creature.Size;
-                var toSize = (int)to.Creature.Size;
+                var toSize = (int)occupant.Size;
                 var sizeDifference = Math.Abs(fromSize - toSize);
                 if (sizeDifference < 2)
                 {
@@ -142,7 +143,7 @@ namespace Logic.Core.Graph
             }
 
             // Cell is occupied, I need 1 more speed and I can't stop here
-            var occupied = to.Creature != null;
+            var occupied = occupant != null;
             if (occupied)
             {
                 amount++;

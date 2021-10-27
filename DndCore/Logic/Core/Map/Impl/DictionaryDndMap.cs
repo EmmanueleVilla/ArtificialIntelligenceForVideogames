@@ -1,4 +1,5 @@
 ﻿using Core.Map;
+using Logic.Core.Creatures;
 using System.Collections.Generic;
 
 namespace Logic.Core.Map
@@ -36,6 +37,16 @@ namespace Logic.Core.Map
             var key = x * Width + y;
             cells.Remove(key);
             cells.Add(key, info);
+        }
+
+        public void AddCreature(ICreature creature, int x, int y)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ICreature GetOccupantCreature(int x, int y)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

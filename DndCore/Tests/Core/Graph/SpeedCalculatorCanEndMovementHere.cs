@@ -26,16 +26,16 @@ namespace Tests.Core.Graph
         public void DestinationMapIsOccupiedByEnemy()
         {
             var creature = new WalkerCreatureMock();
-            var to = new CellInfo('G', 0, new SizedCreature(Sizes.Gargantuan, Loyalties.Enemy));
-            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).CanEndMovementHere);
+            var to = new CellInfo('G', 0);
+            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Gargantuan, Loyalties.Enemy)).CanEndMovementHere);
         }
 
         [Test]
         public void DestinationMapIsOccupiedByAlly()
         {
             var creature = new WalkerCreatureMock();
-            var to = new CellInfo('G', 0, new SizedCreature(Sizes.Medium, Loyalties.Ally));
-            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).CanEndMovementHere);
+            var to = new CellInfo('G', 0);
+            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Medium, Loyalties.Ally)).CanEndMovementHere);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Map;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -23,19 +24,36 @@ namespace Tests.Core.Graph
         }
 
         [Test]
-        public void DestinationMapIsOccupiedByEnemy()
+        public void DestinationMapIsOccupiedByRootEnemy()
         {
             var creature = new WalkerCreatureMock();
-            var to = new CellInfo('G', 0, new SizedCreature(Sizes.Gargantuan, Loyalties.Enemy));
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
+            var to = new CellInfo('G', 0);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Gargantuan, Loyalties.Enemy)).Speed);
+        }
+
+        [Test]
+        public void DestinationMapIsOccupiedByNonRootEnemy()
+        {
+            var creature = new WalkerCreatureMock();
+            var mapCsv = "" +
+                " ,G,G,G\n" +
+                "G,G,G,G\n" +
+                " ,G,G,G";
+            var map = new CsvFullMapBuilder().FromCsv(mapCsv);
+            map.AddCreature(new SizedCreature(Sizes.Medium, Loyalties.Ally), 0, 1);
+            map.AddCreature(new SizedCreature(Sizes.Huge, Loyalties.Enemy), 1, 0);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(
+                creature, map.GetCellInfo(0,1),
+                map.GetCellInfo(1, 0),
+                map).Speed);
         }
 
         [Test]
         public void DestinationMapIsOccupiedByAlly()
         {
             var creature = new WalkerCreatureMock();
-            var to = new CellInfo('G', 0, new SizedCreature(Sizes.Medium, Loyalties.Ally));
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
+            var to = new CellInfo('G', 0);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Medium, Loyalties.Ally)).Speed);
         }
     }
 }
