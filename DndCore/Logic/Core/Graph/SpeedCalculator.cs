@@ -34,13 +34,28 @@ namespace Logic.Core.Graph
 
             var edges = new List<Edge>();
 
+            var myCells = new List<CellInfo>();
+            for (int x = 0; x < sizeInCells; x++)
+            {
+                for (int y = 0; y < sizeInCells; y++)
+                {
+                    var cell = map.GetCellInfo(x, y);
+                    myCells.Add(cell);
+                    Console.WriteLine("My cell: " + cell.X + "," + cell.Y);
+                }
+            }
+
             // otherwise I check every connection between the touched cells
             for (int x = 0; x < sizeInCells; x++)
             {
                 for (int y = 0; y < sizeInCells; y++)
                 {
-                    var newFrom = map.GetCellInfo(from.X + x, from.Y + y);
                     var newTo = map.GetCellInfo(to.X + x, to.Y + y);
+                    if(myCells.Contains(newTo))
+                    {
+                        continue;
+                    }
+                    var newFrom = map.GetCellInfo(from.X + x, from.Y + y);
 
                     // if the height of the destination square is different, I can't go there
                     if(Math.Abs(newTo.Height - to.Height) > 1)

@@ -1,4 +1,5 @@
 ﻿using Core.Map;
+using Logic.Core.Map.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Logic.Core.Map
                     {
                         terrainHeight = byte.Parse(column.Substring(1, column.Length - 1));
                     }
-                    terrains.Add(new Tuple<int, int>(y, x), new CellInfo(terrainType, terrainHeight, null));
+                    terrains.Add(new Tuple<int, int>(y, x), new CellInfo(terrainType, terrainHeight, null, y, x));
                     y++;
                     width = Math.Max(width, y);
                 }
@@ -36,7 +37,7 @@ namespace Logic.Core.Map
             }
             height = Math.Max(height, x);
 
-            var m = new DictionaryDndMap(width, height, CellInfo.Empty());
+            var m = new ArrayDndMap(width, height, CellInfo.Empty());
 
             terrains.ToList().ForEach(t =>
             {

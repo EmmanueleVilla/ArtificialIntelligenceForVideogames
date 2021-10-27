@@ -1,6 +1,7 @@
 ﻿using Core.DI;
 using Core.Map;
 using Logic.Core.Map;
+using Logic.Core.Map.Impl;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,33 @@ namespace test.Source.Map
             "G,H,I,L,M,N\n" +
             "G,G,G,G,G,G\n" +
             "G,G,G,G,G,G";
-            var map = builder.FromCsv(csv) as DictionaryDndMap;
+            var map = builder.FromCsv(csv) as ArrayDndMap;
             Assert.AreEqual(6, map.Width);
             Assert.AreEqual(3, map.Height);
-            Assert.AreEqual('G', map.GetCellInfo(0, 0).Terrain);
-            Assert.AreEqual('H', map.GetCellInfo(1, 0).Terrain);
-            Assert.AreEqual('I', map.GetCellInfo(2, 0).Terrain);
-            Assert.AreEqual('L', map.GetCellInfo(3, 0).Terrain);
-            Assert.AreEqual('M', map.GetCellInfo(4, 0).Terrain);
-            Assert.AreEqual('N', map.GetCellInfo(5, 0).Terrain);
+            Assert.AreEqual(
+                new CellInfo('G', 0, null, 0, 0),
+                map.GetCellInfo(0, 0)
+                );
+            Assert.AreEqual(
+                new CellInfo('H', 0, null, 1, 0),
+                map.GetCellInfo(1, 0)
+                );
+            Assert.AreEqual(
+                new CellInfo('I', 0, null, 2, 0),
+                map.GetCellInfo(2, 0)
+                );
+            Assert.AreEqual(
+                new CellInfo('L', 0, null, 3, 0),
+                map.GetCellInfo(3, 0)
+                );
+            Assert.AreEqual(
+                new CellInfo('M', 0, null, 4, 0),
+                map.GetCellInfo(4, 0)
+                );
+            Assert.AreEqual(
+                new CellInfo('N', 0, null, 5, 0),
+                map.GetCellInfo(5, 0)
+                );
         }
 
     }
