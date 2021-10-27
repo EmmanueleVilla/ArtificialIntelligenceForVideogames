@@ -27,5 +27,12 @@ namespace Tests.Core.Graph.Mocks.Creatures
         public List<Attack> Attacks => new List<Attack>();
 
         public Loyalties Loyalty => Loyalties.Ally;
+
+        public bool Disangaged => false;
+
+        public bool HasReaction()
+        {
+            return true;
+        }
     }
 }

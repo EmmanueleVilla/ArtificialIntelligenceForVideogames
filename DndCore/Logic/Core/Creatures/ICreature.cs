@@ -12,5 +12,7 @@ namespace Logic.Core.Creatures
         Sizes Size { get; }
         List<Speed> Movements { get; }
         List<Attack> Attacks { get; }
+        bool Disangaged { get; }
+        bool HasReaction();
     }
 }

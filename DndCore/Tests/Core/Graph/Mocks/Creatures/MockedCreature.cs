@@ -29,5 +29,12 @@ namespace Tests.Core.Graph.Mocks.Creatures
         public List<Speed> Movements => new List<Speed>();
 
         public List<Attack> Attacks => _attacks;
+
+        public bool Disangaged => false;
+
+        public bool HasReaction()
+        {
+            return true;
+        }
     }
 }

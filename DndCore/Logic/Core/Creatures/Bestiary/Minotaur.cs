@@ -25,5 +25,11 @@ namespace Logic.Core.Creatures.Bestiary
                 new Damage(DamageTypes.Piercing, 14, 2, 8, 4)
             })
         };
+        public bool Disangaged => false;
+
+        public bool HasReaction()
+        {
+            return true;
+        }
     }
 }

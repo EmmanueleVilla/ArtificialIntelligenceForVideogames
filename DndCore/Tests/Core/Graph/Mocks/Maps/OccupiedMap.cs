@@ -46,7 +46,7 @@ namespace Tests.Core.Graph.Mocks
 
         public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
         {
-            throw new NotImplementedException();
+            return new List<ICreature>();
         }
     }
 }

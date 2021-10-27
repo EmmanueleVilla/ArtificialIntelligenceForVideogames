@@ -157,6 +157,22 @@ namespace Logic.Core.Graph
                 amount++;
             }
 
+            if (!creature.Disangaged)
+            {
+                var enemiesLeft = map.IsLeavingThreateningArea(creature, from, to);
+                foreach (var enemy in enemiesLeft)
+                {
+                    if(enemy.HasReaction())
+                    {
+                        damage += enemy.Attacks
+                            .Where(x => x.Type == Actions.AttackTypes.WeaponMelee || x.Type == Actions.AttackTypes.WeaponMeleeReach)
+                            .OrderByDescending(x => x.Damage.OrderByDescending(xx => xx.AverageDamage).First())
+                            .First()
+                            .Damage.OrderByDescending(xx => xx.AverageDamage).First().AverageDamage;
+                    }
+                }
+            }
+
             return new Edge(CellInfo.Copy(to), amount, damage, !occupied);
         }
     }

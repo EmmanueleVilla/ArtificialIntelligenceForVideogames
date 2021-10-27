@@ -15,5 +15,11 @@ namespace Logic.Core.Creatures.Bestiary
         public List<Speed> Movements => new List<Speed>() { new Speed(SpeedTypes.Walking, 8) };
 
         public List<Attack> Attacks => new List<Attack>();
+        public bool Disangaged => false;
+
+        public bool HasReaction()
+        {
+            return true;
+        }
     }
 }
