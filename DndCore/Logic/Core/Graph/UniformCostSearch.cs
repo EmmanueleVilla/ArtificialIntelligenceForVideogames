@@ -16,48 +16,52 @@ namespace Logic.Core.Graph
             public int UsedMovement;
             public float DamageTaken;
             public bool CanEndMovementHere;
-            public bool Expanded;
             public ReachedCell(CellInfo cell)
             {
                 Cell = cell;
             }
         }
 
-        public List<CellInfo> Search(CellInfo from, IMap map)
+        public List<Edge> Search(CellInfo from, IMap map)
         {
+            var result = new List<Edge>();
             var speedCalculator = new SpeedCalculator();
             if(from.Creature.Movements.TrueForAll(x => x.Item2 <= 0))
             {
-                return new List<CellInfo>();
+                return new List<Edge>();
             }
 
-            var visited = new List<int>();
+            var expanded = new List<int>();
             var queue = new List<ReachedCell>();
             queue.Add(new ReachedCell(from));
 
-            while(queue.Any(x => !x.Expanded))
+            while(queue.Count > 0)
             {
                 // Exploring the cell with less damage taken during movement,
                 // then with less used movement
-                queue = queue.Where(x => !x.Expanded).OrderByDescending(x => x.DamageTaken).ThenByDescending(x => x.UsedMovement).ToList();
+                queue = queue.OrderByDescending(x => x.DamageTaken).ThenByDescending(x => x.UsedMovement).ToList();
                 var best = queue[0];
-                visited.Add(best.Cell.X * map.Width + best.Cell.Y);
-                //queue.RemoveAt(0);
+                expanded.Add(best.Cell.X * map.Width + best.Cell.Y);
+                queue.RemoveAt(0);
                 var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement));
-                for (int deltaX = -1; deltaX < 1; deltaX++)
+                Console.WriteLine(string.Format("Expanding {0},{1}", best.Cell.X, best.Cell.Y));
+                for (int deltaX = -1; deltaX <= 1; deltaX++)
                 {
-                    for (int deltaY = -1; deltaY < 1; deltaY++)
+                    for (int deltaY = -1; deltaY <= 1; deltaY++)
                     {
+                        var newX = best.Cell.X + deltaX;
+                        var newY = best.Cell.Y + deltaY;
+                        Console.WriteLine(string.Format("Checking edge to {0},{1}", newX, newY));
                         if(deltaX == 0 && deltaY == 0)
                         {
                             continue;
                         }
-                        var key = (best.Cell.X + deltaX) * map.Width + best.Cell.Y + deltaY;
-                        if(visited.Contains(key))
+                        var key = newX * map.Width + newY;
+                        if(expanded.Contains(key))
                         {
                             continue;
                         }
-                        var to = map.GetCellInfo(best.Cell.X + deltaX, best.Cell.Y + deltaY);
+                        var to = map.GetCellInfo(newX, newY);
                         var edge = speedCalculator.GetNeededSpeed(
                             from.Creature,
                             best.Cell,
@@ -65,6 +69,7 @@ namespace Logic.Core.Graph
                             map);
                         if(edge != null)
                         {
+                            Console.WriteLine("Edge found: " + edge);
                             var reached = new ReachedCell(to)
                             {
                                 UsedMovement = best.UsedMovement + edge.Speed,
@@ -72,15 +77,15 @@ namespace Logic.Core.Graph
                                 DamageTaken = best.DamageTaken + edge.Damage
                             };
                             queue.Add(reached);
+                            result.Add(edge);
+                            Console.WriteLine("Edge added to the queue");
                         }
                     }
                 }
             }
 
-            return queue
+            return result
                 .Where(x => x.CanEndMovementHere)
-                .Select(x => x.Cell)
-                .Where(x => x.X != from.X && x.Y != from.Y)
                 .ToList();
         }
 

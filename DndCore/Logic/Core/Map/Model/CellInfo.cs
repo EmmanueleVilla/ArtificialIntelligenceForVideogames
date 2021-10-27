@@ -24,7 +24,7 @@ namespace Core.Map
 
         public static CellInfo Copy(CellInfo other)
         {
-            return new CellInfo(other.Terrain, other.Height, other.Creature);
+            return new CellInfo(other.Terrain, other.Height, other.Creature, other.X, other.Y);
         }
 
         public static CellInfo Empty()

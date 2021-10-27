@@ -11,6 +11,12 @@ namespace Logic.Core.Graph
     {
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
+            if (to.Terrain == ' ')
+            {
+                return null;
+            }
+
+            Console.WriteLine(string.Format("Testing path to: {0},{1}", to.X, to.Y));
             // Check the creature size on the grid
             int sizeInCells = 1;
             switch (creature.Size)
@@ -77,20 +83,22 @@ namespace Logic.Core.Graph
             //return an edge with the worst case of every cell
             var maxMov = edges.Max(x => x.Speed);
             return new Edge(
-                to,
+                CellInfo.Copy(to),
                 edges.Max(x => x.Speed),
                 edges.Max(x => x.Damage),
                 edges.All(x => x.CanEndMovementHere)
                 );
         }
 
-        Edge GetNeedSpeedInternal(ICreature creature, CellInfo from, CellInfo to, IMap map, List<Speed> movements = null)
+        Edge GetNeedSpeedInternal(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
             // check if terrain is outside the map
             if (to.Terrain == ' ')
             {
                 return null;
             }
+
+            Console.WriteLine(string.Format("Internal testing path to: {0},{1}", to.X, to.Y));
 
             // check if there is an enemy creature and if I can pass through it
             var occupant = map.GetOccupantCreature(to.X, to.Y);
