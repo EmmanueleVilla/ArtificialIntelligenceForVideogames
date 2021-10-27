@@ -7,6 +7,7 @@ namespace Logic.Core.Actions
     public enum AttackTypes
     {
         WeaponMelee,
+        WeaponMeleeReach,
         WeaponRanged,
         MagicMelee,
         MagicRanged

@@ -4,10 +4,20 @@ using System.Text;
 
 namespace Logic.Core.Actions
 {
-    public class Attack
+    public struct Attack
     {
-        AttackTypes Type;
-        string Name;
-        List<Damage> Damage;
+        public readonly AttackTypes Type;
+        public readonly string Name;
+        public readonly List<Damage> Damage;
+
+        public Attack(
+            string name,
+            AttackTypes type,
+            List<Damage> damage)
+        {
+            Name = name;
+            Type = type;
+            Damage = damage;
+        }
     }
 }

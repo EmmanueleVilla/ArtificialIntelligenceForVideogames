@@ -764,6 +764,24 @@ MonoBehaviour:
   GrassPrefab: {fileID: 113452, guid: dab64d92d0839154db1eade84cf11cf0, type: 3}
   StonePrefab: {fileID: 198772, guid: 74327b54fdbe35544aa23d4e9c2ef204, type: 3}
   RiverPrefab: {fileID: 158120, guid: 17a0c7ea5d598fb46825e369be33763a, type: 3}
+  RatWithBow: {fileID: 1368975330069667007, guid: 8c67626156ab6894ea72f40851825d9e,
+    type: 3}
+  RatWithDagger: {fileID: 4140408134658664876, guid: 34b22153ed262af41a1f75e8909c4ef3,
+    type: 3}
+  RatWithClaws: {fileID: 6145249511070863563, guid: a4d5bc1fe08fc6a4c936e5728e2df561,
+    type: 3}
+  RatWithStaff: {fileID: 1194042897259694388, guid: b06330e84821d0041846f0b8ae99ed30,
+    type: 3}
+  Minotaur: {fileID: 7168535934198254918, guid: af2be243c3cce2b46b9fc542865b8f5d,
+    type: 3}
+  DwarfMaleWarrior: {fileID: 6658677904708774731, guid: 9b94b4ee464b92f4cb548edb83b5a28b,
+    type: 3}
+  ElfFemaleWizard: {fileID: 6138009523780790490, guid: 9c3387d1c4826204d99978eb85d77601,
+    type: 3}
+  HumanFemaleMonk: {fileID: 3174390132655017265, guid: f8abf5547bf37c842a8587a2a2e97b13,
+    type: 3}
+  HumanMaleRange: {fileID: 1625954757667970680, guid: da6f0515a868b3e489bb32db4f2bb358,
+    type: 3}
 --- !u!1 &1205988970
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,7 +931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &2016986421
 AudioListener:
   m_ObjectHideFlags: 0

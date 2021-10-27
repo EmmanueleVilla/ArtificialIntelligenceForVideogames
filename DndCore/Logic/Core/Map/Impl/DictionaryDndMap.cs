@@ -39,7 +39,7 @@ namespace Logic.Core.Map
             cells.Add(key, info);
         }
 
-        public void AddCreature(ICreature creature, int x, int y)
+        public bool AddCreature(ICreature creature, int x, int y)
         {
             throw new System.NotImplementedException();
         }

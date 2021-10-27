@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,10 +43,13 @@ namespace Logic.Core.Map.Impl
 
         private List<CellInfo> occupiedCells = new List<CellInfo>();
 
-        public void AddCreature(ICreature creature, int x, int y)
+        public bool AddCreature(ICreature creature, int x, int y)
         {
             var cell = GetCellInfo(x, y);
-            cell.Creature = creature;
+            if (cell.Terrain == ' ' || GetOccupantCreature(x, y) != null) 
+            {
+                return false;
+            }
 
             int sizeInCells = 1;
             switch (creature.Size)
@@ -61,15 +65,33 @@ namespace Logic.Core.Map.Impl
                     break;
             }
 
-            for (int i = 0; i < sizeInCells; i++)
+            var tempOccupiedCells = new List<CellInfo>();
+            var fit = true;
+            for (int i = x; i < sizeInCells + x; i++)
             {
-                for (int j = 0; j < sizeInCells; j++)
+                for (int j = y; j < sizeInCells + y; j++)
                 {
                     var occupiedCell = GetCellInfo(i, j);
+                    if(Math.Abs(cell.Height - occupiedCell.Height) > 1 || GetOccupantCreature(i, j) != null)
+                    {
+                        fit = false;
+                    }
                     occupiedCell.Creature = creature;
-                    occupiedCells.Add(cell);
+                    tempOccupiedCells.Add(occupiedCell);
                 }
             }
+
+            if(!fit)
+            {
+                return false;
+            }
+
+
+            occupiedCells.AddRange(tempOccupiedCells);
+
+            cell.Creature = creature;
+
+            return true;
         }
 
         public ICreature GetOccupantCreature(int x, int y)

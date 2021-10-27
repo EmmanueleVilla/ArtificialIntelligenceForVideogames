@@ -10,7 +10,7 @@ namespace Core.Map
         CellInfo GetCellInfo(int x, int y);
         int Width { get; }
         int Height { get; }
-        void AddCreature(ICreature creature, int x, int y);
+        bool AddCreature(ICreature creature, int x, int y);
         ICreature GetOccupantCreature(int x, int y);
     }
 }

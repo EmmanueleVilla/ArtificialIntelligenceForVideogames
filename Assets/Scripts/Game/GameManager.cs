@@ -1,13 +1,22 @@
 ﻿using Assets.Scripts.Jobs;
 using Core.DI;
 using Core.Map;
+using Logic.Core.Creatures;
+using Logic.Core.Creatures.Bestiary;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public enum Creatures
+    {
+        
+    }
+
     private IMap map;
     public TextAsset RiverMap;
     public Camera menuCamera;
@@ -19,13 +28,24 @@ public class GameManager : MonoBehaviour
     public GameObject StonePrefab;
     public GameObject RiverPrefab;
 
+    public GameObject RatWithBow;
+    public GameObject RatWithDagger;
+    public GameObject RatWithClaws;
+    public GameObject RatWithStaff;
+    public GameObject Minotaur;
+    public GameObject DwarfMaleWarrior;
+    public GameObject ElfFemaleWizard;
+    public GameObject HumanFemaleMonk;
+    public GameObject HumanMaleRanger;
+
+
     void Start()
     {
         Physics.queriesHitTriggers = true;
         menuCamera.gameObject.SetActive(true);
         gameCamera.gameObject.SetActive(false);
         DndModule.RegisterRules();
-        this.StartCoroutine(StartJob());
+        //this.StartCoroutine(StartJob());
     }
 
     IEnumerator StartJob()
@@ -65,6 +85,30 @@ public class GameManager : MonoBehaviour
     public void InitRiverMap()
     {
         map = DndModule.Get<IMapBuilder>().FromCsv(RiverMap.text);
+        var creatures = new List<ICreature>() { 
+            new RatmanWithBow(),
+            new RatmanWithClaw(),
+            new RatmanWithDagger(),
+            new RatmanWithStaff(),
+            new HumanMaleRanger(),
+            new HumanFemaleMonk(),
+            new DwarfMaleWarrior(),
+            new ElfFemaleWizard()
+        };
+
+        var random = DndModule.Get<System.Random>();
+        foreach (var creature in creatures)
+        {
+            if (creature.Loyalty == Loyalties.Ally)
+            {
+                bool fit = false;
+                while (!fit)
+                {
+                    var x = random.Next(0, map.Width);
+                    var y = random.Next(0, map.Height);
+                }
+            }
+        }
         InitGame();
     }
 
