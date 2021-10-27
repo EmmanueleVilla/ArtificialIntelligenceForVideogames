@@ -81,9 +81,11 @@ namespace Tests.Core.Graph.UCS
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 0, 0);
             map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 1, 0);
-            var to = map.GetCellInfo(2, 0);
-            var edge = new Edge(to, 3, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(map.GetCellInfo(0, 0), map));
+            var toOne = map.GetCellInfo(1, 0);
+            var edgeOne = new Edge(toOne, 2, 0, false);
+            var toTwo = map.GetCellInfo(2, 0);
+            var edgeTwo = new Edge(toTwo, 3, 0, true);
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(map.GetCellInfo(0, 0), map));
         }
     }
 }

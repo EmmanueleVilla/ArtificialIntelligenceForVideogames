@@ -47,7 +47,6 @@ namespace Logic.Core.Graph
                 {
                     var cell = map.GetCellInfo(x, y);
                     myCells.Add(cell);
-                    //Console.Writeline("My cell: " + cell.X + "," + cell.Y);
                 }
             }
 

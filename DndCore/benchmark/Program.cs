@@ -9,8 +9,17 @@ namespace benchmark
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<UCSBenchmark>();
-            Console.ReadLine();
+            //var summary = BenchmarkRunner.Run<UCSBenchmark>();
+            Console.WriteLine("Starting..");
+            var benchmark = new UCSBenchmark();
+            benchmark.GlobalSetup();
+            Console.WriteLine("Map Initialized..");
+            for (int i = 0; i < 50000; i++)
+            {
+                Console.WriteLine(i);
+                benchmark.FindPath();
+            }
+            Console.WriteLine("Done.");
         }
     }
 }
