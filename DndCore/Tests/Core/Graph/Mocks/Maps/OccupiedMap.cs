@@ -34,6 +34,11 @@ namespace Tests.Core.Graph.Mocks
             return new CellInfo('G', 0, new SizedCreature(Size, Loyalty));
         }
 
+        public List<CellInfo> GetCellsOccupiedBy(int x, int y)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICreature GetOccupantCreature(int x, int y)
         {
             return new SizedCreature(Size, Loyalty);

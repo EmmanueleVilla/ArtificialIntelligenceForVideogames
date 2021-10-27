@@ -31,5 +31,15 @@ namespace Core.Map
         {
             return new CellInfo(' ', 0);
         }
+
+        public override string ToString()
+        {
+            return string.Format("[CellInfo: Terrain={0}, Height={1}, Creature={2}, X={3}, Y={4}]",
+                Terrain.ToString(),
+                Height.ToString(),
+                Creature?.ToString(),
+                X.ToString(),
+                Y.ToString());
+        }
     }
 }

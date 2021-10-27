@@ -780,7 +780,7 @@ MonoBehaviour:
     type: 3}
   HumanFemaleMonk: {fileID: 3174390132655017265, guid: f8abf5547bf37c842a8587a2a2e97b13,
     type: 3}
-  HumanMaleRange: {fileID: 1625954757667970680, guid: da6f0515a868b3e489bb32db4f2bb358,
+  HumanMaleRanger: {fileID: 1625954757667970680, guid: da6f0515a868b3e489bb32db4f2bb358,
     type: 3}
 --- !u!1 &1205988970
 GameObject:

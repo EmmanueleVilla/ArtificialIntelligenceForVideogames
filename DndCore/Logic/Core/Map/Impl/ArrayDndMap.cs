@@ -89,7 +89,7 @@ namespace Logic.Core.Map.Impl
 
             occupiedCells.AddRange(tempOccupiedCells);
 
-            cell.Creature = creature;
+            SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
 
             return true;
         }
@@ -97,6 +97,22 @@ namespace Logic.Core.Map.Impl
         public ICreature GetOccupantCreature(int x, int y)
         {
             return occupiedCells.FirstOrDefault(c => c.X == x && c.Y == y).Creature;
+        }
+
+        public List<CellInfo> GetCellsOccupiedBy(int x, int y)
+        {
+            var cell = GetCellInfo(x, y);
+            if(cell.Creature == null)
+            {
+                return new List<CellInfo>();
+            }
+            var occupied = occupiedCells.Where(c => c.Creature == cell.Creature).ToList();
+            if(occupied.Count == 0)
+            {
+                return new List<CellInfo>() { cell };
+            }
+
+            return occupied.Select(c => GetCellInfo(c.X, c.Y)).ToList();
         }
     }
 }

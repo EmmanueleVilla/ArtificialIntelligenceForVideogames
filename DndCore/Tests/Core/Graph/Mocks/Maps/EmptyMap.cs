@@ -24,6 +24,11 @@ namespace Tests.Core.Graph.Mocks
             throw new NotImplementedException();
         }
 
+        public List<CellInfo> GetCellsOccupiedBy(int x, int y)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICreature GetOccupantCreature(int x, int y)
         {
             return null;
