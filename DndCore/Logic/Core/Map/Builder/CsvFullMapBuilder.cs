@@ -23,7 +23,7 @@ namespace Logic.Core.Map
                 {
                     var terrainType = column[0];
                     byte terrainHeight = 0;
-                    if (column.Length > 1)
+                    if (column.Length > 1 && terrainType != ' ')
                     {
                         terrainHeight = byte.Parse(column.Substring(1, column.Length - 1));
                     }

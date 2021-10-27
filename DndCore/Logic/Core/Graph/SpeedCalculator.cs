@@ -39,12 +39,11 @@ namespace Logic.Core.Graph
             {
                 for (int y = 0; y < sizeInCells; y++)
                 {
-
                     var newFrom = map.GetCellInfo(from.X + x, from.Y + y);
                     var newTo = map.GetCellInfo(to.X + x, to.Y + y);
 
                     // if the height of the destination square is different, I can't go there
-                    if(newTo.Height != to.Height)
+                    if(Math.Abs(newTo.Height - to.Height) > 1)
                     {
                         return null;
                     }

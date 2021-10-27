@@ -11,13 +11,18 @@ namespace Tests.Core.Graph.Mocks
 {
     class SwimmerCreatureMock : ICreature
     {
+        Sizes _size;
+        public SwimmerCreatureMock(Sizes size = Sizes.Medium)
+        {
+            _size = size;
+        }
         public List<Speed> Movements =>
             new List<Speed>() {
                 new Speed(SpeedTypes.Walking, 6),
                 new Speed(SpeedTypes.Swimming, 8)
             };
 
-        public Sizes Size => Sizes.Medium;
+        public Sizes Size => _size;
 
         public List<Attack> Attacks => throw new System.NotImplementedException();
 
