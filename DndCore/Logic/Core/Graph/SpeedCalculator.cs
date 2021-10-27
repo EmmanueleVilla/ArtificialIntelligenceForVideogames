@@ -84,7 +84,7 @@ namespace Logic.Core.Graph
                 );
         }
 
-        public Edge GetNeedSpeedInternal(ICreature creature, CellInfo from, CellInfo to, IMap map)
+        Edge GetNeedSpeedInternal(ICreature creature, CellInfo from, CellInfo to, IMap map, List<Speed> movements = null)
         {
             // check if terrain is outside the map
             if (to.Terrain == ' ')

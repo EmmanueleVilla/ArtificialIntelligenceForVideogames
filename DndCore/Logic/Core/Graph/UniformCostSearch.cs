@@ -2,20 +2,86 @@
 using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Logic.Core.Graph
 {
     public class UniformCostSearch
     {
+        class ReachedCell
+        {
+            public readonly CellInfo Cell;
+
+            public int UsedMovement;
+            public float DamageTaken;
+            public bool CanEndMovementHere;
+            public bool Expanded;
+            public ReachedCell(CellInfo cell)
+            {
+                Cell = cell;
+            }
+        }
+
         public List<CellInfo> Search(CellInfo from, IMap map)
         {
-            var movement = new List<Speed>(from.Creature.Movements);
-            if(movement.TrueForAll(x => x.Item2 <= 0))
+            var speedCalculator = new SpeedCalculator();
+            if(from.Creature.Movements.TrueForAll(x => x.Item2 <= 0))
             {
                 return new List<CellInfo>();
             }
-            return new List<CellInfo>();
+
+            var visited = new List<int>();
+            var queue = new List<ReachedCell>();
+            queue.Add(new ReachedCell(from));
+
+            while(queue.Any(x => !x.Expanded))
+            {
+                // Exploring the cell with less damage taken during movement,
+                // then with less used movement
+                queue = queue.Where(x => !x.Expanded).OrderByDescending(x => x.DamageTaken).ThenByDescending(x => x.UsedMovement).ToList();
+                var best = queue[0];
+                visited.Add(best.Cell.X * map.Width + best.Cell.Y);
+                //queue.RemoveAt(0);
+                var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement));
+                for (int deltaX = -1; deltaX < 1; deltaX++)
+                {
+                    for (int deltaY = -1; deltaY < 1; deltaY++)
+                    {
+                        if(deltaX == 0 && deltaY == 0)
+                        {
+                            continue;
+                        }
+                        var key = (best.Cell.X + deltaX) * map.Width + best.Cell.Y + deltaY;
+                        if(visited.Contains(key))
+                        {
+                            continue;
+                        }
+                        var to = map.GetCellInfo(best.Cell.X + deltaX, best.Cell.Y + deltaY);
+                        var edge = speedCalculator.GetNeededSpeed(
+                            from.Creature,
+                            best.Cell,
+                            to,
+                            map);
+                        if(edge != null)
+                        {
+                            var reached = new ReachedCell(to)
+                            {
+                                UsedMovement = best.UsedMovement + edge.Speed,
+                                CanEndMovementHere = edge.CanEndMovementHere,
+                                DamageTaken = best.DamageTaken + edge.Damage
+                            };
+                            queue.Add(reached);
+                        }
+                    }
+                }
+            }
+
+            return queue
+                .Where(x => x.CanEndMovementHere)
+                .Select(x => x.Cell)
+                .Where(x => x.X != from.X && x.Y != from.Y)
+                .ToList();
         }
 
         /*
