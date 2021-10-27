@@ -198,5 +198,15 @@ namespace Tests.Core.Graph
             Assert.AreEqual(3, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Damage);
         }
+
+        [Test]
+        public void SixHigherCell_ExpiredClimbingSpeed()
+        {
+            var creature = new ExpiredClimberCreatureMock();
+            var from = new CellInfo('G', 0);
+            var to = new CellInfo('G', 6);
+            Assert.AreEqual(6, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
+            Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Damage);
+        }
     }
 }

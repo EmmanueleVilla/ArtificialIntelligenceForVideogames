@@ -20,6 +20,11 @@ namespace Logic.Core.Graph
             {
                 Cell = cell;
             }
+
+            public override string ToString()
+            {
+                return string.Format("Used Movement until now:" + UsedMovement);
+            }
         }
 
         public List<Edge> Search(CellInfo from, IMap map)
@@ -43,8 +48,10 @@ namespace Logic.Core.Graph
                 var best = queue[0];
                 expanded.Add(best.Cell.X * map.Width + best.Cell.Y);
                 queue.RemoveAt(0);
-                var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement));
+                var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
+                Console.WriteLine(string.Format("Remaining Movement: {0},{1}", remainingMovement[0].Item1, remainingMovement[0].Item2));
                 Console.WriteLine(string.Format("Expanding {0},{1}", best.Cell.X, best.Cell.Y));
+                Console.WriteLine(best);
                 for (int deltaX = -1; deltaX <= 1; deltaX++)
                 {
                     for (int deltaY = -1; deltaY <= 1; deltaY++)
@@ -70,6 +77,10 @@ namespace Logic.Core.Graph
                         if(edge != null)
                         {
                             Console.WriteLine("Edge found: " + edge);
+                            if(!remainingMovement.Any( x => x.Item2 - edge.Speed >= 0))
+                            {
+                                continue;
+                            }
                             var reached = new ReachedCell(to)
                             {
                                 UsedMovement = best.UsedMovement + edge.Speed,
@@ -77,6 +88,8 @@ namespace Logic.Core.Graph
                                 DamageTaken = best.DamageTaken + edge.Damage
                             };
                             queue.Add(reached);
+                            edge.Speed += best.UsedMovement;
+                            edge.Damage += best.DamageTaken;
                             result.Add(edge);
                             Console.WriteLine("Edge added to the queue");
                         }

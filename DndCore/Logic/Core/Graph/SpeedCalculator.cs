@@ -122,8 +122,8 @@ namespace Logic.Core.Graph
             // I need to climb
             if (heightDiff > 1)
             {
-                var hasClimb = creature.Movements.Any(x => x.Item1 == SpeedTypes.Climbing);
-                if (hasClimb)
+                var climbingMovement = creature.Movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Climbing);
+                if (climbingMovement != null && climbingMovement.Item2 > 0)
                 {
                     amount += (heightDiff + 1) / 2 - 1;
                 }
@@ -146,7 +146,8 @@ namespace Logic.Core.Graph
             {
                 // I need to swim
                 case 'R':
-                    amount += creature.Movements.Any(x => x.Item1 == SpeedTypes.Swimming) ? 0 : 1;
+                    var swimmingMovement = creature.Movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Swimming);
+                    amount += swimmingMovement != null && swimmingMovement.Item2 > 0 ? 0 : 1;
                     break;
             }
 

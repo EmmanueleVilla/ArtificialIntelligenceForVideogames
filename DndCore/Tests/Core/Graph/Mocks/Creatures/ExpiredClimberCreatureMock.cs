@@ -5,22 +5,18 @@ using System.Collections.Generic;
 
 namespace Tests.Core.Graph.Mocks
 {
-    class WalkerCreatureMock : ICreature
+    class ExpiredClimberCreatureMock : ICreature
     {
-        Sizes _size;
-        public WalkerCreatureMock(Sizes size = Sizes.Medium)
-        {
-            _size = size;
-        }
         public List<Speed> Movements =>
             new List<Speed>() {
-                new Speed(SpeedTypes.Walking, 6)
+                new Speed(SpeedTypes.Walking, 10),
+                new Speed(SpeedTypes.Climbing, 0)
             };
 
-        public Sizes Size => _size;
+        public Sizes Size => Sizes.Medium;
 
         public List<Attack> Attacks => throw new System.NotImplementedException();
 
-        public Loyalties Loyalty => Loyalties.Ally;
+        public Loyalties Loyalty => throw new System.NotImplementedException();
     }
 }
