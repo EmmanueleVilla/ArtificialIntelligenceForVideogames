@@ -11,9 +11,9 @@ namespace Tests.Core.Graph.Mocks.Creatures
 {
     class StillCreature : ICreature
     {
-        public Loyalties Loyalty => throw new NotImplementedException();
+        public Loyalties Loyalty => Loyalties.Ally;
 
-        public Sizes Size => throw new NotImplementedException();
+        public Sizes Size => Sizes.Medium;
 
         public List<Speed> Movements => new List<Speed>()
         {
@@ -21,6 +21,6 @@ namespace Tests.Core.Graph.Mocks.Creatures
             new Speed(SpeedTypes.Swimming, -1)
         };
 
-        public List<Attack> Attacks => throw new NotImplementedException();
+        public List<Attack> Attacks => new List<Attack>();
     }
 }

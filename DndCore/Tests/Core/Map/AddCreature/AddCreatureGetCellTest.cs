@@ -11,10 +11,10 @@ using Tests.Core.Graph.Mocks;
 namespace Tests.Core.Map
 {
     [TestFixture]
-    class AddCreatureTest
+    class AddCreatureGetCellTest
     {
         [Test]
-        public void AddCreatureAndRetrieve()
+        public void AddCreatureAndRetrieveCell()
         {
             var map = new ArrayDndMap(10, 10, CellInfo.Empty());
             for(int i = 0; i<10; i++)

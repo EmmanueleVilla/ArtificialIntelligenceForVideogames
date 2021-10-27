@@ -12,7 +12,7 @@ namespace Core.Map
         int Height { get; }
         bool AddCreature(ICreature creature, int x, int y);
         ICreature GetOccupantCreature(int x, int y);
-
         List<CellInfo> GetCellsOccupiedBy(int x, int y);
+        List<ICreature> IsLeavingThreateningArea(CellInfo start, CellInfo end);
     }
 }

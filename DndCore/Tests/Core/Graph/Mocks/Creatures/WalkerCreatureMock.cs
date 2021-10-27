@@ -19,7 +19,7 @@ namespace Tests.Core.Graph.Mocks
 
         public Sizes Size => _size;
 
-        public List<Attack> Attacks => throw new System.NotImplementedException();
+        public List<Attack> Attacks => new List<Attack>();
 
         public Loyalties Loyalty => Loyalties.Ally;
     }

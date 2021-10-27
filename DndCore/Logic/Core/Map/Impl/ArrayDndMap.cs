@@ -31,7 +31,7 @@ namespace Logic.Core.Map.Impl
         public CellInfo GetCellInfo(int x, int y)
         {
             if(x < 0 || x >= Width || y < 0 || y >= Height) {
-                return CellInfo.Empty();
+                return new CellInfo(' ', 0, null, x, y);
             }
             return cells[x, y];
         }
@@ -41,8 +41,9 @@ namespace Logic.Core.Map.Impl
             cells[x, y] = info;
         }
 
-        private List<CellInfo> occupiedCells = new List<CellInfo>();
-
+        public List<CellInfo> occupiedCells = new List<CellInfo>();
+        public List<Tuple<ICreature, List<CellInfo>>> threateningAreas = new List<Tuple<ICreature, List<CellInfo>>>();
+        
         public bool AddCreature(ICreature creature, int x, int y)
         {
             var cell = GetCellInfo(x, y);
@@ -81,13 +82,42 @@ namespace Logic.Core.Map.Impl
                 }
             }
 
-            if(!fit)
+            if (!fit)
             {
                 return false;
             }
 
-
             occupiedCells.AddRange(tempOccupiedCells);
+
+            var reach = 0;
+            if (creature.Attacks.Any(a => a.Type == Actions.AttackTypes.WeaponMelee))
+            {
+                reach = 1;
+            }
+
+            if (creature.Attacks.Any(a => a.Type == Actions.AttackTypes.WeaponMeleeReach))
+            {
+                reach = 2;
+            }
+
+
+            if (reach > 0)
+            {
+                var cells = new List<CellInfo>();
+                var startI = x - reach;
+                var endI = x + sizeInCells + reach;
+                var startJ = y - reach;
+                var endJ = y + sizeInCells + reach;
+                for (int i = startI; i < endI; i++)
+                {
+                    for (int j = startJ; j < endJ; j++)
+                    {
+                        Console.WriteLine(String.Format("{0},{1}", i, j));
+                        cells.Add(GetCellInfo(i, j));
+                    }
+                }
+                threateningAreas.Add(new Tuple<ICreature, List<CellInfo>>(creature, cells));
+            }
 
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
 
@@ -113,6 +143,11 @@ namespace Logic.Core.Map.Impl
             }
 
             return occupied.Select(c => GetCellInfo(c.X, c.Y)).ToList();
+        }
+
+        public List<ICreature> IsLeavingThreateningArea(CellInfo start, CellInfo end)
+        {
+            throw new NotImplementedException();
         }
     }
 }

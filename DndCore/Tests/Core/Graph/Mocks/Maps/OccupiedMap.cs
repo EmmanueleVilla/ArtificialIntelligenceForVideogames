@@ -31,7 +31,7 @@ namespace Tests.Core.Graph.Mocks
 
         public CellInfo GetCellInfo(int x, int y)
         {
-            return new CellInfo('G', 0, new SizedCreature(Size, Loyalty));
+            return new CellInfo('G', 0, new MockedCreature(Size, Loyalty));
         }
 
         public List<CellInfo> GetCellsOccupiedBy(int x, int y)
@@ -41,7 +41,12 @@ namespace Tests.Core.Graph.Mocks
 
         public ICreature GetOccupantCreature(int x, int y)
         {
-            return new SizedCreature(Size, Loyalty);
+            return new MockedCreature(Size, Loyalty);
+        }
+
+        public List<ICreature> IsLeavingThreateningArea(CellInfo start, CellInfo end)
+        {
+            throw new NotImplementedException();
         }
     }
 }

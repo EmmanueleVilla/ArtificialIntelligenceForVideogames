@@ -53,5 +53,10 @@ namespace Logic.Core.Map
         {
             throw new System.NotImplementedException();
         }
+
+        public List<ICreature> IsLeavingThreateningArea(CellInfo start, CellInfo end)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

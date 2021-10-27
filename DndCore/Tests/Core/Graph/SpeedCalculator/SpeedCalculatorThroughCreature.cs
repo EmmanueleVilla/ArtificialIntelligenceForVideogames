@@ -40,8 +40,8 @@ namespace Tests.Core.Graph
                 "G,G,G,G\n" +
                 " ,G,G,G";
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
-            map.AddCreature(new SizedCreature(Sizes.Medium, Loyalties.Ally), 0, 1);
-            map.AddCreature(new SizedCreature(Sizes.Huge, Loyalties.Enemy), 1, 0);
+            map.AddCreature(new MockedCreature(Sizes.Medium, Loyalties.Ally), 0, 1);
+            map.AddCreature(new MockedCreature(Sizes.Huge, Loyalties.Enemy), 1, 0);
             Assert.AreEqual(2, speedCalculator.GetNeededSpeed(
                 creature, map.GetCellInfo(0,1),
                 map.GetCellInfo(1, 0),
