@@ -14,4 +14,10 @@
     <ProjectReference Include="..\Tests\Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Core\Map\river.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

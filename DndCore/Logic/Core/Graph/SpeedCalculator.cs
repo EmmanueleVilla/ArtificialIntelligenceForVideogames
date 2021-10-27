@@ -16,7 +16,7 @@ namespace Logic.Core.Graph
                 return null;
             }
 
-            Console.WriteLine(string.Format("Testing path to: {0},{1}", to.X, to.Y));
+            //Console.Writeline(string.Format("Testing path to: {0},{1}", to.X, to.Y));
             // Check the creature size on the grid
             int sizeInCells = 1;
             switch (creature.Size)
@@ -47,7 +47,7 @@ namespace Logic.Core.Graph
                 {
                     var cell = map.GetCellInfo(x, y);
                     myCells.Add(cell);
-                    Console.WriteLine("My cell: " + cell.X + "," + cell.Y);
+                    //Console.Writeline("My cell: " + cell.X + "," + cell.Y);
                 }
             }
 
@@ -98,7 +98,7 @@ namespace Logic.Core.Graph
                 return null;
             }
 
-            Console.WriteLine(string.Format("Internal testing path to: {0},{1}", to.X, to.Y));
+            //Console.Writeline(string.Format("Internal testing path to: {0},{1}", to.X, to.Y));
 
             // check if there is an enemy creature and if I can pass through it
             var occupant = map.GetOccupantCreature(to.X, to.Y);

@@ -8,7 +8,7 @@ namespace Core.Utils.Log
     {
         public void WriteLine(string message)
         {
-            Console.WriteLine(message);
+            //Console.Writeline(message);
         }
     }
 }

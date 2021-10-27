@@ -31,7 +31,9 @@ namespace Logic.Core.Graph
         {
             var result = new List<Edge>();
             var speedCalculator = new SpeedCalculator();
-            if(from.Creature.Movements.TrueForAll(x => x.Item2 <= 0))
+            var creature = from.Creature;
+            var movements = creature.Movements;
+            if (movements.TrueForAll(x => x.Item2 <= 0))
             {
                 return new List<Edge>();
             }
@@ -49,16 +51,16 @@ namespace Logic.Core.Graph
                 expanded.Add(best.Cell.X * map.Width + best.Cell.Y);
                 queue.RemoveAt(0);
                 var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
-                Console.WriteLine(string.Format("Remaining Movement: {0},{1}", remainingMovement[0].Item1, remainingMovement[0].Item2));
-                Console.WriteLine(string.Format("Expanding {0},{1}", best.Cell.X, best.Cell.Y));
-                Console.WriteLine(best);
+                //Console.Writeline(string.Format("Remaining Movement: {0},{1}", remainingMovement[0].Item1, remainingMovement[0].Item2));
+                //Console.Writeline(string.Format("Expanding {0},{1}", best.Cell.X, best.Cell.Y));
+                //Console.Writeline(best);
                 for (int deltaX = -1; deltaX <= 1; deltaX++)
                 {
                     for (int deltaY = -1; deltaY <= 1; deltaY++)
                     {
                         var newX = best.Cell.X + deltaX;
                         var newY = best.Cell.Y + deltaY;
-                        Console.WriteLine(string.Format("Checking edge to {0},{1}", newX, newY));
+                        //Console.Writeline(string.Format("Checking edge to {0},{1}", newX, newY));
                         if(deltaX == 0 && deltaY == 0)
                         {
                             continue;
@@ -76,7 +78,7 @@ namespace Logic.Core.Graph
                             map);
                         if(edge != null)
                         {
-                            Console.WriteLine("Edge found: " + edge);
+                            //Console.Writeline("Edge found: " + edge);
                             if(!remainingMovement.Any( x => x.Item2 - edge.Speed >= 0))
                             {
                                 continue;
@@ -91,7 +93,7 @@ namespace Logic.Core.Graph
                             edge.Speed += best.UsedMovement;
                             edge.Damage += best.DamageTaken;
                             result.Add(edge);
-                            Console.WriteLine("Edge added to the queue");
+                            //Console.Writeline("Edge added to the queue");
                         }
                     }
                 }
