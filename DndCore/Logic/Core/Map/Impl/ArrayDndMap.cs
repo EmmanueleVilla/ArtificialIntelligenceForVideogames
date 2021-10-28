@@ -12,6 +12,7 @@ namespace Logic.Core.Map.Impl
         public readonly int Height;
         private CellInfo[,] cells;
         public List<CellInfo> occupiedCells = new List<CellInfo>();
+        public Dictionary<int,ICreature> occupiedCellsDictionary = new Dictionary<int, ICreature>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -88,6 +89,10 @@ namespace Logic.Core.Map.Impl
             }
 
             occupiedCells.AddRange(tempOccupiedCells);
+            tempOccupiedCells.ForEach(temp =>
+            {
+                occupiedCellsDictionary.Add(temp.X * Width + temp.Y, creature);
+            });
 
             var reach = 0;
             if (creature.Attacks.Any(a => a.Type == Actions.AttackTypes.WeaponMelee))
@@ -126,7 +131,9 @@ namespace Logic.Core.Map.Impl
 
         public ICreature GetOccupantCreature(int x, int y)
         {
-            return occupiedCells.FirstOrDefault(c => c.X == x && c.Y == y).Creature;
+            ICreature creature;
+            occupiedCellsDictionary.TryGetValue(x * Width + y, out creature);
+            return creature;
         }
 
         public List<CellInfo> GetCellsOccupiedBy(int x, int y)
