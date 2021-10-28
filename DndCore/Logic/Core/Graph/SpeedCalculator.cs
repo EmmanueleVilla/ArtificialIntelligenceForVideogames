@@ -48,15 +48,15 @@ namespace Logic.Core.Graph
             //TEST WITHOUT LINQ
             var deltaX = to.X - from.X;
             var deltaY = to.Y - from.Y;
-            var movingHorizontal = deltaY == 0 && deltaX != 0;
-            var movingVertically = deltaX == 0 && deltaY != 0;
+            var movingHorizontal = deltaX != 0;
+            var movingVertically = deltaY != 0;
             if (movingHorizontal)
             {
                 var xPos = from.X + (deltaX > 0 ? sizeInCells - 1 : 0);
                 for (int y = from.Y; y < from.Y + sizeInCells; y++)
                 {
                     var tempFrom = map.GetCellInfo(xPos, y);
-                    var tempTo = map.GetCellInfo(xPos + deltaX, y);
+                    var tempTo = map.GetCellInfo(xPos + deltaX, y + deltaY);
                     if (Math.Abs(tempTo.Height - to.Height) > 1)
                     {
                         return null;
@@ -76,7 +76,7 @@ namespace Logic.Core.Graph
                 for (int x = from.X; x < from.X + sizeInCells; x++)
                 {
                     var tempFrom = map.GetCellInfo(x, yPos);
-                    var tempTo = map.GetCellInfo(x, yPos + deltaY);
+                    var tempTo = map.GetCellInfo(x + deltaX, yPos + deltaY);
                     if (Math.Abs(tempTo.Height - to.Height) > 1)
                     {
                         return null;
