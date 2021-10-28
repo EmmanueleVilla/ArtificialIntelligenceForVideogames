@@ -53,5 +53,10 @@ namespace Logic.Core.Map
         {
             throw new System.NotImplementedException();
         }
+
+        public List<CellInfo> GetCellsOccupiedBy(int x, int y)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
