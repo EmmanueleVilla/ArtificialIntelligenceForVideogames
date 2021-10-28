@@ -22,26 +22,25 @@ namespace Benchmark.Core.Map.Impl
         public void GlobalSetup()
         {
             DndModule.RegisterRules(false);
-            map = new ArrayDndMap(50, 50, new CellInfo('G', 0));
+            map = new ArrayDndMap(75, 75, new CellInfo('G', 0));
             var random = DndModule.Get<System.Random>();
 
-            for (int x = 0; x < 50; x++)
+            for (int x = 0; x < 75; x++)
             {
-                for (int y = 0; y < 50; y++)
+                for (int y = 0; y < 75; y++)
                 {
                     map.SetCell(x, y, new CellInfo('G', (byte)random.Next(2), null, x, y));
                 }
             }
             var creatures = new List<ICreature>() {
-            new RatmanWithBow(),
-            new RatmanWithClaw(),
-            new RatmanWithDagger(),
-            new RatmanWithStaff(),
-            new Minotaur(),
-            new HumanMaleRanger(),
-            new HumanFemaleMonk(),
-            new DwarfMaleWarrior(),
             new ElfFemaleWizard(),
+            new ElfFemaleWizard(),
+            new ElfFemaleWizard(),
+            new ElfFemaleWizard(),
+            new Minotaur(),
+            new Minotaur(),
+            new Minotaur(),
+            new HugeMinotaur(),
             new HugeMinotaur(),
             new GargantuanMinotaur()
             };
