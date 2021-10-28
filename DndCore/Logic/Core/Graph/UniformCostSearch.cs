@@ -42,15 +42,15 @@ namespace Logic.Core.Graph
                 return new List<Edge>();
             }
 
-            var expanded = new List<int>();
+            var visited = new List<int>();
             var queue = new List<ReachedCell>();
             queue.Add(new ReachedCell(from));
 
             while(queue.Count > 0)
             {
-                queue = queue.OrderByDescending(x => x.DamageTaken).ThenByDescending(x => x.UsedMovement).ToList();
+                queue = queue.OrderBy(x => x.DamageTaken).ThenBy(x => x.UsedMovement).ToList();
                 var best = queue[0];
-                expanded.Add(best.Cell.X * map.Width + best.Cell.Y);
+                visited.Add(best.Cell.X * map.Width + best.Cell.Y);
                 queue.RemoveAt(0);
                 var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
                 for (int deltaX = -1; deltaX <= 1; deltaX++)
@@ -64,7 +64,7 @@ namespace Logic.Core.Graph
                             continue;
                         }
                         var key = newX * map.Width + newY;
-                        if(expanded.Contains(key))
+                        if(visited.Contains(key))
                         {
                             continue;
                         }
@@ -74,9 +74,9 @@ namespace Logic.Core.Graph
                             best.Cell,
                             to,
                             map);
-                        if(edge != null)
+                        if (edge != null)
                         {
-                            if(!remainingMovement.Any( x => x.Item2 - edge.Speed >= 0))
+                            if (!remainingMovement.Any(x => x.Item2 - edge.Speed >= 0))
                             {
                                 continue;
                             }
@@ -89,7 +89,15 @@ namespace Logic.Core.Graph
                             queue.Add(reached);
                             edge.Speed += best.UsedMovement;
                             edge.Damage += best.DamageTaken;
+                            if(edge.Damage == 0)
+                            {
+                                visited.Add(key);
+                            }
                             result.Add(edge);
+                        }
+                        else
+                        {
+                            visited.Add(key);
                         }
                     }
                 }

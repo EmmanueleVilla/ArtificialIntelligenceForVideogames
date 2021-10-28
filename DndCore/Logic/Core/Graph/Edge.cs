@@ -4,13 +4,15 @@ namespace Logic.Core.Graph
 {
     public class Edge
     {
+        public CellInfo Start;
         public CellInfo Destination;
         public int Speed;
         public float Damage;
         public bool CanEndMovementHere;
 
-        public Edge(CellInfo destination, int speed, float damage, bool canEndMovementHere)
+        public Edge(CellInfo start, CellInfo destination, int speed, float damage, bool canEndMovementHere)
         {
+            Start = start;
             Destination = destination;
             Speed = speed;
             Damage = damage;
@@ -19,7 +21,8 @@ namespace Logic.Core.Graph
 
         public override string ToString()
         {
-            return string.Format("Destination: {0}, Speed Used: {1}, Damage Taken: {2}, CanEndMovementHere: {3}",
+            return string.Format("From: {0}, To: {1}, Speed: {2}, Damage: {3}, CanEnd: {4}",
+                Start.X + "," + Start.Y,
                 Destination.X + "," + Destination.Y,
                 Speed,
                 Damage,

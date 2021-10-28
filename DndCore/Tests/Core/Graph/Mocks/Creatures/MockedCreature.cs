@@ -16,11 +16,13 @@ namespace Tests.Core.Graph.Mocks.Creatures
         List<Attack> _attacks;
         bool _disengaged;
         bool _hasReactions;
+        List<Speed> _movements;
 
         public MockedCreature(
             Sizes size,
             Loyalties loyalty,
             List<Attack> attacks = null,
+            List<Speed> movements = null,
             bool disengaged = false,
             bool hasReactions = true)
         {
@@ -29,13 +31,14 @@ namespace Tests.Core.Graph.Mocks.Creatures
             _attacks = attacks ?? new List<Attack>();
             _disengaged = disengaged;
             _hasReactions = hasReactions;
+            _movements = movements ?? new List<Speed>();
         }
 
         public Loyalties Loyalty => _loyalty;
 
         public Sizes Size => _size;
 
-        public List<Speed> Movements => new List<Speed>();
+        public List<Speed> Movements => _movements;
 
         public List<Attack> Attacks => _attacks;
 

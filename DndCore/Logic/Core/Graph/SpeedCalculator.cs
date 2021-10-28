@@ -65,7 +65,7 @@ namespace Logic.Core.Graph
                 for (int y = 0; y < sizeInCells; y++)
                 {
                     var newTo = map.GetCellInfo(to.X + x, to.Y + y);
-                    if(myCells.Contains(newTo))
+                    if (myCells.Any(my => my.X == newTo.X && my.Y == newTo.Y))
                     {
                         continue;
                     }
@@ -77,21 +77,20 @@ namespace Logic.Core.Graph
                         return null;
                     }
 
-                    // calculate the cost of a single cell
-                    edges.Add(GetNeedSpeedInternal(creature, newFrom, newTo, map));
+                    var edge = GetNeedSpeedInternal(creature, newFrom, newTo, map);
+                    if(edge == null)
+                    {
+                        return null;
+                    }
+                    edges.Add(edge);
                 }
-            }
-
-            // if one edge is null, the path is blocked somewhere
-            if(edges.Any(x => x == null))
-            {
-                return null;
             }
 
             //return an edge with the worst case of every cell
             var maxMov = edges.Max(x => x.Speed);
             return new Edge(
-                CellInfo.Copy(to),
+                from,
+                to,
                 edges.Max(x => x.Speed),
                 edges.Max(x => x.Damage),
                 edges.All(x => x.CanEndMovementHere)
@@ -182,7 +181,7 @@ namespace Logic.Core.Graph
                 }
             }
 
-            return new Edge(CellInfo.Copy(to), amount, damage, !occupied);
+            return new Edge(from, to, amount, damage, !occupied);
         }
     }
 }

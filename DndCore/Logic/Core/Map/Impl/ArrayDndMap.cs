@@ -11,6 +11,7 @@ namespace Logic.Core.Map.Impl
         public readonly int Width;
         public readonly int Height;
         private CellInfo[,] cells;
+        public List<CellInfo> occupiedCells = new List<CellInfo>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -40,8 +41,7 @@ namespace Logic.Core.Map.Impl
         {
             cells[x, y] = info;
         }
-
-        public List<CellInfo> occupiedCells = new List<CellInfo>();
+        
         public List<Tuple<ICreature, List<CellInfo>>> threateningAreas = new List<Tuple<ICreature, List<CellInfo>>>();
         
         public bool AddCreature(ICreature creature, int x, int y)
@@ -150,9 +150,17 @@ namespace Logic.Core.Map.Impl
             var creatures = new List<ICreature>();
             foreach (var area in threateningAreas)
             {
+                if (area.Item1.Loyalty == mover.Loyalty)
+                {
+                    continue;
+                }
                 var areaContainsStart = area.Item2.Any(x => x.X == start.X && x.Y == start.Y);
+                if(!areaContainsStart)
+                {
+                    continue;
+                }
                 var areaContainsEnd = !area.Item2.Any(x => x.X == end.X && x.Y == end.Y);
-                if (areaContainsStart && areaContainsEnd && area.Item1.Loyalty != mover.Loyalty)
+                if (areaContainsEnd)
                 {
                     creatures.Add(area.Item1);
                 }

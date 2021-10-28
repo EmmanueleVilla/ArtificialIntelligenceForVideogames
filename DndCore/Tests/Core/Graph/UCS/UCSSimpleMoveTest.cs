@@ -22,9 +22,10 @@ namespace Tests.Core.Graph.UCS
             var creature = new WalkerCreatureMock(Sizes.Medium);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
+            var from = map.GetCellInfo(0, 0);
             var to = map.GetCellInfo(1, 0);
-            var edge = new Edge(to, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(map.GetCellInfo(0,0), map));
+            var edge = new Edge(from, to, 1, 0, true);
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
         }
 
         [Test]
@@ -34,11 +35,12 @@ namespace Tests.Core.Graph.UCS
             var creature = new WalkerCreatureMock(Sizes.Medium);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 1, 0);
+            var from = map.GetCellInfo(1, 0);
             var toOne = map.GetCellInfo(0, 0);
-            var edgeOne = new Edge(toOne, 1, 0, true);
+            var edgeOne = new Edge(from, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new Edge(toTwo, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(map.GetCellInfo(1, 0), map));
+            var edgeTwo = new Edge(from, toTwo, 1, 0, true);
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(from, map));
         }
 
         [Test]
@@ -48,11 +50,12 @@ namespace Tests.Core.Graph.UCS
             var creature = new WalkerCreatureMock(Sizes.Medium);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
+            var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
-            var edgeOne = new Edge(toOne, 1, 0, true);
+            var edgeOne = new Edge(from, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new Edge(toTwo, 2, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(map.GetCellInfo(0, 0), map));
+            var edgeTwo = new Edge(from, toTwo, 2, 0, true);
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(from, map));
         }
 
         [Test]
@@ -62,13 +65,15 @@ namespace Tests.Core.Graph.UCS
             var creature = new WalkerCreatureMock(Sizes.Medium);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
-
+            var from = map.GetCellInfo(0, 0);
+            var prev = from;
             var expected = new List<Edge>();
             for (int i = 1; i <= 6; i++)
             {
                 var to = map.GetCellInfo(i, 0);
-                var edge = new Edge(to, i, 0, true);
+                var edge = new Edge(prev,to, i, 0, true);
                 expected.Add(edge);
+                prev = to;
             }
 
             Assert.AreEqual(expected, new UniformCostSearch().Search(map.GetCellInfo(0, 0), map));
@@ -81,11 +86,12 @@ namespace Tests.Core.Graph.UCS
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 0, 0);
             map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 1, 0);
+            var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
-            var edgeOne = new Edge(toOne, 2, 0, false);
+            var edgeOne = new Edge(from, toOne, 2, 0, false);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new Edge(toTwo, 3, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(map.GetCellInfo(0, 0), map));
+            var edgeTwo = new Edge(from, toTwo, 3, 0, true);
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(from, map));
         }
     }
 }

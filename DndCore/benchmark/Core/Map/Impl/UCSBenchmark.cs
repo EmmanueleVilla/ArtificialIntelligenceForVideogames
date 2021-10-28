@@ -4,14 +4,8 @@ using Core.Map;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
-using Logic.Core.Map;
 using Logic.Core.Map.Impl;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Benchmark.Core.Map.Impl
 {
@@ -22,11 +16,12 @@ namespace Benchmark.Core.Map.Impl
         CellInfo mediumCell;
         CellInfo largeCell;
         CellInfo hugeCell;
+        CellInfo gargantuanCell;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            DndModule.RegisterRules();
+            DndModule.RegisterRules(false);
             map = new ArrayDndMap(50, 50, new CellInfo('G', 0));
             var random = DndModule.Get<System.Random>();
 
@@ -47,7 +42,8 @@ namespace Benchmark.Core.Map.Impl
             new HumanFemaleMonk(),
             new DwarfMaleWarrior(),
             new ElfFemaleWizard(),
-            new HugeMinotaur()
+            new HugeMinotaur(),
+            new GargantuanMinotaur()
             };
 
             foreach (var creature in creatures)
@@ -83,6 +79,9 @@ namespace Benchmark.Core.Map.Impl
                         case Sizes.Huge:
                             hugeCell = map.GetCellInfo(x, y);
                             break;
+                        case Sizes.Gargantuan:
+                            gargantuanCell = map.GetCellInfo(x, y);
+                            break;
                     }
                 }
             }
@@ -92,7 +91,6 @@ namespace Benchmark.Core.Map.Impl
         public int FindPathMediumCreature()
         {
             var number = new UniformCostSearch().Search(mediumCell, map).Count;
-            Console.WriteLine("***** MEDIUM " + number);
             return number;
         }
 
@@ -100,7 +98,6 @@ namespace Benchmark.Core.Map.Impl
         public int FindPathLargeCreature()
         {
             var number = new UniformCostSearch().Search(largeCell, map).Count;
-            Console.WriteLine("***** LARGE " + number);
             return number;
         }
 
@@ -108,7 +105,13 @@ namespace Benchmark.Core.Map.Impl
         public int FindPathHugeCreature()
         {
             var number = new UniformCostSearch().Search(hugeCell, map).Count;
-            Console.WriteLine("***** HUGE " + number);
+            return number;
+        }
+
+        [Benchmark]
+        public int FindPathGargantuanCreature()
+        {
+            var number = new UniformCostSearch().Search(gargantuanCell, map).Count;
             return number;
         }
     }
