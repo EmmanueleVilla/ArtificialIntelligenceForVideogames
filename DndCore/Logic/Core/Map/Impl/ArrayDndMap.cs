@@ -136,22 +136,6 @@ namespace Logic.Core.Map.Impl
             return creature;
         }
 
-        public List<CellInfo> GetCellsOccupiedBy(int x, int y)
-        {
-            var cell = GetCellInfo(x, y);
-            if(cell.Creature == null)
-            {
-                return new List<CellInfo>();
-            }
-            var occupied = occupiedCells.Where(c => c.Creature == cell.Creature).ToList();
-            if(occupied.Count == 0)
-            {
-                return new List<CellInfo>() { cell };
-            }
-
-            return occupied.Select(c => GetCellInfo(c.X, c.Y)).ToList();
-        }
-
         public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
         {
             var creatures = new List<ICreature>();
