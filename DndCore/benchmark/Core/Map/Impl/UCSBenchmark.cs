@@ -22,12 +22,12 @@ namespace Benchmark.Core.Map.Impl
         public void GlobalSetup()
         {
             DndModule.RegisterRules(false);
-            map = new ArrayDndMap(75, 75, new CellInfo('G', 0));
+            map = new ArrayDndMap(63, 63, new CellInfo('G', 0));
             var random = DndModule.Get<System.Random>();
 
-            for (int x = 0; x < 75; x++)
+            for (int x = 0; x < 63; x++)
             {
-                for (int y = 0; y < 75; y++)
+                for (int y = 0; y < 63; y++)
                 {
                     map.SetCell(x, y, new CellInfo('G', (byte)random.Next(2), null, x, y));
                 }

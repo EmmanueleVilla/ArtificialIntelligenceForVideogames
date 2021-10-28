@@ -7,10 +7,10 @@ namespace Logic.Core.Graph
         public CellInfo Start;
         public CellInfo Destination;
         public int Speed;
-        public float Damage;
+        public int Damage;
         public bool CanEndMovementHere;
 
-        public Edge(CellInfo start, CellInfo destination, int speed, float damage, bool canEndMovementHere)
+        public Edge(CellInfo start, CellInfo destination, int speed, int damage, bool canEndMovementHere)
         {
             Start = start;
             Destination = destination;

@@ -17,7 +17,7 @@ namespace Logic.Core.Graph
             public readonly CellInfo Cell;
 
             public int UsedMovement;
-            public float DamageTaken;
+            public int DamageTaken;
             public bool CanEndMovementHere;
             public ReachedCell(CellInfo cell)
             {
@@ -27,6 +27,29 @@ namespace Logic.Core.Graph
             public override string ToString()
             {
                 return string.Format("Used Movement until now:" + UsedMovement);
+            }
+        }
+
+        class ReachedCellComparer : IComparer<ReachedCell>
+        {
+            public int Compare(ReachedCell x, ReachedCell y)
+            {
+                if(x.DamageTaken == y.DamageTaken && x.UsedMovement != y.UsedMovement)
+                {
+                    return x.UsedMovement.CompareTo(y.UsedMovement);
+                }
+                var result = x.DamageTaken.CompareTo(y.DamageTaken);
+                if (result == 0)
+                {
+                    // HACK
+                    // This breaks get(key), but we won't use it
+                    // and it lets us have multiple items with the same key
+                    return -1;
+                }
+                else
+                {
+                    return result;
+                }
             }
         }
 
@@ -41,15 +64,13 @@ namespace Logic.Core.Graph
             {
                 return new List<Edge>();
             }
-
-            var visited = new List<string>();
-            var queue = new List<ReachedCell>();
-            queue.Add(new ReachedCell(from));
-
-            while(queue.Count > 0)
+            var visited = new HashSet<string>();
+            var queue = new SortedList<ReachedCell, ReachedCell>(new ReachedCellComparer());
+            var startingPoint = new ReachedCell(from);
+            queue.Add(startingPoint, startingPoint);
+            while (queue.Count > 0)
             {
-                queue = queue.OrderBy(x => x.DamageTaken).ThenBy(x => x.UsedMovement).ToList();
-                var best = queue[0];
+                var best = queue.First().Value;
                 visited.Add(best.Cell.X + "," + best.Cell.Y);
                 queue.RemoveAt(0);
                 var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
@@ -91,7 +112,7 @@ namespace Logic.Core.Graph
                                 CanEndMovementHere = edge.CanEndMovementHere,
                                 DamageTaken = best.DamageTaken + edge.Damage
                             };
-                            queue.Add(reached);
+                            queue.Add(reached, reached);
                             edge.Speed += best.UsedMovement;
                             edge.Damage += best.DamageTaken;
                             if(edge.Damage == 0)

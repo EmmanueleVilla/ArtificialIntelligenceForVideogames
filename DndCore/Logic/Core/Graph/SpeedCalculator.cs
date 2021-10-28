@@ -11,13 +11,10 @@ namespace Logic.Core.Graph
 {
     public class SpeedCalculator
     {
-        ILogger logger = DndModule.Get<ILogger>();
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
-            logger?.WriteLine("GetNeededSpeed from " + from + " to " + to);
             if (to.Terrain == ' ')
             {
-                logger?.WriteLine("Invalid Terrain");
                 return null;
             }
 
@@ -43,7 +40,9 @@ namespace Logic.Core.Graph
                 return GetNeedSpeedInternal(creature, from, to, map);
             }
 
-            var edges = new List<Edge>();
+            var maxSpeed = 0;
+            var maxDamage = 0;
+            var canEndMovementHere = true;
 
             //TEST WITHOUT LINQ
             var deltaX = to.X - from.X;
@@ -67,7 +66,9 @@ namespace Logic.Core.Graph
                     {
                         return null;
                     }
-                    edges.Add(edge);
+                    maxSpeed = Math.Max(maxSpeed, edge.Speed);
+                    maxDamage = Math.Max(maxDamage, edge.Damage);
+                    canEndMovementHere &= edge.CanEndMovementHere;
                 }
             }
             if (movingVertically)
@@ -87,7 +88,9 @@ namespace Logic.Core.Graph
                     {
                         return null;
                     }
-                    edges.Add(edge);
+                    maxSpeed = Math.Max(maxSpeed, edge.Speed);
+                    maxDamage = Math.Max(maxDamage, edge.Damage);
+                    canEndMovementHere &= edge.CanEndMovementHere;
                 }
             }
 
@@ -96,58 +99,13 @@ namespace Logic.Core.Graph
                 return null;
             }
 
-
-            /*
-            var myCells = new List<CellInfo>();
-            var startX = from.X;
-            var endX = from.X + sizeInCells;
-            var startY = from.Y;
-            var endY = from.Y + sizeInCells;
-            for (int x = startX; x < endX; x++)
-            {
-                for (int y = startY; y < endY; y++)
-                {
-                    var cell = map.GetCellInfo(x, y);
-                    myCells.Add(cell);
-                }
-            }
-
-            // otherwise I check every connection between the touched cells
-            for (int x = 0; x < sizeInCells; x++)
-            {
-                for (int y = 0; y < sizeInCells; y++)
-                {
-                    var newTo = map.GetCellInfo(to.X + x, to.Y + y);
-                    if (myCells.Any(my => my.X == newTo.X && my.Y == newTo.Y))
-                    {
-                        continue;
-                    }
-                    var newFrom = map.GetCellInfo(from.X + x, from.Y + y);
-
-                    // if the height of the destination square is different, I can't go there
-                    if(Math.Abs(newTo.Height - to.Height) > 1)
-                    {
-                        return null;
-                    }
-
-                    var edge = GetNeedSpeedInternal(creature, newFrom, newTo, map);
-                    if(edge == null)
-                    {
-                        return null;
-                    }
-                    edges.Add(edge);
-                }
-            }
-            */
-
             //return an edge with the worst case of every cell
-            var maxMov = edges.Max(x => x.Speed);
             return new Edge(
                 from,
                 to,
-                edges.Max(x => x.Speed),
-                edges.Max(x => x.Damage),
-                edges.All(x => x.CanEndMovementHere)
+                maxSpeed,
+                maxDamage,
+                canEndMovementHere
                 );
         }
 

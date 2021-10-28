@@ -12,12 +12,16 @@ namespace Logic.Core.Map.Impl
         public readonly int Height;
         private CellInfo[,] cells;
         public List<CellInfo> occupiedCells = new List<CellInfo>();
-        public Dictionary<string,ICreature> occupiedCellsDictionary = new Dictionary<string, ICreature>();
+        public Dictionary<int,ICreature> occupiedCellsDictionary = new Dictionary<int, ICreature>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
         public ArrayDndMap(int width, int height, CellInfo defaultInfo)
         {
+            if(width >= 64 || height >= 64)
+            {
+                throw new Exception("This map can only handle 63x63 size");
+            }
             Width = width;
             Height = height;
             cells = new CellInfo[width, height];
@@ -91,7 +95,7 @@ namespace Logic.Core.Map.Impl
             occupiedCells.AddRange(tempOccupiedCells);
             tempOccupiedCells.ForEach(temp =>
             {
-                occupiedCellsDictionary.Add(temp.X + "," + temp.Y, creature);
+                occupiedCellsDictionary.Add((temp.X << 6) + temp.Y, creature);
             });
 
             var reach = 0;
@@ -132,7 +136,7 @@ namespace Logic.Core.Map.Impl
         public ICreature GetOccupantCreature(int x, int y)
         {
             ICreature creature;
-            occupiedCellsDictionary.TryGetValue(x + "," + y, out creature);
+            occupiedCellsDictionary.TryGetValue((x << 6) + y, out creature);
             return creature;
         }
 

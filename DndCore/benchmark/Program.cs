@@ -2,6 +2,7 @@
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 using System;
+using System.Collections.Generic;
 
 namespace benchmark
 {
@@ -9,20 +10,31 @@ namespace benchmark
     {
         static void Main(string[] args)
         {
+
             var summary = BenchmarkRunner.Run<UCSBenchmark>(
                 new DebugInProcessConfig()
                 );
             Console.ReadLine();
+
+            //Console.WriteLine("Starting..");
+            //var benchmark = new UCSBenchmark();
+            //benchmark.GlobalSetup();
+            //Console.WriteLine("Map Initialized..");
+            //for (int i = 0; i < 5000; i++)
+            //{
+            //    benchmark.FindPathGargantuanCreature();
+            //}
+            //Console.WriteLine("Done.");
+
             /*
-            Console.WriteLine("Starting..");
-            var benchmark = new UCSBenchmark();
-            benchmark.GlobalSetup();
-            Console.WriteLine("Map Initialized..");
-            for (int i = 0; i < 5000; i++)
+            Dictionary<int, int> test = new Dictionary<int, int>();
+            for(int i=0; i<64;i++)
             {
-                benchmark.FindPathGargantuanCreature();
+                for (int j = 0; j < 64; j++)
+                {
+                    test.Add((i << 6) + j, 0);
+                }
             }
-            Console.WriteLine("Done.");
             */
         }
     }
