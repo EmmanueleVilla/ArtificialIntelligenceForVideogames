@@ -1,4 +1,6 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
+using Core.Utils.Log;
 using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ namespace Logic.Core.Graph
 {
     public class UniformCostSearch
     {
+        ILogger logger = DndModule.Get<ILogger>();
         class ReachedCell
         {
             public readonly CellInfo Cell;
@@ -29,6 +32,7 @@ namespace Logic.Core.Graph
 
         public List<Edge> Search(CellInfo from, IMap map)
         {
+            logger?.WriteLine("Starting search");
             var result = new List<Edge>();
             var speedCalculator = new SpeedCalculator();
             var creature = from.Creature;

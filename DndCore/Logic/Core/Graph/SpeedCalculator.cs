@@ -1,4 +1,6 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
+using Core.Utils.Log;
 using Logic.Core.Creatures;
 using Logic.Core.Movements;
 using System;
@@ -9,10 +11,13 @@ namespace Logic.Core.Graph
 {
     public class SpeedCalculator
     {
+        ILogger logger = DndModule.Get<ILogger>();
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
+            logger?.WriteLine("GetNeededSpeed from " + from + " to " + to);
             if (to.Terrain == ' ')
             {
+                logger?.WriteLine("Invalid Terrain");
                 return null;
             }
 
@@ -41,9 +46,13 @@ namespace Logic.Core.Graph
             var edges = new List<Edge>();
 
             var myCells = new List<CellInfo>();
-            for (int x = 0; x < sizeInCells; x++)
+            var startX = from.X;
+            var endX = from.X + sizeInCells;
+            var startY = from.Y;
+            var endY = from.Y + sizeInCells;
+            for (int x = startX; x < endX; x++)
             {
-                for (int y = 0; y < sizeInCells; y++)
+                for (int y = startY; y < endY; y++)
                 {
                     var cell = map.GetCellInfo(x, y);
                     myCells.Add(cell);

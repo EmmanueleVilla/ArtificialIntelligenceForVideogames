@@ -9,7 +9,7 @@ namespace Core.Utils.Log
         public FileLogger()
         {
             var now = DateTime.Now;
-            fileName = $"{now:yyyy-MM-dd-HH:mm:ss}.txt";
+            fileName = $"{now:yyyy_MM_dd_HH_mm_ss}.txt";
         }
 
         public void WriteLine(string message)

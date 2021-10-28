@@ -12,7 +12,7 @@ using Tests.Core.Graph.Mocks.Creatures;
 
 namespace Tests.Core.Map.AOP
 {
-    [TextFixture]
+    [TestFixture]
     class AttackOfOpportunityTests
     {
         [Test]

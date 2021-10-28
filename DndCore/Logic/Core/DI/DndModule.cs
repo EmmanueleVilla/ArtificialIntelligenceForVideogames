@@ -13,11 +13,26 @@ namespace Core.DI
         private static Dictionary<Type, Func<object>> factories = new Dictionary<Type, Func<object>>();
         private static Dictionary<Type, object> singletons = new Dictionary<Type, object>();
 
-        public static void RegisterRules()
+        public static void RegisterRulesForTest()
         {
-            singletons.Add(typeof(Random), new Random());
+            singletons.Clear();
+            factories.Clear();
             factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
+        }
+
+        public static void RegisterRules(bool enableLogs = true)
+        {
+            singletons.Clear();
+            factories.Clear();
+            singletons.Add(typeof(Random), new Random());
             factories.Add(typeof(IMapBuilder), () => new CsvFullMapBuilder());
+            if(enableLogs)
+            {
+                factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
+            } else
+            {
+                factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger>()));
+            }
         }
 
         public static T Get<T>() where T: class

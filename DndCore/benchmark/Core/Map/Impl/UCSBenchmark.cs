@@ -5,6 +5,7 @@ using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
 using Logic.Core.Map;
+using Logic.Core.Map.Impl;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,14 +18,25 @@ namespace Benchmark.Core.Map.Impl
     [RPlotExporter]
     public class UCSBenchmark
     {
-        IMap map;
-        CellInfo cell;
+        ArrayDndMap map;
+        CellInfo mediumCell;
+        CellInfo largeCell;
+        CellInfo hugeCell;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             DndModule.RegisterRules();
-            map = new CsvFullMapBuilder().FromCsv(File.ReadAllText("Core/Map/river.txt"));
+            map = new ArrayDndMap(50, 50, new CellInfo('G', 0));
+            var random = DndModule.Get<System.Random>();
+
+            for (int x = 0; x < 50; x++)
+            {
+                for (int y = 0; y < 50; y++)
+                {
+                    map.SetCell(x, y, new CellInfo('G', (byte)random.Next(2), null, x, y));
+                }
+            }
             var creatures = new List<ICreature>() {
             new RatmanWithBow(),
             new RatmanWithClaw(),
@@ -34,10 +46,10 @@ namespace Benchmark.Core.Map.Impl
             new HumanMaleRanger(),
             new HumanFemaleMonk(),
             new DwarfMaleWarrior(),
-            new ElfFemaleWizard()
+            new ElfFemaleWizard(),
+            new HugeMinotaur()
             };
 
-            var random = DndModule.Get<System.Random>();
             foreach (var creature in creatures)
             {
                 bool fit = false;
@@ -60,15 +72,44 @@ namespace Benchmark.Core.Map.Impl
                         continue;
                     }
                     fit = map.AddCreature(creature, x, y);
-                    cell = map.GetCellInfo(x, y);
+                    switch(creature.Size)
+                    {
+                        case Sizes.Medium:
+                            mediumCell = map.GetCellInfo(x, y);
+                            break;
+                        case Sizes.Large:
+                            largeCell = map.GetCellInfo(x, y);
+                            break;
+                        case Sizes.Huge:
+                            hugeCell = map.GetCellInfo(x, y);
+                            break;
+                    }
                 }
             }
         }
 
         [Benchmark]
-        public int FindPath()
+        public int FindPathMediumCreature()
         {
-            return new UniformCostSearch().Search(cell, map).Count;
+            var number = new UniformCostSearch().Search(mediumCell, map).Count;
+            Console.WriteLine("***** MEDIUM " + number);
+            return number;
+        }
+
+        [Benchmark]
+        public int FindPathLargeCreature()
+        {
+            var number = new UniformCostSearch().Search(largeCell, map).Count;
+            Console.WriteLine("***** LARGE " + number);
+            return number;
+        }
+
+        [Benchmark]
+        public int FindPathHugeCreature()
+        {
+            var number = new UniformCostSearch().Search(hugeCell, map).Count;
+            Console.WriteLine("***** HUGE " + number);
+            return number;
         }
     }
 }

@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class Minotaur : ICreature
+    public class HugeMinotaur : ICreature
     {
         public Loyalties Loyalty => Loyalties.Enemy;
 
-        public Sizes Size => Sizes.Large;
+        public Sizes Size => Sizes.Huge;
 
         public List<Speed> Movements => new List<Speed>() { new Speed(SpeedTypes.Walking, 6) };
 

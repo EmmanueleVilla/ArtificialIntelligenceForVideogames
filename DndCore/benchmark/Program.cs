@@ -9,7 +9,10 @@ namespace benchmark
     {
         static void Main(string[] args)
         {
-            //var summary = BenchmarkRunner.Run<UCSBenchmark>();
+            var summary = BenchmarkRunner.Run<UCSBenchmark>(
+                new DebugInProcessConfig()
+                );
+            /*
             Console.WriteLine("Starting..");
             var benchmark = new UCSBenchmark();
             benchmark.GlobalSetup();
@@ -20,6 +23,8 @@ namespace benchmark
                 benchmark.FindPath();
             }
             Console.WriteLine("Done.");
+            */
+            Console.ReadLine();
         }
     }
 }
