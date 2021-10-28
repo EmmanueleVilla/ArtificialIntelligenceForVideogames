@@ -35,9 +35,9 @@ namespace Logic.Core.Graph
                 case Sizes.Gargantuan:
                     sizeInCells = 4;
                     break;
-            }            
-            
-            if(sizeInCells == 1)
+            }
+
+            if (sizeInCells == 1)
             {
                 // if size is 1, I don't waste time creating the cell list
                 return GetNeedSpeedInternal(creature, from, to, map);
@@ -45,6 +45,59 @@ namespace Logic.Core.Graph
 
             var edges = new List<Edge>();
 
+            //TEST WITHOUT LINQ
+            var deltaX = to.X - from.X;
+            var deltaY = to.Y - from.Y;
+            var movingHorizontal = deltaY == 0 && deltaX != 0;
+            var movingVertically = deltaX == 0 && deltaY != 0;
+            if (movingHorizontal)
+            {
+                var xPos = from.X + (deltaX > 0 ? sizeInCells - 1 : 0);
+                for (int y = from.Y; y < from.Y + sizeInCells; y++)
+                {
+                    var tempFrom = map.GetCellInfo(xPos, y);
+                    var tempTo = map.GetCellInfo(xPos + deltaX, y);
+                    if (Math.Abs(tempTo.Height - to.Height) > 1)
+                    {
+                        return null;
+                    }
+
+                    var edge = GetNeedSpeedInternal(creature, tempFrom, tempTo, map);
+                    if (edge == null)
+                    {
+                        return null;
+                    }
+                    edges.Add(edge);
+                }
+            }
+            if (movingVertically)
+            {
+                var yPos = from.Y + (deltaY > 0 ? sizeInCells - 1 : 0);
+                for (int x = from.X; x < from.X + sizeInCells; x++)
+                {
+                    var tempFrom = map.GetCellInfo(x, yPos);
+                    var tempTo = map.GetCellInfo(x, yPos + deltaY);
+                    if (Math.Abs(tempTo.Height - to.Height) > 1)
+                    {
+                        return null;
+                    }
+
+                    var edge = GetNeedSpeedInternal(creature, tempFrom, tempTo, map);
+                    if (edge == null)
+                    {
+                        return null;
+                    }
+                    edges.Add(edge);
+                }
+            }
+
+            if (!movingHorizontal && !movingVertically)
+            {
+                return null;
+            }
+
+
+            /*
             var myCells = new List<CellInfo>();
             var startX = from.X;
             var endX = from.X + sizeInCells;
@@ -85,6 +138,7 @@ namespace Logic.Core.Graph
                     edges.Add(edge);
                 }
             }
+            */
 
             //return an edge with the worst case of every cell
             var maxMov = edges.Max(x => x.Speed);

@@ -21,7 +21,7 @@ namespace Tests.Core.Graph.UCS
             DndModule.RegisterRulesForTest();
         }
         [Test]
-        public void CanMoveOnlyOneSquare()
+        public void CanMoveOnlyOneSquareRight()
         {
             var mapCsv = 
                 "G0,G0,G0\n" +
@@ -31,6 +31,53 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
             var to = map.GetCellInfo(1, 0);
+            var edge = new Edge(from, to, 1, 0, true);
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+        }
+
+        [Test]
+        public void CanMoveOnlyOneSquareLeft()
+        {
+            var mapCsv =
+                "G0,G0,G0\n" +
+                "G0,G0,G0";
+            var creature = new WalkerCreatureMock(Sizes.Large);
+            var map = new CsvFullMapBuilder().FromCsv(mapCsv);
+            map.AddCreature(creature, 1, 0);
+            var from = map.GetCellInfo(1, 0);
+            var to = map.GetCellInfo(0, 0);
+            var edge = new Edge(from, to, 1, 0, true);
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+        }
+
+        [Test]
+        public void CanMoveOnlyOneSquareDown()
+        {
+            var mapCsv =
+                "G0,G0\n" +
+                "G0,G0\n" +
+                "G0,G0";
+            var creature = new WalkerCreatureMock(Sizes.Large);
+            var map = new CsvFullMapBuilder().FromCsv(mapCsv);
+            map.AddCreature(creature, 0, 0);
+            var from = map.GetCellInfo(0, 0);
+            var to = map.GetCellInfo(0, 1);
+            var edge = new Edge(from, to, 1, 0, true);
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+        }
+
+        [Test]
+        public void CanMoveOnlyOneSquareUp()
+        {
+            var mapCsv =
+                "G0,G0\n" +
+                "G0,G0\n" +
+                "G0,G0";
+            var creature = new WalkerCreatureMock(Sizes.Large);
+            var map = new CsvFullMapBuilder().FromCsv(mapCsv);
+            map.AddCreature(creature, 0, 1);
+            var from = map.GetCellInfo(0, 1);
+            var to = map.GetCellInfo(0, 0);
             var edge = new Edge(from, to, 1, 0, true);
             Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
         }

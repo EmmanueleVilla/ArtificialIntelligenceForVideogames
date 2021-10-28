@@ -12,7 +12,7 @@ namespace Logic.Core.Map.Impl
         public readonly int Height;
         private CellInfo[,] cells;
         public List<CellInfo> occupiedCells = new List<CellInfo>();
-        public Dictionary<int,ICreature> occupiedCellsDictionary = new Dictionary<int, ICreature>();
+        public Dictionary<string,ICreature> occupiedCellsDictionary = new Dictionary<string, ICreature>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -91,7 +91,7 @@ namespace Logic.Core.Map.Impl
             occupiedCells.AddRange(tempOccupiedCells);
             tempOccupiedCells.ForEach(temp =>
             {
-                occupiedCellsDictionary.Add(temp.X * Width + temp.Y, creature);
+                occupiedCellsDictionary.Add(temp.X + "," + temp.Y, creature);
             });
 
             var reach = 0;
@@ -132,7 +132,7 @@ namespace Logic.Core.Map.Impl
         public ICreature GetOccupantCreature(int x, int y)
         {
             ICreature creature;
-            occupiedCellsDictionary.TryGetValue(x * Width + y, out creature);
+            occupiedCellsDictionary.TryGetValue(x + "," + y, out creature);
             return creature;
         }
 

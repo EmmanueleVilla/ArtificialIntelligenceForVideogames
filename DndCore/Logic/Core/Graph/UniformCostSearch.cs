@@ -42,7 +42,7 @@ namespace Logic.Core.Graph
                 return new List<Edge>();
             }
 
-            var visited = new List<int>();
+            var visited = new List<string>();
             var queue = new List<ReachedCell>();
             queue.Add(new ReachedCell(from));
 
@@ -50,7 +50,7 @@ namespace Logic.Core.Graph
             {
                 queue = queue.OrderBy(x => x.DamageTaken).ThenBy(x => x.UsedMovement).ToList();
                 var best = queue[0];
-                visited.Add(best.Cell.X * map.Width + best.Cell.Y);
+                visited.Add(best.Cell.X + "," + best.Cell.Y);
                 queue.RemoveAt(0);
                 var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
                 for (int deltaX = -1; deltaX <= 1; deltaX++)
@@ -63,12 +63,17 @@ namespace Logic.Core.Graph
                         {
                             continue;
                         }
-                        var key = newX * map.Width + newY;
-                        if(visited.Contains(key))
+                        var key = newX + "," + newY;
+                        if (visited.Contains(key))
                         {
                             continue;
                         }
                         var to = map.GetCellInfo(newX, newY);
+                        if(to.Terrain == ' ')
+                        {
+                            visited.Add(key);
+                            continue;
+                        }
                         var edge = speedCalculator.GetNeededSpeed(
                             from.Creature,
                             best.Cell,
