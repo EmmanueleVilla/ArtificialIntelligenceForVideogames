@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public TextAsset RiverMap;
     public Camera menuCamera;
     public Camera gameCamera;
+    public Camera gameUICamera;
 
     public GameObject MapRoot;
     public GameObject DirtPrefab;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         Physics.queriesHitTriggers = true;
         menuCamera.gameObject.SetActive(true);
         gameCamera.gameObject.SetActive(false);
+        gameUICamera.gameObject.SetActive(false);
         DndModule.RegisterRules();
         //this.StartCoroutine(StartJob());
     }
@@ -141,6 +143,7 @@ public class GameManager : MonoBehaviour
         var tiles = new List<SpriteManager>();
         menuCamera.gameObject.SetActive(false);
         gameCamera.gameObject.SetActive(true);
+        gameUICamera.gameObject.SetActive(true);
         var offsetUp = 0f;
         var offsetRight = 0f;
         for (int x = 0; x < map.Height; x++) 
