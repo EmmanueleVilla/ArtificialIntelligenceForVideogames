@@ -148,9 +148,9 @@ public class GameManager : MonoBehaviour
         var offsetRight = 0f;
         for (int x = 0; x < map.Height; x++) 
         {
+            yield return null;
             for (int y = 0; y < map.Width; y++)
             {
-                yield return null;
                 var cell = map.GetCellInfo(y, x);
                 GameObject go = null;
                 switch(cell.Terrain)
@@ -253,10 +253,13 @@ public class GameManager : MonoBehaviour
                     var max = cells.OrderByDescending(c => c.Y).ThenBy(c => c.X).First();
                     Debug.Log("Max tile is" + max);
                     var tile = tiles.FirstOrDefault(tile => tile.X == max.Y && tile.Y == max.X);
+                    int offset = 1;
                     if (tile != null)
                     {
-                        creature.GetComponentInChildren<SpriteRenderer>().sortingOrder =
-                            tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + 9;
+                        foreach(var renderer in creature.GetComponentsInChildren<SpriteRenderer>()) {
+                        renderer.sortingOrder =
+                            tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + offset++;
+                        }
                     } else
                     {
                         Debug.Log("Corresponding tile is null");
