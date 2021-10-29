@@ -11,53 +11,19 @@ namespace Logic.Core.Graph
 {
     public class UniformCostSearch
     {
-        ILogger logger = DndModule.Get<ILogger>();
-        class ReachedCell
+        private ILogger logger;
+        private ISpeedCalculator speedCalculator;
+
+        public UniformCostSearch(ISpeedCalculator speedCalculator = null, ILogger logger = null)
         {
-            public readonly CellInfo Cell;
-
-            public int UsedMovement;
-            public int DamageTaken;
-            public bool CanEndMovementHere;
-            public ReachedCell(CellInfo cell)
-            {
-                Cell = cell;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Used Movement until now:" + UsedMovement);
-            }
-        }
-
-        class ReachedCellComparer : IComparer<ReachedCell>
-        {
-            public int Compare(ReachedCell x, ReachedCell y)
-            {
-                if(x.DamageTaken == y.DamageTaken && x.UsedMovement != y.UsedMovement)
-                {
-                    return x.UsedMovement.CompareTo(y.UsedMovement);
-                }
-                var result = x.DamageTaken.CompareTo(y.DamageTaken);
-                if (result == 0)
-                {
-                    // HACK
-                    // This breaks get(key), but we won't use it
-                    // and it lets us have multiple items with the same key
-                    return -1;
-                }
-                else
-                {
-                    return result;
-                }
-            }
+            this.logger = logger ?? DndModule.Get<ILogger>();
+            this.speedCalculator = speedCalculator ?? DndModule.Get<ISpeedCalculator>();
         }
 
         public List<Edge> Search(CellInfo from, IMap map)
         {
             logger?.WriteLine("Starting search");
             var result = new List<Edge>();
-            var speedCalculator = new SpeedCalculator();
             var creature = from.Creature;
             var movements = creature.Movements;
             if (movements.TrueForAll(x => x.Item2 <= 0))

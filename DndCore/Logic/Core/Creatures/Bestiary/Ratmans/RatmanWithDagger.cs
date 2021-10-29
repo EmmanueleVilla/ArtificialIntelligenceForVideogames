@@ -5,14 +5,16 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class RatmanWithBow : ARatman
+    public class RatmanWithDagger : ARatman
     {
         public override List<Attack> Attacks => new List<Attack>()
         {
-            new Attack("Bow", AttackTypes.WeaponRanged, new List<Damage>()
+            new Attack("Dagger", AttackTypes.WeaponMelee, new List<Damage>()
             {
                 new Damage(DamageTypes.Piercing, 6, 1, 6, 2)
             })
         };
+
+        public override int InitiativeModifier => 2;
     }
 }

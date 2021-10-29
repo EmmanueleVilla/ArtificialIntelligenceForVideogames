@@ -4,8 +4,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Core\Battle\" />
+    <None Remove="Core\Dice\" />
+    <None Remove="Core\Creatures\Bestiary\Ratmans\" />
+    <None Remove="Core\Creatures\Bestiary\Minotaurs\" />
+    <None Remove="Core\Creatures\Bestiary\Characters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Battle\" />
+    <Folder Include="Core\Dice\" />
+    <Folder Include="Core\Creatures\Bestiary\Ratmans\" />
+    <Folder Include="Core\Creatures\Bestiary\Minotaurs\" />
+    <Folder Include="Core\Creatures\Bestiary\Characters\" />
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)\..\Assets\$(ProjectName).dll&quot;" />
+    <Exec Command="cp -f &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)\..\Assets\$(ProjectName).dll&quot;" />
   </Target>
 
 </Project>

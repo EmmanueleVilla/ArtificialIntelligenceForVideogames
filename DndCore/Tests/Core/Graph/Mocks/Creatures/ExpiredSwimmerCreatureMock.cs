@@ -30,6 +30,8 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public bool Disangaged => false;
 
+        public int RolledInitiative => throw new NotImplementedException();
+
         public bool HasReaction()
         {
             return true;

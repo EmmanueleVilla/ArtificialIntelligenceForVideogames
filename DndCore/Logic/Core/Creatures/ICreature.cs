@@ -14,5 +14,6 @@ namespace Logic.Core.Creatures
         List<Attack> Attacks { get; }
         bool Disangaged { get; }
         bool HasReaction();
+        int RolledInitiative { get; }
     }
 }

@@ -91,7 +91,7 @@ namespace Tests.Core.Graph.UCS
 
                 new Edge(map.GetCellInfo(4,2), map.GetCellInfo(4,3), 8, 0 , true),
             };
-            var result = new UniformCostSearch().Search(map.GetCellInfo(0, 3), map);
+            var result = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(map.GetCellInfo(0, 3), map);
             Assert.AreEqual(expected, result);
         }
     }

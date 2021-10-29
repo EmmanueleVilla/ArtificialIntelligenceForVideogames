@@ -17,7 +17,7 @@ namespace Tests.Core.Graph.UCS
         [Test]
         public void EmptyGraphIfCreatureCantMove()
         {
-            Assert.IsEmpty(new UniformCostSearch().Search(new CellInfo(' ', 0, new StillCreature()), new EmptyMap()));
+            Assert.IsEmpty(new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(new CellInfo(' ', 0, new StillCreature()), new EmptyMap()));
         }
     }
 }

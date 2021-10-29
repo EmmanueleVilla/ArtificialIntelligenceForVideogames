@@ -25,6 +25,8 @@ namespace Tests.Core.Graph.Mocks
 
         public bool Disangaged => false;
 
+        public int RolledInitiative => throw new System.NotImplementedException();
+
         public bool HasReaction()
         {
             return true;

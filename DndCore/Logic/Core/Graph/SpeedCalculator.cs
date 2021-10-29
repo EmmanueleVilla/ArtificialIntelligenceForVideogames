@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Logic.Core.Graph
 {
-    public class SpeedCalculator
+    public class SpeedCalculator : ISpeedCalculator
     {
         public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
@@ -44,7 +44,6 @@ namespace Logic.Core.Graph
             var maxDamage = 0;
             var canEndMovementHere = true;
 
-            //TEST WITHOUT LINQ
             var deltaX = to.X - from.X;
             var deltaY = to.Y - from.Y;
             var movingHorizontal = deltaX != 0;

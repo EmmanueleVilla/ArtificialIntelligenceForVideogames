@@ -37,9 +37,9 @@ namespace Benchmark.Core.Map.Impl
             new ElfFemaleWizard(),
             new ElfFemaleWizard(),
             new ElfFemaleWizard(),
-            new Minotaur(),
-            new Minotaur(),
-            new Minotaur(),
+            new LargeMinotaur(),
+            new LargeMinotaur(),
+            new LargeMinotaur(),
             new HugeMinotaur(),
             new HugeMinotaur(),
             new GargantuanMinotaur()
@@ -89,28 +89,28 @@ namespace Benchmark.Core.Map.Impl
         [Benchmark]
         public int FindPathMediumCreature()
         {
-            var number = new UniformCostSearch().Search(mediumCell, map).Count;
+            var number = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(mediumCell, map).Count;
             return number;
         }
 
         [Benchmark]
         public int FindPathLargeCreature()
         {
-            var number = new UniformCostSearch().Search(largeCell, map).Count;
+            var number = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(largeCell, map).Count;
             return number;
         }
 
         [Benchmark]
         public int FindPathHugeCreature()
         {
-            var number = new UniformCostSearch().Search(hugeCell, map).Count;
+            var number = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(hugeCell, map).Count;
             return number;
         }
 
         [Benchmark]
         public int FindPathGargantuanCreature()
         {
-            var number = new UniformCostSearch().Search(gargantuanCell, map).Count;
+            var number = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(gargantuanCell, map).Count;
             return number;
         }
     }

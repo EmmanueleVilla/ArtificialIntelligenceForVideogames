@@ -32,7 +32,7 @@ namespace Tests.Core.Graph.UCS
             var from = map.GetCellInfo(0, 0);
             var to = map.GetCellInfo(1, 0);
             var edge = new Edge(from, to, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Tests.Core.Graph.UCS
             var from = map.GetCellInfo(1, 0);
             var to = map.GetCellInfo(0, 0);
             var edge = new Edge(from, to, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Tests.Core.Graph.UCS
             var from = map.GetCellInfo(0, 0);
             var to = map.GetCellInfo(0, 1);
             var edge = new Edge(from, to, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Tests.Core.Graph.UCS
             var from = map.GetCellInfo(0, 1);
             var to = map.GetCellInfo(0, 0);
             var edge = new Edge(from, to, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace Tests.Core.Graph.UCS
             var edgeOne = new Edge(from, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
             var edgeTwo = new Edge(from, toTwo, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Tests.Core.Graph.UCS
             var edgeOne = new Edge(from, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
             var edgeTwo = new Edge(toOne, toTwo, 2, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace Tests.Core.Graph.UCS
                 prev = to;
             }
 
-            Assert.AreEqual(expected, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(expected, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace Tests.Core.Graph.UCS
             var edgeTwo = new Edge(toOne, toTwo, 3, 0, true);
             var toThree = map.GetCellInfo(3, 0);
             var edgeThree = new Edge(toTwo, toThree, 4, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo, edgeThree }, new UniformCostSearch().Search(from, map));
+            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo, edgeThree }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
     }
 }
