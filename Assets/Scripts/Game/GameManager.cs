@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     public GameObject HumanFemaleMonk;
     public GameObject HumanMaleRanger;
 
+    public AudioSource Ambient;
+
 
     void Start()
     {
@@ -91,7 +93,7 @@ public class GameManager : MonoBehaviour
             new RatmanWithClaw(),
             new RatmanWithDagger(),
             new RatmanWithStaff(),
-            new Minotaur(),
+            new LargeMinotaur(),
             new HumanMaleRanger(),
             new HumanFemaleMonk(),
             new DwarfMaleWarrior(),
@@ -130,11 +132,12 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        InitGame();
+        this.StartCoroutine(InitGame());
     }
 
-    private void InitGame()
+    private IEnumerator InitGame()
     {
+        Ambient.Play();
         var tiles = new List<SpriteManager>();
         menuCamera.gameObject.SetActive(false);
         gameCamera.gameObject.SetActive(true);
@@ -144,6 +147,7 @@ public class GameManager : MonoBehaviour
         {
             for (int y = 0; y < map.Width; y++)
             {
+                yield return null;
                 var cell = map.GetCellInfo(y, x);
                 GameObject go = null;
                 switch(cell.Terrain)
@@ -194,6 +198,8 @@ public class GameManager : MonoBehaviour
             offsetRight -= 2.5f;
         }
 
+        yield return null;
+
         foreach(var go in tiles)
         {
             var xPos = go.GetComponent<SpriteManager>().X;
@@ -202,6 +208,7 @@ public class GameManager : MonoBehaviour
 
             if (cell.Creature != null)
             {
+                yield return null;
                 Debug.Log("FOUND CREATURE " + cell.Creature);
                 GameObject creature = null;
                 switch (cell.Creature.GetType().ToString().Split('.').Last())
@@ -230,7 +237,7 @@ public class GameManager : MonoBehaviour
                     case "ElfFemaleWizard":
                         creature = Instantiate(ElfFemaleWizard);
                         break;
-                    case "Minotaur":
+                    case "LargeMinotaur":
                         creature = Instantiate(Minotaur);
                         break;
                 }
@@ -239,6 +246,7 @@ public class GameManager : MonoBehaviour
                     creature.transform.parent = go.transform;
                     creature.transform.localPosition = Vector3.zero;
                     var cells = map.GetCellsOccupiedBy(yPos, xPos);
+                    Debug.Log("Occupied cells: " + String.Join("-", cells));
                     var max = cells.OrderByDescending(c => c.Y).ThenBy(c => c.X).First();
                     Debug.Log("Max tile is" + max);
                     var tile = tiles.FirstOrDefault(tile => tile.X == max.Y && tile.Y == max.X);

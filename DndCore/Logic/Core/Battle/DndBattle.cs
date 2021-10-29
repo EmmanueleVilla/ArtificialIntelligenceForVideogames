@@ -8,12 +8,23 @@ namespace Logic.Core
 {
     public class DndBattle: IDndBattle
     {
-        private SortedList<ICreature, ICreature> initiativeOrder = new SortedList<ICreature, ICreature>(new CreatureInitiativeComparer());
+        private List<ICreature> initiativeOrder = new List<ICreature>();
         private IMap map;
+        private int turnIndex;
 
         public void Init(IMap map)
         {
             this.map = map;
+        }
+
+        public List<ICreature> RollInitiative()
+        {
+            foreach (var creature in map.Creatures)
+            {
+                initiativeOrder.Add(creature);
+            }
+            initiativeOrder.Sort(new CreatureInitiativeComparer());
+            return initiativeOrder;
         }
 
         public ICreature GetCreatureInTurn()
@@ -22,10 +33,11 @@ namespace Logic.Core
             {
                 foreach(var creature in map.Creatures)
                 {
-
+                    initiativeOrder.Add(creature);
                 }
+                initiativeOrder.Sort(new CreatureInitiativeComparer());
             }
-            return null;
+            return initiativeOrder[turnIndex];
         }
     }
 }
