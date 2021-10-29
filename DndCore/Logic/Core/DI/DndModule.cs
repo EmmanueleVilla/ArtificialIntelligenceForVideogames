@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Core.Utils.Log;
+using Logic.Core.Dice;
 using Logic.Core.Map;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace Core.DI
             factories.Clear();
             singletons.Add(typeof(Random), new Random());
             factories.Add(typeof(IMapBuilder), () => new CsvFullMapBuilder());
+            factories.Add(typeof(IDiceRoller), () => new DiceRoller());
             if(enableLogs)
             {
                 factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));

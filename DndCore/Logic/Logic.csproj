@@ -10,6 +10,7 @@
     <None Remove="Core\Creatures\Bestiary\Ratmans\" />
     <None Remove="Core\Creatures\Bestiary\Minotaurs\" />
     <None Remove="Core\Creatures\Bestiary\Characters\" />
+    <None Remove="Core\Creatures\Scores\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Battle\" />
@@ -17,6 +18,7 @@
     <Folder Include="Core\Creatures\Bestiary\Ratmans\" />
     <Folder Include="Core\Creatures\Bestiary\Minotaurs\" />
     <Folder Include="Core\Creatures\Bestiary\Characters\" />
+    <Folder Include="Core\Creatures\Scores\" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cp -f &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)\..\Assets\$(ProjectName).dll&quot;" />

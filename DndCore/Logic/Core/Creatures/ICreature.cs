@@ -1,4 +1,5 @@
 ﻿using Logic.Core.Actions;
+using Logic.Core.Creatures.Scores;
 using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,8 @@ namespace Logic.Core.Creatures
         bool Disangaged { get; }
         bool HasReaction();
         int RolledInitiative { get; }
+
+        //Ability scores
+        AbilityScores AbilityScores { get; }
     }
 }

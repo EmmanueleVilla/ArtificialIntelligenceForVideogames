@@ -14,6 +14,8 @@ namespace Tests.Core.Graph.Mocks
 
         public int Height => throw new NotImplementedException();
 
+        public List<ICreature> Creatures => throw new NotImplementedException();
+
         public bool AddCreature(ICreature creature, int x, int y)
         {
             throw new NotImplementedException();

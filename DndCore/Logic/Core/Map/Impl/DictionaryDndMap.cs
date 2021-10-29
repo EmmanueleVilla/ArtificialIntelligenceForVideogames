@@ -12,6 +12,9 @@ namespace Logic.Core.Map
 
         int IMap.Width => Width;
         int IMap.Height => Height;
+
+        public List<ICreature> Creatures => throw new System.NotImplementedException();
+
         public DictionaryDndMap(int width, int height, CellInfo defaultInfo)
         {
             Width = width;

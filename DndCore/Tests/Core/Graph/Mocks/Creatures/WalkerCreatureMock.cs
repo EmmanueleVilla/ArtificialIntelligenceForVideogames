@@ -1,6 +1,8 @@
 ﻿using Logic.Core.Actions;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Scores;
 using Logic.Core.Movements;
+using System;
 using System.Collections.Generic;
 
 namespace Tests.Core.Graph.Mocks
@@ -31,5 +33,6 @@ namespace Tests.Core.Graph.Mocks
         {
             return true;
         }
+        public AbilityScores AbilityScores => throw new NotImplementedException();
     }
 }

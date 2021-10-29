@@ -1,5 +1,6 @@
 ﻿using Logic.Core.Actions;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Scores;
 using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,8 @@ namespace Tests.Core.Graph.Mocks.Creatures
         public bool Disangaged => _disengaged;
 
         public int RolledInitiative => throw new System.NotImplementedException();
+
+        public AbilityScores AbilityScores => throw new NotImplementedException();
 
         public bool HasReaction()
         {

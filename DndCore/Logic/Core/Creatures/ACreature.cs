@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Core.DI;
 using Logic.Core.Actions;
+using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
 using Logic.Core.Movements;
 
@@ -38,7 +39,14 @@ namespace Logic.Core.Creatures
         public abstract int InitiativeModifier { get; }
         public abstract RollTypes InitiativeRollType { get; }
 
+        public AbilityScores AbilityScores => GetAbilityScores();
+
         //Common logic
         private int? _rolledInitiative = null;
+
+        protected virtual AbilityScores GetAbilityScores()
+        {
+            return new AbilityScores(10, 10, 10, 10, 10, 10);
+        }
     }
 }
