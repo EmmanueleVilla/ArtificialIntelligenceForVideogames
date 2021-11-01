@@ -8,9 +8,10 @@ namespace Logic.Core
 {
     public class DndBattle: IDndBattle
     {
-        private List<ICreature> initiativeOrder = new List<ICreature>();
         private IMap map;
-        private int turnIndex;
+        private int turnIndex = 0;
+
+        private List<ICreature> initiativeOrder = new List<ICreature>();
 
         public void Init(IMap map)
         {
@@ -21,6 +22,7 @@ namespace Logic.Core
         {
             foreach (var creature in map.Creatures)
             {
+                Console.WriteLine(string.Format("{0} rolled {1}", creature, creature.RollInitiative()));
                 initiativeOrder.Add(creature);
             }
             initiativeOrder.Sort(new CreatureInitiativeComparer());
@@ -31,13 +33,18 @@ namespace Logic.Core
         {
             if(initiativeOrder.Count == 0)
             {
-                foreach(var creature in map.Creatures)
-                {
-                    initiativeOrder.Add(creature);
-                }
-                initiativeOrder.Sort(new CreatureInitiativeComparer());
+                RollInitiative();
             }
             return initiativeOrder[turnIndex];
+        }
+
+        public void NextTurn()
+        {
+            turnIndex++;
+            if(turnIndex >= map.Creatures.Count)
+            {
+                turnIndex = 0;
+            }
         }
     }
 }

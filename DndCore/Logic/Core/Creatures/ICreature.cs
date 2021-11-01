@@ -16,6 +16,7 @@ namespace Logic.Core.Creatures
         bool Disangaged { get; }
         bool HasReaction();
         int RolledInitiative { get; }
+        int RollInitiative();
 
         //Ability scores
         AbilityScores AbilityScores { get; }

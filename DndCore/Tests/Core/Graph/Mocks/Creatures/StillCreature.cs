@@ -32,6 +32,12 @@ namespace Tests.Core.Graph.Mocks.Creatures
         {
             return true;
         }
+
+        public int RollInitiative()
+        {
+            throw new NotImplementedException();
+        }
+
         public AbilityScores AbilityScores => throw new NotImplementedException();
     }
 }

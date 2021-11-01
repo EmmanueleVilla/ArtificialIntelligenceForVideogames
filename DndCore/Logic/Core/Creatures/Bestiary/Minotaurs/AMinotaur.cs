@@ -26,9 +26,9 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override bool Disangaged => false;
 
-        public override int InitiativeModifier => throw new NotImplementedException();
+        public override int InitiativeModifier => +3;
 
-        public override RollTypes InitiativeRollType => throw new NotImplementedException();
+        public override RollTypes InitiativeRollType => RollTypes.Normal;
 
         public override bool HasReaction()
         {

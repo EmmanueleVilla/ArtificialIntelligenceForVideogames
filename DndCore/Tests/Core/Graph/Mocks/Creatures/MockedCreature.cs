@@ -53,5 +53,10 @@ namespace Tests.Core.Graph.Mocks.Creatures
         {
             return _hasReactions;
         }
+
+        public int RollInitiative()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

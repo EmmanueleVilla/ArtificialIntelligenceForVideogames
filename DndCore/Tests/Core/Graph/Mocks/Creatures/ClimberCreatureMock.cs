@@ -29,6 +29,18 @@ namespace Tests.Core.Graph.Mocks
         {
             return true;
         }
+
+        bool ICreature.HasReaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        int ICreature.RollInitiative()
+        {
+            throw new NotImplementedException();
+        }
+
         public AbilityScores AbilityScores => throw new NotImplementedException();
+
     }
 }

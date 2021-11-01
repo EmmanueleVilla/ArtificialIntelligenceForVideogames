@@ -7,11 +7,11 @@ namespace Logic.Core.Creatures
     {
         public int Compare(ICreature x, ICreature y)
         {
-            if (x.RolledInitiative == y.RolledInitiative && x.AbilityScores.Dexterity != y.AbilityScores.Dexterity)
+            if (y.RolledInitiative == x.RolledInitiative && y.AbilityScores.Dexterity != x.AbilityScores.Dexterity)
             {
-                return x.AbilityScores.Dexterity.CompareTo(y.AbilityScores.Dexterity);
+                return y.AbilityScores.Dexterity.CompareTo(x.AbilityScores.Dexterity);
             }
-            var result = x.RolledInitiative.CompareTo(y.RolledInitiative);
+            var result = y.RolledInitiative.CompareTo(x.RolledInitiative);
             if (result == 0)
             {
                 // HACK

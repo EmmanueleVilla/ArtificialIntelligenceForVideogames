@@ -18,15 +18,7 @@ namespace Logic.Core.Creatures
         }
 
         //Implemented fields
-        public int RolledInitiative {
-            get {
-                if (_rolledInitiative == null) {
-                    _rolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);
-                }
-                return _rolledInitiative.Value;
-            }
-        }
-
+        public int RolledInitiative { get; private set; }
 
         //Abstract fields
         public abstract Loyalties Loyalty { get; }
@@ -41,12 +33,15 @@ namespace Logic.Core.Creatures
 
         public AbilityScores AbilityScores => GetAbilityScores();
 
-        //Common logic
-        private int? _rolledInitiative = null;
-
         protected virtual AbilityScores GetAbilityScores()
         {
             return new AbilityScores(10, 10, 10, 10, 10, 10);
+        }
+
+        public int RollInitiative()
+        {
+            RolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);
+            return RolledInitiative;
         }
     }
 }

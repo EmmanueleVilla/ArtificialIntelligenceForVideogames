@@ -1,15 +1,18 @@
 ﻿using Assets.Scripts.Jobs;
 using Core.DI;
 using Core.Map;
+using Logic.Core.Battle;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,6 +42,10 @@ public class GameManager : MonoBehaviour
     public GameObject ElfFemaleWizard;
     public GameObject HumanFemaleMonk;
     public GameObject HumanMaleRanger;
+
+    #region UI
+    public Text InitiativeText;
+    #endregion
 
     public AudioSource Ambient;
 
@@ -82,10 +89,6 @@ public class GameManager : MonoBehaviour
         result.Dispose();
     }
     
-    void Update()
-    {
-        
-    }
 
     public void InitRiverMap()
     {
@@ -134,10 +137,10 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        this.StartCoroutine(InitGame());
+        this.StartCoroutine(PlayGame());
     }
 
-    private IEnumerator InitGame()
+    private IEnumerator PlayGame()
     {
         Ambient.Play();
         var tiles = new List<SpriteManager>();
@@ -189,12 +192,9 @@ public class GameManager : MonoBehaviour
                     }
                     go.GetComponent<SpriteRenderer>().sortingOrder = (x * map.Height - y + map.Height) * 10;
                     var spriteManager = go.GetComponent<SpriteManager>();
-                    if (spriteManager != null)
-                    {
-                        tiles.Add(spriteManager);
-                        spriteManager.X = x;
-                        spriteManager.Y = y;
-                    }
+                    tiles.Add(spriteManager);
+                    spriteManager.X = x;
+                    spriteManager.Y = y;
                 }
             }
             offsetUp += 4.3f;
@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour
             if (cell.Creature != null)
             {
                 yield return null;
+                
                 Debug.Log("FOUND CREATURE " + cell.Creature);
                 GameObject creature = null;
                 switch (cell.Creature.GetType().ToString().Split('.').Last())
@@ -246,6 +247,9 @@ public class GameManager : MonoBehaviour
                 }
                 if (creature != null)
                 {
+                    var indicator = creature.GetComponent<InitiativeIndicator>();
+                    indicator.Hide();
+                    initiativeIndicators.Add(new Tuple<ICreature, InitiativeIndicator>(cell.Creature, indicator));
                     creature.transform.parent = go.transform;
                     creature.transform.localPosition = Vector3.zero;
                     var cells = map.GetCellsOccupiedBy(yPos, xPos);
@@ -265,6 +269,48 @@ public class GameManager : MonoBehaviour
                         Debug.Log("Corresponding tile is null");
                     }
                 }
+            }
+        }
+
+        var battle = DndModule.Get<IDndBattle>();
+        battle.Init(map);
+        var initiatives = battle.RollInitiative();
+        while (true)
+        {
+            UpdateInitiativeUI(battle, initiatives);
+
+            battle.NextTurn();
+
+            yield return new WaitForSeconds(2);
+        }
+    }
+
+    List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();
+
+    void UpdateInitiativeUI(IDndBattle battle, List<ICreature> initiatives)
+    {
+        var creatureInTurn = battle.GetCreatureInTurn();
+
+        var builder = new StringBuilder();
+        foreach (var creature in initiatives)
+        {
+            if (creatureInTurn == creature)
+            {
+                builder.Append("> ");
+            }
+            builder.AppendLine(creature.GetType().ToString().Split('.').Last());
+        }
+
+        InitiativeText.text = builder.ToString();
+
+        foreach(var indicator in initiativeIndicators)
+        {
+            if(indicator.Item1.GetType().ToString() == creatureInTurn.GetType().ToString())
+            {
+                indicator.Item2.Show();
+            } else
+            {
+                indicator.Item2.Hide();
             }
         }
     }

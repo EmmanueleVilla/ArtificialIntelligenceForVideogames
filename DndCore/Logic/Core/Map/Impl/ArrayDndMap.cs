@@ -17,7 +17,7 @@ namespace Logic.Core.Map.Impl
         int IMap.Width => Width;
         int IMap.Height => Height;
 
-        public List<ICreature> Creatures => occupiedCells.Select(x => x.Creature).ToList();
+        public List<ICreature> Creatures => occupiedCells.Select(x => x.Creature).Distinct().ToList();
 
         public ArrayDndMap(int width, int height, CellInfo defaultInfo)
         {

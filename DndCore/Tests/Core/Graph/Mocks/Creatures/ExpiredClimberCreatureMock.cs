@@ -29,6 +29,12 @@ namespace Tests.Core.Graph.Mocks
         {
             return true;
         }
+
+        public int RollInitiative()
+        {
+            throw new NotImplementedException();
+        }
+
         public AbilityScores AbilityScores => throw new NotImplementedException();
     }
 }
