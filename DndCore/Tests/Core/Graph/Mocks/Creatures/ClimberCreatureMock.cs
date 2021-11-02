@@ -9,6 +9,7 @@ namespace Tests.Core.Graph.Mocks
 {
     class ClimberCreatureMock : ICreature
     {
+        public int Id { get; set; }
         public List<Speed> Movements =>
             new List<Speed>() {
                 new Speed(SpeedTypes.Walking, 10),

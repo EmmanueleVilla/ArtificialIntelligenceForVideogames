@@ -12,6 +12,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
 {
     class StillCreature : ICreature
     {
+        public int Id { get; set; }
         public Loyalties Loyalty => Loyalties.Ally;
 
         public Sizes Size => Sizes.Medium;

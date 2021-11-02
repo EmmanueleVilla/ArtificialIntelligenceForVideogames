@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core.DI;
 using Core.Map;
 using Logic.Core.Battle;
+using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using Logic.Core.Graph;
 
@@ -46,10 +47,12 @@ namespace Logic.Core
             return initiativeOrder[turnIndex];
         }
 
-        public AvailableActions GetAvailableActions(ICreature creature)
+        public List<IAvailableAction> GetAvailableActions(ICreature creature)
         {
             //TODO deplete used movement
-            return new AvailableActions(creature.Movements);
+            return new List<IAvailableAction>() {
+                new MovementAction() { RemainingMovement = creature.Movements }
+            };
         }
 
         public void NextTurn()

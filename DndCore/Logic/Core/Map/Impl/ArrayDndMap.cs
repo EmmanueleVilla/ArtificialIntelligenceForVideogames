@@ -131,6 +131,8 @@ namespace Logic.Core.Map.Impl
                 threateningAreas.Add(new Tuple<ICreature, List<CellInfo>>(creature, cells));
             }
 
+            creature.Id = Creatures.Max(c => c.Id) + 1;
+
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
 
             return true;

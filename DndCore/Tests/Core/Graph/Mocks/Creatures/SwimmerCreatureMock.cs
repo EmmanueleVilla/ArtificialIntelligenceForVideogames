@@ -12,6 +12,7 @@ namespace Tests.Core.Graph.Mocks
 {
     class SwimmerCreatureMock : ICreature
     {
+        public int Id { get; set; }
         Sizes _size;
         public SwimmerCreatureMock(Sizes size = Sizes.Medium)
         {

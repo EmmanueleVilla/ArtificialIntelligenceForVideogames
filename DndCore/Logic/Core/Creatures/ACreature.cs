@@ -36,6 +36,8 @@ namespace Logic.Core.Creatures
         public bool HasBonusAction { get; set; } = true;
         public bool HasReaction { get; set; } = true;
 
+        public int Id { get; set; }
+
         protected virtual AbilityScores GetAbilityScores()
         {
             return new AbilityScores(10, 10, 10, 10, 10, 10);
@@ -45,6 +47,11 @@ namespace Logic.Core.Creatures
         {
             RolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);
             return RolledInitiative;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Id == (obj as ICreature).Id;
         }
     }
 }

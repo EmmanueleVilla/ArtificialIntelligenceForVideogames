@@ -12,6 +12,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
 {
     public class MockedCreature : ICreature
     {
+        public int Id { get; set; }
         Sizes _size;
         Loyalties _loyalty;
         List<Attack> _attacks;
@@ -20,8 +21,8 @@ namespace Tests.Core.Graph.Mocks.Creatures
         List<Speed> _movements;
 
         public MockedCreature(
-            Sizes size,
-            Loyalties loyalty,
+            Sizes size = Sizes.Medium,
+            Loyalties loyalty = Loyalties.Ally,
             List<Attack> attacks = null,
             List<Speed> movements = null,
             bool disengaged = false,

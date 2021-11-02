@@ -9,6 +9,7 @@ namespace Logic.Core.Creatures
 {
     public interface ICreature
     {
+        int Id { get; set; }
         Loyalties Loyalty { get; }
         Sizes Size { get; }
         List<Speed> Movements { get; }

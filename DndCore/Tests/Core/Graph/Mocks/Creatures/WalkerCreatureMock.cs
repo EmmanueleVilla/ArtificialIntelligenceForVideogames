@@ -9,6 +9,8 @@ namespace Tests.Core.Graph.Mocks
 {
     class WalkerCreatureMock : ICreature
     {
+        public int Id { get; set; }
+
         Sizes _size;
         public WalkerCreatureMock(Sizes size = Sizes.Medium)
         {
