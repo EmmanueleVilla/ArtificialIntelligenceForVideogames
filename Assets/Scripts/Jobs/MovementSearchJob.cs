@@ -1,18 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.DI;
+using Logic.Core.Battle;
+using Unity.Collections;
+using Unity.Jobs;
+using UnityEngine;
 
 namespace Assets.Scripts.Jobs
 {
+    struct UnmanagedEdge
+    {
+        public int X;
+        public int Y;
+        public int Speed;
+        public int Damage;
+        public bool CanEndMovementHere;
+
+        public override string ToString()
+        {
+            return string.Format("[{0},{1}], speed {2}, damage {3}, canEndHere {4}",
+                X, Y, Speed, Damage, CanEndMovementHere);
+        }
+    }
+
     struct MovementSearchJob : IJob
     {
-        public NativeArray<int> result;
+        public static int MAX_EDGES = 1000;
+        public NativeArray<UnmanagedEdge> result;
+
         public void Execute()
         {
-            var executor = new VeryTimeConsumingClass();
-            result[0] = executor.VeryTimeConsumingMethod();
+            var battle = DndModule.Get<IDndBattle>();
+            Debug.Log(battle);
+            var currentCreature = battle.GetCreatureInTurn();
+            Debug.Log(currentCreature);
+            var res = battle.GetReachableCells(currentCreature);
+            for (int i = 0; i < res.Count && i < MAX_EDGES; i++)
+            {
+                result[i] = new UnmanagedEdge() {
+                    X = res[i].Destination.X,
+                    Y = res[i].Destination.Y,
+                    Damage = res[i].Damage,
+                    CanEndMovementHere = res[i].CanEndMovementHere,
+                    Speed = res[i].Speed
+                };
+            }
         }
     }
 }

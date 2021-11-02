@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.DI;
 using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 
 namespace Logic.Core
 {
@@ -12,6 +14,12 @@ namespace Logic.Core
         private int turnIndex = 0;
 
         private List<ICreature> initiativeOrder = new List<ICreature>();
+
+        private UniformCostSearch Search;
+
+        public DndBattle(UniformCostSearch search = null) {
+            Search = search ?? DndModule.Get<UniformCostSearch>();
+        }
 
         public void Init(IMap map)
         {
@@ -51,6 +59,11 @@ namespace Logic.Core
             {
                 turnIndex = 0;
             }
+        }
+
+        public List<Edge> GetReachableCells(ICreature creature)
+        {
+            return Search.Search(map.GetCellOccupiedBy(creature), map);
         }
     }
 }

@@ -3,6 +3,7 @@ using Core.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle;
 using Logic.Core.Dice;
+using Logic.Core.Graph;
 using Logic.Core.Map;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Core.DI
     public static class DndModule
     {
         private static Dictionary<Type, Func<object>> factories = new Dictionary<Type, Func<object>>();
+        private static Dictionary<Type, Func<object>> singletonsFactories = new Dictionary<Type, Func<object>>();
         private static Dictionary<Type, object> singletons = new Dictionary<Type, object>();
 
         public static void RegisterRulesForTest()
@@ -27,10 +29,15 @@ namespace Core.DI
         {
             singletons.Clear();
             factories.Clear();
-            singletons.Add(typeof(Random), new Random());
+
+            singletonsFactories.Add(typeof(Random), () => new Random());
+            singletonsFactories.Add(typeof(IDndBattle), () => new DndBattle());
+
             factories.Add(typeof(IMapBuilder), () => new CsvFullMapBuilder());
             factories.Add(typeof(IDiceRoller), () => new DiceRoller());
-            factories.Add(typeof(IDndBattle), () => new DndBattle());
+            factories.Add(typeof(UniformCostSearch), () => new UniformCostSearch());
+            factories.Add(typeof(ISpeedCalculator), () => new SpeedCalculator());
+
             if(enableLogs)
             {
                 factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
@@ -42,7 +49,12 @@ namespace Core.DI
 
         public static T Get<T>() where T: class
         {
-            if(singletons.ContainsKey(typeof(T)))
+            if (singletonsFactories.ContainsKey(typeof(T)) && !singletons.ContainsKey(typeof(T)))
+            {
+                singletons.Add(typeof(T), singletonsFactories[typeof(T)]() as T);
+            }
+
+            if (singletons.ContainsKey(typeof(T)))
             {
                 return singletons[typeof(T)] as T;
             }
@@ -52,7 +64,7 @@ namespace Core.DI
                 return factories[typeof(T)]() as T;
             }
 
-            return default(T);
+            throw new Exception("Did not found factory for type " + typeof(T));
         }
     }
 }

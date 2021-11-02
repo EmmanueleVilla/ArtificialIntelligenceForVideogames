@@ -181,5 +181,21 @@ namespace Logic.Core.Map.Impl
 
             return occupied.Select(c => GetCellInfo(c.X, c.Y)).ToList();
         }
+
+        public CellInfo GetCellOccupiedBy(ICreature creature)
+        {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    var cell = GetCellInfo(i, j);
+                    if (cell.Creature == creature)
+                    {
+                        return cell;
+                    }
+                }
+            }
+            return CellInfo.Empty();
+        }
     }
 }

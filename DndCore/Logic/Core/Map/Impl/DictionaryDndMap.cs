@@ -61,5 +61,10 @@ namespace Logic.Core.Map
         {
             throw new System.NotImplementedException();
         }
+
+        public CellInfo GetCellOccupiedBy(ICreature creature)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

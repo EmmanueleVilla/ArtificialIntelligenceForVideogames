@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class SpriteManager : MonoBehaviour
 {
+    GameManager GameManager;
+
     public int X;
     public int Y;
 
+    void Start()
+    {
+        GameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    }
+
     void OnMouseDown()
     {
-        Debug.Log(string.Format("Clicked {0}:{1}", X, Y));
+        GameManager.OnCellClicked(X, Y);
     }
 }

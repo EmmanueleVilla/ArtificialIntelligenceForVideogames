@@ -4,6 +4,7 @@ using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
+using Logic.Core.Graph;
 using Logic.Core.Movements;
 using System;
 using System.Collections;
@@ -17,10 +18,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public enum Creatures
-    {
-        
-    }
+
+    List<SpriteManager> tiles = new List<SpriteManager>();
 
     private IMap map;
     public TextAsset RiverMap;
@@ -63,15 +62,24 @@ public class GameManager : MonoBehaviour
         gameUICamera.gameObject.SetActive(false);
         DndModule.RegisterRules();
         Battle = DndModule.Get<IDndBattle>();
-        //this.StartCoroutine(StartJob());
     }
 
-    IEnumerator StartJob()
+    public void EnterMovementMode()
     {
-        NativeArray<int> result = new NativeArray<int>(1, Allocator.Persistent);
+        this.StartCoroutine(StartMovementMode());
+    }
+
+    bool InMovementMode = false;
+    List<UnmanagedEdge> NextMovementAvailableCells = new List<UnmanagedEdge>();
+
+    IEnumerator StartMovementMode()
+    {
+        InMovementMode = true;
+
+        NativeArray<UnmanagedEdge> result = new NativeArray<UnmanagedEdge>(MovementSearchJob.MAX_EDGES, Allocator.Persistent);
 
         // Set up the job data
-        var jobData = new VeryTimeConsumingJob
+        var jobData = new MovementSearchJob
         {
             result = result
         };
@@ -86,10 +94,15 @@ public class GameManager : MonoBehaviour
 
         handle.Complete();
 
-        // All copies of the NativeArray point to the same memory, you can access the result in "your" copy of the NativeArray
-        int res = result[0];
+        foreach(var tile in tiles)
+        {
+            if(!result.Any(res => res.X == tile.Y && res.Y == tile.X && res.Speed > 0))
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = Color.red;
+            }
+        }
 
-        Debug.Log("Result is " + res);
+        NextMovementAvailableCells = result.Where(x => x.Speed > 0).ToList();
 
         // Free the memory allocated by the result array
         result.Dispose();
@@ -149,7 +162,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator PlayGame()
     {
         Ambient.Play();
-        var tiles = new List<SpriteManager>();
         menuCamera.gameObject.SetActive(false);
         gameCamera.gameObject.SetActive(true);
         gameUICamera.gameObject.SetActive(true);
@@ -283,10 +295,7 @@ public class GameManager : MonoBehaviour
         UpdateInitiativeUI(Battle, Initiatives);
         ActionsManager.SetActions(Battle.GetAvailableActions(Battle.GetCreatureInTurn()));
     }
-    internal void EnterMovementMode(List<Speed> movements)
-    {
-
-    }
+    
 
     List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();
 
@@ -315,6 +324,14 @@ public class GameManager : MonoBehaviour
             {
                 indicator.Item2.Hide();
             }
+        }
+    }
+
+    internal void OnCellClicked(int x, int y)
+    {
+        if(InMovementMode)
+        {
+            //Battle.MoveCurrentCreatureTo(x, y);
         }
     }
 }

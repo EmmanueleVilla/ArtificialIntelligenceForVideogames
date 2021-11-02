@@ -38,6 +38,11 @@ namespace Tests.Core.DndBattles.Mock
             throw new NotImplementedException();
         }
 
+        public CellInfo GetCellOccupiedBy(ICreature creature)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<CellInfo> GetCellsOccupiedBy(int x, int y)
         {
             throw new NotImplementedException();

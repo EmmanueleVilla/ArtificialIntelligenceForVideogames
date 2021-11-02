@@ -8,6 +8,7 @@ namespace Core.Map
     public interface IMap
     {
         CellInfo GetCellInfo(int x, int y);
+        CellInfo GetCellOccupiedBy(ICreature creature);
         int Width { get; }
         int Height { get; }
         bool AddCreature(ICreature creature, int x, int y);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 
 namespace Logic.Core.Battle
 {
@@ -12,5 +13,6 @@ namespace Logic.Core.Battle
         List<ICreature> RollInitiative();
         void NextTurn();
         AvailableActions GetAvailableActions(ICreature creature);
+        List<Edge> GetReachableCells(ICreature creature);
     }
 }

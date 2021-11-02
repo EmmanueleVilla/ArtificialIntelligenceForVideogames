@@ -39,7 +39,7 @@ public class ActionsManager : MonoBehaviour
         switch(index)
         {
             case 0:
-                GameManager.EnterMovementMode(Actions.Movements);
+                GameManager.EnterMovementMode();
                 break;
         }
     }
