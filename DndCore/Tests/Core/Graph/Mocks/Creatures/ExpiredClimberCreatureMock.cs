@@ -25,16 +25,15 @@ namespace Tests.Core.Graph.Mocks
 
         public int RolledInitiative => throw new System.NotImplementedException();
 
-        public bool HasReaction()
-        {
-            return true;
-        }
-
         public int RollInitiative()
         {
             throw new NotImplementedException();
         }
 
         public AbilityScores AbilityScores => throw new NotImplementedException();
+
+        public bool HasAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool HasBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool HasReaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

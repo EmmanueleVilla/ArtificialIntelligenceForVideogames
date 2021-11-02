@@ -19,11 +19,6 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override bool Disangaged => false;
 
-        public override bool HasReaction()
-        {
-            return true;
-        }
-
         public override RollTypes InitiativeRollType => RollTypes.Normal;
     }
 }

@@ -49,10 +49,9 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public AbilityScores AbilityScores => throw new NotImplementedException();
 
-        public bool HasReaction()
-        {
-            return _hasReactions;
-        }
+        public bool HasAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool HasBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool HasReaction { get => _hasReactions; set => throw new NotImplementedException(); }
 
         public int RollInitiative()
         {

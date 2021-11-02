@@ -30,9 +30,5 @@ namespace Tests.Core.DndBattles.Mock
 
         public override RollTypes InitiativeRollType => RollTypes.Normal;
 
-        public override bool HasReaction()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

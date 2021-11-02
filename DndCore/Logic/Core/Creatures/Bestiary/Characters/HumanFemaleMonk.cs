@@ -22,9 +22,5 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override RollTypes InitiativeRollType => RollTypes.Advantage;
 
-        public override bool HasReaction()
-        {
-            return true;
-        }
     }
 }

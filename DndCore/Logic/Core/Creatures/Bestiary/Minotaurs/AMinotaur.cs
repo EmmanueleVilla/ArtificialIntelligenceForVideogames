@@ -29,10 +29,5 @@ namespace Logic.Core.Creatures.Bestiary
         public override int InitiativeModifier => +3;
 
         public override RollTypes InitiativeRollType => RollTypes.Normal;
-
-        public override bool HasReaction()
-        {
-            return true;
-        }
     }
 }

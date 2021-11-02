@@ -14,11 +14,16 @@ namespace Logic.Core.Creatures
         List<Speed> Movements { get; }
         List<Attack> Attacks { get; }
         bool Disangaged { get; }
-        bool HasReaction();
+        
         int RolledInitiative { get; }
         int RollInitiative();
 
         //Ability scores
         AbilityScores AbilityScores { get; }
+
+        //Actions values
+        bool HasAction { get; set; }
+        bool HasBonusAction { get; set; }
+        bool HasReaction { get; set; }
     }
 }

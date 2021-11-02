@@ -181,7 +181,7 @@ namespace Logic.Core.Graph
                 var enemiesLeft = map.IsLeavingThreateningArea(creature, from, to);
                 foreach (var enemy in enemiesLeft)
                 {
-                    if(enemy.HasReaction())
+                    if(enemy.HasReaction)
                     {
                         damage += enemy.Attacks
                             .Where(x => x.Type == Actions.AttackTypes.WeaponMelee || x.Type == Actions.AttackTypes.WeaponMeleeReach)

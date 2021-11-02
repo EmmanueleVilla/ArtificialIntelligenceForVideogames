@@ -26,12 +26,15 @@ namespace Logic.Core.Creatures
         public abstract List<Speed> Movements { get; }
         public abstract List<Attack> Attacks { get; }
         public abstract bool Disangaged { get; }
-        public abstract bool HasReaction();
 
         public abstract int InitiativeModifier { get; }
         public abstract RollTypes InitiativeRollType { get; }
 
         public AbilityScores AbilityScores => GetAbilityScores();
+
+        public bool HasAction { get; set; } = true;
+        public bool HasBonusAction { get; set; } = true;
+        public bool HasReaction { get; set; } = true;
 
         protected virtual AbilityScores GetAbilityScores()
         {
