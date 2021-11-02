@@ -13,7 +13,6 @@
     <None Remove="Core\Creatures\Scores\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Battle\" />
     <Folder Include="Core\Dice\" />
     <Folder Include="Core\Creatures\Bestiary\Ratmans\" />
     <Folder Include="Core\Creatures\Bestiary\Minotaurs\" />

@@ -11,5 +11,6 @@ namespace Logic.Core.Battle
         ICreature GetCreatureInTurn();
         List<ICreature> RollInitiative();
         void NextTurn();
+        AvailableActions GetAvailableActions(ICreature creature);
     }
 }

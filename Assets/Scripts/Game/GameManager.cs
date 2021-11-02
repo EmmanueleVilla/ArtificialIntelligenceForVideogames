@@ -48,7 +48,10 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public AudioSource Ambient;
+    public ActionsManager ActionsManager;
 
+    IDndBattle Battle;
+    List<ICreature> Initiatives;
 
     void Start()
     {
@@ -57,6 +60,7 @@ public class GameManager : MonoBehaviour
         gameCamera.gameObject.SetActive(false);
         gameUICamera.gameObject.SetActive(false);
         DndModule.RegisterRules();
+        Battle = DndModule.Get<IDndBattle>();
         //this.StartCoroutine(StartJob());
     }
 
@@ -271,18 +275,11 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
-        var battle = DndModule.Get<IDndBattle>();
-        battle.Init(map);
-        var initiatives = battle.RollInitiative();
-        while (true)
-        {
-            UpdateInitiativeUI(battle, initiatives);
-
-            battle.NextTurn();
-
-            yield return new WaitForSeconds(2);
-        }
+        
+        Battle.Init(map);
+        Initiatives = Battle.RollInitiative();
+        UpdateInitiativeUI(Battle, Initiatives);
+        ActionsManager.SetActions(Battle.GetAvailableActions(Battle.GetCreatureInTurn()));
     }
 
     List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();

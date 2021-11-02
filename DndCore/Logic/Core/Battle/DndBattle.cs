@@ -38,6 +38,12 @@ namespace Logic.Core
             return initiativeOrder[turnIndex];
         }
 
+        public AvailableActions GetAvailableActions(ICreature creature)
+        {
+            //TODO deplete used movement
+            return new AvailableActions(creature.Movements);
+        }
+
         public void NextTurn()
         {
             turnIndex++;
