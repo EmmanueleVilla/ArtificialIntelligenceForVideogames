@@ -10,6 +10,8 @@ public class ActionsManager : MonoBehaviour
     public GameManager GameManager;
     public GameObject[] Buttons;
 
+
+    private AvailableActions Actions;
     public void Start()
     {
         foreach (var button in Buttons)
@@ -20,7 +22,8 @@ public class ActionsManager : MonoBehaviour
 
     public void SetActions(AvailableActions actions)
     {
-        foreach(var button in Buttons)
+        Actions = actions;
+        foreach (var button in Buttons)
         {
             button.gameObject.SetActive(false);
         }
@@ -33,6 +36,11 @@ public class ActionsManager : MonoBehaviour
 
     public void SelectAction(int index)
     {
-        
+        switch(index)
+        {
+            case 0:
+                GameManager.EnterMovementMode(Actions.Movements);
+                break;
+        }
     }
 }

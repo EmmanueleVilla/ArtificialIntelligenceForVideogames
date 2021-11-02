@@ -2,7 +2,7 @@
 
 namespace Logic.Core.Graph
 {
-    public class Edge
+    public struct Edge
     {
         public CellInfo Start;
         public CellInfo Destination;
@@ -19,6 +19,12 @@ namespace Logic.Core.Graph
             CanEndMovementHere = canEndMovementHere;
         }
 
+        public static Edge Empty()
+        {
+            return new Edge(CellInfo.Empty(), CellInfo.Empty(), 0, 0, false);
+        }
+
+
         public override string ToString()
         {
             return string.Format("From: {0}, To: {1}, Speed: {2}, Damage: {3}, CanEnd: {4}",
@@ -31,7 +37,7 @@ namespace Logic.Core.Graph
 
         public override bool Equals(object obj)
         {
-            var other = obj as Edge;
+            var other = (Edge)obj;
             return CanEndMovementHere == other.CanEndMovementHere
                 && Speed == other.Speed
                 && Damage == other.Damage

@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 using Logic.Core.Map;
 using NUnit.Framework;
 using Tests.Core.Graph.Mocks;
@@ -77,7 +78,7 @@ namespace Tests.Core.Graph
 
             var from = new CellInfo('G', 0, creature, 0, 0);
             var to = new CellInfo('G', 0, null, 1, 1);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(creature, from, to, map));
+            Assert.AreEqual(Edge.Empty(), speedCalculator.GetNeededSpeed(creature, from, to, map));
         }
 
         [Test]
@@ -131,7 +132,7 @@ namespace Tests.Core.Graph
 
             var from = new CellInfo('G', 0, creature, 0, 0);
             var to = new CellInfo('G', 0, null, 1, 1);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(creature, from, to, map));
+            Assert.AreEqual(Edge.Empty(), speedCalculator.GetNeededSpeed(creature, from, to, map));
         }
 
         [Test]
@@ -149,7 +150,7 @@ namespace Tests.Core.Graph
 
             var from = new CellInfo('G', 0, creature, 0, 0);
             var to = new CellInfo('G', 0, null, 1, 1);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(creature, from, to, map));
+            Assert.AreEqual(Edge.Empty(), speedCalculator.GetNeededSpeed(creature, from, to, map));
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Logic.Core.Graph
                             best.Cell,
                             to,
                             map);
-                        if (edge != null)
+                        if (!edge.Equals(Edge.Empty()))
                         {
                             if (!remainingMovement.Any(x => x.Item2 - edge.Speed >= 0))
                             {

@@ -15,7 +15,7 @@ namespace Logic.Core.Graph
         {
             if (to.Terrain == ' ')
             {
-                return null;
+                return Edge.Empty();
             }
 
             //Console.Writeline(string.Format("Testing path to: {0},{1}", to.X, to.Y));
@@ -57,13 +57,13 @@ namespace Logic.Core.Graph
                     var tempTo = map.GetCellInfo(xPos + deltaX, y + deltaY);
                     if (Math.Abs(tempTo.Height - to.Height) > 1)
                     {
-                        return null;
+                        return Edge.Empty(); ;
                     }
 
                     var edge = GetNeedSpeedInternal(creature, tempFrom, tempTo, map);
-                    if (edge == null)
+                    if (edge.Equals(Edge.Empty()))
                     {
-                        return null;
+                        return edge;
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
                     maxDamage = Math.Max(maxDamage, edge.Damage);
@@ -79,13 +79,13 @@ namespace Logic.Core.Graph
                     var tempTo = map.GetCellInfo(x + deltaX, yPos + deltaY);
                     if (Math.Abs(tempTo.Height - to.Height) > 1)
                     {
-                        return null;
+                        return Edge.Empty();
                     }
 
                     var edge = GetNeedSpeedInternal(creature, tempFrom, tempTo, map);
-                    if (edge == null)
+                    if (edge.Equals(Edge.Empty()))
                     {
-                        return null;
+                        return edge;
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
                     maxDamage = Math.Max(maxDamage, edge.Damage);
@@ -95,7 +95,7 @@ namespace Logic.Core.Graph
 
             if (!movingHorizontal && !movingVertically)
             {
-                return null;
+                return Edge.Empty();
             }
 
             //return an edge with the worst case of every cell
@@ -113,7 +113,7 @@ namespace Logic.Core.Graph
             // check if terrain is outside the map
             if (to.Terrain == ' ')
             {
-                return null;
+                return Edge.Empty();
             }
 
             //Console.Writeline(string.Format("Internal testing path to: {0},{1}", to.X, to.Y));
@@ -127,7 +127,7 @@ namespace Logic.Core.Graph
                 var sizeDifference = Math.Abs(fromSize - toSize);
                 if (sizeDifference < 2)
                 {
-                    return null;
+                    return Edge.Empty();
                 }
             }
 

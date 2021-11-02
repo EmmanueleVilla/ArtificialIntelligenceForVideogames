@@ -4,6 +4,7 @@ using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
+using Logic.Core.Movements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     public GameObject Minotaur;
     public GameObject DwarfMaleWarrior;
     public GameObject ElfFemaleWizard;
+
     public GameObject HumanFemaleMonk;
     public GameObject HumanMaleRanger;
 
@@ -280,6 +282,10 @@ public class GameManager : MonoBehaviour
         Initiatives = Battle.RollInitiative();
         UpdateInitiativeUI(Battle, Initiatives);
         ActionsManager.SetActions(Battle.GetAvailableActions(Battle.GetCreatureInTurn()));
+    }
+    internal void EnterMovementMode(List<Speed> movements)
+    {
+
     }
 
     List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();

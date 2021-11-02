@@ -1,4 +1,5 @@
 ﻿using Core.Map;
+using Logic.Core.Graph;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Tests.Core.Graph
         public void NullWhenOutsideMap()
         {
             var to = new CellInfo(' ', 0);
-            Assert.AreEqual(null, speedCalculator.GetNeededSpeed(new WalkerCreatureMock(), CellInfo.Empty(), to, null));
+            Assert.AreEqual(Edge.Empty(), speedCalculator.GetNeededSpeed(new WalkerCreatureMock(), CellInfo.Empty(), to, null));
         }
     }
 }
