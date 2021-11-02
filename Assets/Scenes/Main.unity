@@ -123,6 +123,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &55473738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55473739}
+  - component: {fileID: 55473740}
+  m_Layer: 0
+  m_Name: CameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &55473739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55473738}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 988567976}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &55473740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55473738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3547bad2f8da31a4fb2ebfa4116d8981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 988567977}
+  MenuCamera: {fileID: 519420031}
+  GameCamera: {fileID: 2016986422}
+  GameUICamera: {fileID: 139938859}
 --- !u!1 &123145287
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,6 +728,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 367386882}
   m_CullTransparentMesh: 1
+--- !u!1 &402581998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 402581999}
+  - component: {fileID: 402582000}
+  - component: {fileID: 402582003}
+  - component: {fileID: 402582004}
+  m_Layer: 0
+  m_Name: MapManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &402581999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402581998}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 988567976}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &402582000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402581998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d22d5daca7fad4e8ddf2c7e100d2e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapProvider: {fileID: 402582003}
+  EncounterProvider: {fileID: 402582004}
+--- !u!114 &402582003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402581998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fffed67ba2e8d1449dc7221a0434910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Maps:
+  - {fileID: 4900000, guid: 604332095a08dcf428319abc2f7965c8, type: 3}
+--- !u!114 &402582004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402581998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d76469e59ef6648b7a32d104ff358f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &466646931
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &519420029
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1514,7 +1634,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 988567977}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: InitRiverMap
+        m_MethodName: InitMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1572,7 +1692,6 @@ GameObject:
   m_Component:
   - component: {fileID: 988567976}
   - component: {fileID: 988567977}
-  - component: {fileID: 988567978}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1590,7 +1709,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 341, y: 192, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 402581999}
+  - {fileID: 55473739}
+  - {fileID: 1466541629}
+  - {fileID: 1003386596}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1606,43 +1729,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddc6f2d89ef208642a2bd75b57f4f365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RiverMap: {fileID: 4900000, guid: 604332095a08dcf428319abc2f7965c8, type: 3}
-  menuCamera: {fileID: 519420031}
-  gameCamera: {fileID: 2016986422}
-  gameUICamera: {fileID: 139938859}
-  MapRoot: {fileID: 1719897914}
-  DirtPrefab: {fileID: 109710, guid: 14058525519bb6d4696e576f8102185c, type: 3}
-  GrassPrefab: {fileID: 113452, guid: dab64d92d0839154db1eade84cf11cf0, type: 3}
-  StonePrefab: {fileID: 198772, guid: 74327b54fdbe35544aa23d4e9c2ef204, type: 3}
-  RiverPrefab: {fileID: 158120, guid: 17a0c7ea5d598fb46825e369be33763a, type: 3}
-  RatWithBow: {fileID: 1368975330069667007, guid: 8c67626156ab6894ea72f40851825d9e,
-    type: 3}
-  RatWithDagger: {fileID: 4140408134658664876, guid: 34b22153ed262af41a1f75e8909c4ef3,
-    type: 3}
-  RatWithClaws: {fileID: 6145249511070863563, guid: a4d5bc1fe08fc6a4c936e5728e2df561,
-    type: 3}
-  RatWithStaff: {fileID: 1194042897259694388, guid: b06330e84821d0041846f0b8ae99ed30,
-    type: 3}
-  Minotaur: {fileID: 7168535934198254918, guid: af2be243c3cce2b46b9fc542865b8f5d,
-    type: 3}
-  DwarfMaleWarrior: {fileID: 6658677904708774731, guid: 9b94b4ee464b92f4cb548edb83b5a28b,
-    type: 3}
-  ElfFemaleWizard: {fileID: 6138009523780790490, guid: 9c3387d1c4826204d99978eb85d77601,
-    type: 3}
-  HumanFemaleMonk: {fileID: 3174390132655017265, guid: f8abf5547bf37c842a8587a2a2e97b13,
-    type: 3}
-  HumanMaleRanger: {fileID: 1625954757667970680, guid: da6f0515a868b3e489bb32db4f2bb358,
-    type: 3}
-  InitiativeText: {fileID: 1857262834}
-  Ambient: {fileID: 988567978}
+  MapBuilder: {fileID: 402582000}
   ActionsManager: {fileID: 1378778315}
---- !u!82 &988567978
+  CameraManager: {fileID: 55473740}
+  SoundManager: {fileID: 1003386598}
+  UIManager: {fileID: 1466541630}
+  InitiativeUIManager: {fileID: 2091639441}
+--- !u!1 &1003386595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1003386596}
+  - component: {fileID: 1003386598}
+  - component: {fileID: 1003386597}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1003386596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003386595}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 988567976}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1003386597
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 988567975}
+  m_GameObject: {fileID: 1003386595}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -1732,6 +1863,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1003386598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003386595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fae8ca2d286e874ebeebe8d3f28b16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ambient: {fileID: 1003386597}
+  GameManager: {fileID: 988567977}
 --- !u!1 &1087385737
 GameObject:
   m_ObjectHideFlags: 0
@@ -2229,6 +2374,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1402718482}
   m_CullTransparentMesh: 1
+--- !u!1 &1466541628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1466541629}
+  - component: {fileID: 1466541630}
+  - component: {fileID: 1466541631}
+  - component: {fileID: 1466541632}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1466541629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466541628}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 988567976}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1466541630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466541628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 531951591fd56984fbe31e6786f99801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 988567977}
+  MapRoot: {fileID: 1719897914}
+  TerrainPrefabProvider: {fileID: 1466541632}
+  CreaturePrefabProvider: {fileID: 1466541631}
+--- !u!114 &1466541631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466541628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550dc0a7392853f45a4d9cd722517093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RatWithBow: {fileID: 1368975330069667007, guid: 8c67626156ab6894ea72f40851825d9e,
+    type: 3}
+  RatWithDagger: {fileID: 4140408134658664876, guid: 34b22153ed262af41a1f75e8909c4ef3,
+    type: 3}
+  RatWithClaws: {fileID: 6145249511070863563, guid: a4d5bc1fe08fc6a4c936e5728e2df561,
+    type: 3}
+  RatWithStaff: {fileID: 1194042897259694388, guid: b06330e84821d0041846f0b8ae99ed30,
+    type: 3}
+  Minotaur: {fileID: 7168535934198254918, guid: af2be243c3cce2b46b9fc542865b8f5d,
+    type: 3}
+  DwarfMaleWarrior: {fileID: 6658677904708774731, guid: 9b94b4ee464b92f4cb548edb83b5a28b,
+    type: 3}
+  ElfFemaleWizard: {fileID: 6138009523780790490, guid: 9c3387d1c4826204d99978eb85d77601,
+    type: 3}
+  HumanFemaleMonk: {fileID: 3174390132655017265, guid: f8abf5547bf37c842a8587a2a2e97b13,
+    type: 3}
+  HumanMaleRanger: {fileID: 1625954757667970680, guid: da6f0515a868b3e489bb32db4f2bb358,
+    type: 3}
+--- !u!114 &1466541632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466541628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 830d85ab13d673d4bb5d082fd43af283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DirtPrefab: {fileID: 109710, guid: 14058525519bb6d4696e576f8102185c, type: 3}
+  GrassPrefab: {fileID: 113452, guid: dab64d92d0839154db1eade84cf11cf0, type: 3}
+  StonePrefab: {fileID: 198772, guid: 74327b54fdbe35544aa23d4e9c2ef204, type: 3}
+  RiverPrefab: {fileID: 158120, guid: 17a0c7ea5d598fb46825e369be33763a, type: 3}
 --- !u!1 &1609057215
 GameObject:
   m_ObjectHideFlags: 0
@@ -3088,6 +3328,7 @@ GameObject:
   - component: {fileID: 2091639438}
   - component: {fileID: 2091639440}
   - component: {fileID: 2091639439}
+  - component: {fileID: 2091639441}
   m_Layer: 5
   m_Name: Initiatives
   m_TagString: Untagged
@@ -3153,6 +3394,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091639437}
   m_CullTransparentMesh: 1
+--- !u!114 &2091639441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091639437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62612bcc55822f40843fdf932d8e238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 988567977}
+  InitiativeText: {fileID: 1857262834}
 --- !u!1 &2114501578
 GameObject:
   m_ObjectHideFlags: 0

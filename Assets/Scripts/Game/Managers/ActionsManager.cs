@@ -1,4 +1,5 @@
 using Logic.Core.Battle;
+using Logic.Core.Battle.Actions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ public class ActionsManager : MonoBehaviour
     public GameObject[] Buttons;
 
 
-    private AvailableActions Actions;
+    List<IAvailableAction> Actions;
     public void Start()
     {
         foreach (var button in Buttons)
@@ -20,27 +21,23 @@ public class ActionsManager : MonoBehaviour
         }
     }
 
-    public void SetActions(AvailableActions actions)
+    public void SetActions(List<IAvailableAction> actions)
     {
         Actions = actions;
         foreach (var button in Buttons)
         {
             button.gameObject.SetActive(false);
         }
-        if(actions.Movements.Any(x => x.Item2 > 0))
+
+        for (int i = 0; i < actions.Count && i < Buttons.Length; i++)
         {
-            Buttons[0].gameObject.SetActive(true);
-            Buttons[0].gameObject.GetComponentInChildren<Text>().text = "Move";
+            Buttons[i].gameObject.SetActive(true);
+            Buttons[i].gameObject.GetComponentInChildren<Text>().text = actions[i].ActionType.ToString();
         }
     }
 
     public void SelectAction(int index)
     {
-        switch(index)
-        {
-            case 0:
-                GameManager.EnterMovementMode();
-                break;
-        }
+        GameManager.SelectAction(Actions[index]);
     }
 }
