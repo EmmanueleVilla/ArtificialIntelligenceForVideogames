@@ -1,4 +1,5 @@
-﻿using Logic.Core.Actions;
+﻿using Core.Map;
+using Logic.Core.Actions;
 using Logic.Core.Creatures;
 using Logic.Core.Graph;
 using Logic.Core.Map;
@@ -45,44 +46,154 @@ namespace Tests.Core.Graph.UCS
 
             map.AddCreature(ally, 0, 3);
             map.AddCreature(enemy, 2, 2);
-            var expected = new List<Edge>() {
-                new Edge(map.GetCellInfo(0,3), map.GetCellInfo(0,2), 1, 0 , true),
-                new Edge(map.GetCellInfo(0,3), map.GetCellInfo(1,2), 1, 0 , true),
-                new Edge(map.GetCellInfo(0,3), map.GetCellInfo(1,3), 1, 0 , true),
+            var expected = new List<MemoryEdge>() {
+                new MemoryEdge(
+                    new List<CellInfo>() {
+                        map.GetCellInfo(0,3)
+                    }, map.GetCellInfo(0,2), 1, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3)
+                    }, map.GetCellInfo(1,2), 1, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3)
+                    }, map.GetCellInfo(1,3), 1, 0 , true),
 
-                new Edge(map.GetCellInfo(0,2), map.GetCellInfo(0,1), 2, 0 , true),
-                new Edge(map.GetCellInfo(0,2), map.GetCellInfo(1,1), 2, 0 , true),
+                new MemoryEdge(
+                    new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2)
+                    }, map.GetCellInfo(0,1), 2, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2)
+                    }, map.GetCellInfo(1,1), 2, 0 , true),
 
-                new Edge(map.GetCellInfo(1,2), map.GetCellInfo(2,1), 2, 0 , true),
-                new Edge(map.GetCellInfo(1,2), map.GetCellInfo(2,3), 2, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2)
+                    }, map.GetCellInfo(2,1), 2, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2)
+                    }, map.GetCellInfo(2,3), 2, 0 , true),
 
-                new Edge(map.GetCellInfo(0,1), map.GetCellInfo(0,0), 3, 0 , true),
-                new Edge(map.GetCellInfo(0,1), map.GetCellInfo(1,0), 3, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1)
+                    }, map.GetCellInfo(0,0), 3, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1)
+                    }, map.GetCellInfo(1,0), 3, 0 , true),
 
-                new Edge(map.GetCellInfo(1,1), map.GetCellInfo(2,0), 3, 10 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(1,1)
+                    }, map.GetCellInfo(2,0), 3, 10 , true),
 
-                new Edge(map.GetCellInfo(2,1), map.GetCellInfo(3,0), 3, 10 , true),
-                new Edge(map.GetCellInfo(2,1), map.GetCellInfo(3,1), 3, 0 , true),
-                new Edge(map.GetCellInfo(2,1), map.GetCellInfo(3,2), 3, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1)
+                    }, map.GetCellInfo(3,0), 3, 10 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1)
+                    }, map.GetCellInfo(3,1), 3, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1)
+                    }, map.GetCellInfo(3,2), 3, 0 , true),
 
-                new Edge(map.GetCellInfo(2,3), map.GetCellInfo(3,3), 3, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,3)
+                    }, map.GetCellInfo(3,3), 3, 0 , true),
 
-                new Edge(map.GetCellInfo(1,0), map.GetCellInfo(2,0), 4, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1),
+                        map.GetCellInfo(1,0)
+                    }, map.GetCellInfo(2,0), 4, 0 , true),
 
-                new Edge(map.GetCellInfo(3,1), map.GetCellInfo(4,0), 4, 10 , true),
-                new Edge(map.GetCellInfo(3,1), map.GetCellInfo(4,1), 4, 10 , true),
-                new Edge(map.GetCellInfo(3,1), map.GetCellInfo(4,2), 4, 10 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1),
+                        map.GetCellInfo(3,1)
+                    }, map.GetCellInfo(4,0), 4, 10 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1),
+                        map.GetCellInfo(3,1)
+                    }, map.GetCellInfo(4,1), 4, 10 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1),
+                        map.GetCellInfo(3,1)
+                    }, map.GetCellInfo(4,2), 4, 10 , true),
 
-                new Edge(map.GetCellInfo(3,2), map.GetCellInfo(4,3), 4, 10 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,2),
+                        map.GetCellInfo(2,1),
+                        map.GetCellInfo(3,2)
+                    }, map.GetCellInfo(4,3), 4, 10 , true),
 
-                new Edge(map.GetCellInfo(2,0), map.GetCellInfo(3,0), 5, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1),
+                        map.GetCellInfo(1,0),
+                        map.GetCellInfo(2,0)
+                    }, map.GetCellInfo(3,0), 5, 0 , true),
 
-                new Edge(map.GetCellInfo(3,0), map.GetCellInfo(4,0), 6, 0 , true),
-                new Edge(map.GetCellInfo(3,0), map.GetCellInfo(4,1), 6, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1),
+                        map.GetCellInfo(1,0),
+                        map.GetCellInfo(2,0),
+                        map.GetCellInfo(3,0)
+                    }, map.GetCellInfo(4,0), 6, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1),
+                        map.GetCellInfo(1,0),
+                        map.GetCellInfo(2,0),
+                        map.GetCellInfo(3,0)
+                    }, map.GetCellInfo(4,1), 6, 0 , true),
 
-                new Edge(map.GetCellInfo(4,1), map.GetCellInfo(4,2), 7, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1),
+                        map.GetCellInfo(1,0),
+                        map.GetCellInfo(2,0),
+                        map.GetCellInfo(3,0),
+                        map.GetCellInfo(4,1)
+                    }, map.GetCellInfo(4,2), 7, 0 , true),
 
-                new Edge(map.GetCellInfo(4,2), map.GetCellInfo(4,3), 8, 0 , true),
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(0,2),
+                        map.GetCellInfo(0,1),
+                        map.GetCellInfo(1,0),
+                        map.GetCellInfo(2,0),
+                        map.GetCellInfo(3,0),
+                        map.GetCellInfo(4,1),
+                        map.GetCellInfo(4,2)
+                    }, map.GetCellInfo(4,3), 8, 0 , true),
             };
             var result = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(map.GetCellInfo(0, 3), map);
             Assert.AreEqual(expected, result);

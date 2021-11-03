@@ -70,7 +70,7 @@ namespace Logic.Core
             }
         }
 
-        public List<Edge> GetReachableCells()
+        public List<MemoryEdge> GetReachableCells()
         {
             return Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
         }

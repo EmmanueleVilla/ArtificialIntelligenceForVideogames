@@ -13,6 +13,6 @@ namespace Logic.Core.Battle
         ICreature GetCreatureInTurn();
         void NextTurn();
         List<IAvailableAction> GetAvailableActions();
-        List<Edge> GetReachableCells();
+        List<MemoryEdge> GetReachableCells();
     }
 }

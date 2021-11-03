@@ -20,24 +20,24 @@ namespace Logic.Core.Graph
             this.speedCalculator = speedCalculator ?? DndModule.Get<ISpeedCalculator>();
         }
 
-        public List<Edge> Search(CellInfo from, IMap map)
+        public List<MemoryEdge> Search(CellInfo from, IMap map)
         {
             logger?.WriteLine("Starting search");
-            var result = new List<Edge>();
+            var result = new List<MemoryEdge>();
             var creature = from.Creature;
             var movements = creature.Movements;
             if (movements.TrueForAll(x => x.Item2 <= 0))
             {
-                return new List<Edge>();
+                return result;
             }
-            var visited = new HashSet<string>();
+            var visited = new HashSet<int>();
             var queue = new SortedList<ReachedCell, ReachedCell>(new ReachedCellComparer());
             var startingPoint = new ReachedCell(from);
             queue.Add(startingPoint, startingPoint);
             while (queue.Count > 0)
             {
                 var best = queue.First().Value;
-                visited.Add(best.Cell.X + "," + best.Cell.Y);
+                visited.Add((best.Cell.X << 6) + best.Cell.Y);
                 queue.RemoveAt(0);
                 var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
                 for (int deltaX = -1; deltaX <= 1; deltaX++)
@@ -50,7 +50,7 @@ namespace Logic.Core.Graph
                         {
                             continue;
                         }
-                        var key = newX + "," + newY;
+                        var key = (newX << 6) + newY;
                         if (visited.Contains(key))
                         {
                             continue;
@@ -72,11 +72,14 @@ namespace Logic.Core.Graph
                             {
                                 continue;
                             }
+                            var path = new List<CellInfo>(best.Path);
+                            path.Add(edge.Start);
                             var reached = new ReachedCell(to)
                             {
                                 UsedMovement = best.UsedMovement + edge.Speed,
                                 CanEndMovementHere = edge.CanEndMovementHere,
-                                DamageTaken = best.DamageTaken + edge.Damage
+                                DamageTaken = best.DamageTaken + edge.Damage,
+                                Path = path
                             };
                             queue.Add(reached, reached);
                             edge.Speed += best.UsedMovement;
@@ -85,7 +88,7 @@ namespace Logic.Core.Graph
                             {
                                 visited.Add(key);
                             }
-                            result.Add(edge);
+                            result.Add(new MemoryEdge(path, edge.Destination, edge.Speed, edge.Damage, edge.CanEndMovementHere));
                         }
                         else
                         {
@@ -95,7 +98,7 @@ namespace Logic.Core.Graph
                 }
             }
             var grouped = result.Distinct().GroupBy(x => new { x.Destination, x.Damage });
-            var filtered = new List<Edge>();
+            var filtered = new List<MemoryEdge>();
             foreach(var group in grouped)
             {
                 filtered.Add(group.First(e => e.Speed == group.Min(x => x.Speed)));

@@ -1,4 +1,5 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
 using Logic.Core.Creatures;
 using Logic.Core.Graph;
 using Logic.Core.Map;
@@ -15,6 +16,12 @@ namespace Tests.Core.Graph.UCS
     [TestFixture]
     class UCSSimpleMoveTest
     {
+        [SetUp]
+        public void Setup()
+        {
+            DndModule.RegisterRulesForTest();
+        }
+
         [Test]
         public void CanMoveOnlyOneSquare()
         {
@@ -24,8 +31,10 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
             var to = map.GetCellInfo(1, 0);
-            var edge = new Edge(from, to, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edge }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
+            var edge = new MemoryEdge(new List<CellInfo>() { from }, to, 1, 0, true);
+            var expected = new List<MemoryEdge>() { edge };
+            var actual = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -37,10 +46,10 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 1, 0);
             var from = map.GetCellInfo(1, 0);
             var toOne = map.GetCellInfo(0, 0);
-            var edgeOne = new Edge(from, toOne, 1, 0, true);
+            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new Edge(from, toTwo, 1, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
+            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from }, toTwo, 1, 0, true);
+            Assert.AreEqual(new List<MemoryEdge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -52,10 +61,10 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
-            var edgeOne = new Edge(from, toOne, 1, 0, true);
+            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new Edge(from, toTwo, 2, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
+            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from, toOne }, toTwo, 2, 0, true);
+            Assert.AreEqual(new List<MemoryEdge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
 
         [Test]
@@ -65,15 +74,14 @@ namespace Tests.Core.Graph.UCS
             var creature = new WalkerCreatureMock(Sizes.Medium);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
-            var from = map.GetCellInfo(0, 0);
-            var prev = from;
-            var expected = new List<Edge>();
+            var prev = new List<CellInfo>() { map.GetCellInfo(0, 0) };
+            var expected = new List<MemoryEdge>();
             for (int i = 1; i <= 6; i++)
             {
                 var to = map.GetCellInfo(i, 0);
-                var edge = new Edge(prev,to, i, 0, true);
+                var edge = new MemoryEdge(new List<CellInfo>(prev), to, i, 0, true);
                 expected.Add(edge);
-                prev = to;
+                prev.Add(edge.Destination);
             }
 
             Assert.AreEqual(expected, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(map.GetCellInfo(0, 0), map));
@@ -88,10 +96,12 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 1, 0);
             var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
-            var edgeOne = new Edge(from, toOne, 2, 0, false);
+            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, toOne, 2, 0, false);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new Edge(from, toTwo, 3, 0, true);
-            Assert.AreEqual(new List<Edge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
+            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from, toOne }, toTwo, 3, 0, true);
+            var expected = new List<MemoryEdge>() { edgeOne, edgeTwo };
+            var actual = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
