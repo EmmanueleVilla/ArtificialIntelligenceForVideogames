@@ -9,11 +9,10 @@ namespace Logic.Core.Battle
 {
     public interface IDndBattle
     {
-        void Init(IMap map);
+        List<ICreature> Init(IMap map);
         ICreature GetCreatureInTurn();
-        List<ICreature> RollInitiative();
         void NextTurn();
-        List<IAvailableAction> GetAvailableActions(ICreature creature);
-        List<Edge> GetReachableCells(ICreature creature);
+        List<IAvailableAction> GetAvailableActions();
+        List<Edge> GetReachableCells();
     }
 }

@@ -33,10 +33,6 @@ public class GameManager : MonoBehaviour
     private IDndBattle Battle;
     private List<ICreature> Initiatives;
 
-    internal void SelectAction(IAvailableAction availableAction)
-    {
-    }
-
     void Awake()
     {
         Physics.queriesHitTriggers = true;
@@ -48,15 +44,24 @@ public class GameManager : MonoBehaviour
         Battle = DndModule.Get<IDndBattle>();
     }
 
-    public void EnterMovementMode()
+    bool InMovementMode = false;
+    public void TriggerMovementMode()
     {
-        //this.StartCoroutine(StartMovementMode());
+        if (!InMovementMode)
+        {
+            this.StartCoroutine(StartMovementMode());
+        } else
+        {
+            UIManager.ResetMovementHighlight();
+            NextMovementAvailableCells.Clear();
+            InMovementMode = false;
+            ActionsManager.SetActions(Battle.GetAvailableActions());
+        }
     }
 
-    bool InMovementMode = false;
+
     List<UnmanagedEdge> NextMovementAvailableCells = new List<UnmanagedEdge>();
 
-    /*
     IEnumerator StartMovementMode()
     {
         InMovementMode = true;
@@ -79,20 +84,12 @@ public class GameManager : MonoBehaviour
 
         handle.Complete();
 
-        foreach(var tile in tiles)
-        {
-            if(!result.Any(res => res.X == tile.Y && res.Y == tile.X && res.Speed > 0))
-            {
-                tile.GetComponentInChildren<SpriteRenderer>().color = Color.red;
-            }
-        }
+        UIManager.HighlightMovement(result);
 
         NextMovementAvailableCells = result.Where(x => x.Speed > 0).ToList();
 
-        // Free the memory allocated by the result array
         result.Dispose();
     }
-    */
 
     public void InitMap()
     {
@@ -104,18 +101,32 @@ public class GameManager : MonoBehaviour
         map = MapBuilder.BuildMap();
         GameStarted?.Invoke(this, EventArgs.Empty);
         yield return StartCoroutine(UIManager.DrawMap(map));
-        Battle.Init(map);
-        Initiatives = Battle.RollInitiative();
+        Initiatives = Battle.Init(map);
         InitiativesRolled?.Invoke(this, Initiatives);
         TurnStarted?.Invoke(this, Battle.GetCreatureInTurn());
-        ActionsManager.SetActions(Battle.GetAvailableActions(Battle.GetCreatureInTurn()));
+        ActionsManager.SetActions(Battle.GetAvailableActions());
+    }
+
+    internal void NextTurn()
+    {
+        Battle.NextTurn();
+        TurnStarted?.Invoke(this, Battle.GetCreatureInTurn());
+        ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
     internal void OnCellClicked(int x, int y)
     {
-        if(InMovementMode)
+        if(InMovementMode && NextMovementAvailableCells.Any(edge => edge.X == y && edge.Y == x))
         {
-            //Battle.MoveCurrentCreatureTo(x, y);
+            //check if there are multiple paths
+            var ends = NextMovementAvailableCells.Where(edge => edge.X == y && edge.Y == x).ToList();
+            var actions = new List<IAvailableAction>();
+            foreach(var end in ends)
+            {
+                actions.Add(new ConfirmMovementAction() { Edge = end });
+            }
+            actions.Add(new CancelMovementAction());
+            ActionsManager.SetActions(actions);
         }
     }
 }

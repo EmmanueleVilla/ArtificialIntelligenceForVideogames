@@ -1,7 +1,9 @@
 ﻿using Core.Map;
+using System.Collections.Generic;
 
 namespace Logic.Core.Graph
 {
+
     public struct Edge
     {
         public CellInfo Start;

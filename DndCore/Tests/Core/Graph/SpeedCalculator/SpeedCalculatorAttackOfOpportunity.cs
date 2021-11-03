@@ -111,5 +111,53 @@ namespace Tests.Core.Graph
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
             Assert.AreEqual(0, result.Damage);
         }
+
+        [Test]
+        public void DontTakeDamageBecauseSameAllyTeam()
+        {
+            var map = new ArrayDndMap(10, 10, CellInfo.Empty());
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
+                }
+            }
+            var creature = new MockedCreature(Sizes.Medium, Loyalties.Ally);
+            var ally = new MockedCreature(Sizes.Medium, Loyalties.Ally,
+                new List<Attack>() {
+                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                        new Damage(DamageTypes.Acid, 10, 0, 0, 0)
+                    })
+                    }, hasReactions: false);
+            map.AddCreature(ally, 1, 1);
+            map.AddCreature(creature, 2, 2);
+            var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(0, result.Damage);
+        }
+
+        [Test]
+        public void DontTakeDamageBecauseSameEnemyTeam()
+        {
+            var map = new ArrayDndMap(10, 10, CellInfo.Empty());
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
+                }
+            }
+            var creature = new MockedCreature(Sizes.Medium, Loyalties.Enemy);
+            var ally = new MockedCreature(Sizes.Medium, Loyalties.Enemy,
+                new List<Attack>() {
+                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                        new Damage(DamageTypes.Acid, 10, 0, 0, 0)
+                    })
+                    }, hasReactions: false);
+            map.AddCreature(ally, 1, 1);
+            map.AddCreature(creature, 2, 2);
+            var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(0, result.Damage);
+        }
     }
 }

@@ -61,7 +61,6 @@ namespace Tests.Core.Graph.UCS
 
                 new Edge(map.GetCellInfo(1,1), map.GetCellInfo(2,0), 3, 10 , true),
 
-                new Edge(map.GetCellInfo(2,1), map.GetCellInfo(2,0), 3, 10 , true),
                 new Edge(map.GetCellInfo(2,1), map.GetCellInfo(3,0), 3, 10 , true),
                 new Edge(map.GetCellInfo(2,1), map.GetCellInfo(3,1), 3, 0 , true),
                 new Edge(map.GetCellInfo(2,1), map.GetCellInfo(3,2), 3, 0 , true),
@@ -70,17 +69,11 @@ namespace Tests.Core.Graph.UCS
 
                 new Edge(map.GetCellInfo(1,0), map.GetCellInfo(2,0), 4, 0 , true),
 
-                new Edge(map.GetCellInfo(3,1), map.GetCellInfo(3,0), 4, 10 , true),
                 new Edge(map.GetCellInfo(3,1), map.GetCellInfo(4,0), 4, 10 , true),
                 new Edge(map.GetCellInfo(3,1), map.GetCellInfo(4,1), 4, 10 , true),
                 new Edge(map.GetCellInfo(3,1), map.GetCellInfo(4,2), 4, 10 , true),
 
-                new Edge(map.GetCellInfo(3,2), map.GetCellInfo(4,1), 4, 10 , true),
-                new Edge(map.GetCellInfo(3,2), map.GetCellInfo(4,2), 4, 10 , true),
                 new Edge(map.GetCellInfo(3,2), map.GetCellInfo(4,3), 4, 10 , true),
-
-                new Edge(map.GetCellInfo(3,3), map.GetCellInfo(4,2), 4, 10 , true),
-                new Edge(map.GetCellInfo(3,3), map.GetCellInfo(4,3), 4, 10 , true),
 
                 new Edge(map.GetCellInfo(2,0), map.GetCellInfo(3,0), 5, 0 , true),
 

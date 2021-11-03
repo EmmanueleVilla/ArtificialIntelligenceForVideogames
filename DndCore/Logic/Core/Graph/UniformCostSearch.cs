@@ -94,8 +94,13 @@ namespace Logic.Core.Graph
                     }
                 }
             }
-
-            return result;
+            var grouped = result.Distinct().GroupBy(x => new { x.Destination, x.Damage });
+            var filtered = new List<Edge>();
+            foreach(var group in grouped)
+            {
+                filtered.Add(group.First(e => e.Speed == group.Min(x => x.Speed)));
+            }
+            return filtered;
         }
     }
 }

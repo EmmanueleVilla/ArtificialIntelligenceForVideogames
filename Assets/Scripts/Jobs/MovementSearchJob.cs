@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Jobs
 {
-    struct UnmanagedEdge
+    public struct UnmanagedEdge
     {
         public int X;
         public int Y;
@@ -29,10 +29,7 @@ namespace Assets.Scripts.Jobs
         public void Execute()
         {
             var battle = DndModule.Get<IDndBattle>();
-            Debug.Log(battle);
-            var currentCreature = battle.GetCreatureInTurn();
-            Debug.Log(currentCreature);
-            var res = battle.GetReachableCells(currentCreature);
+            var res = battle.GetReachableCells();
             for (int i = 0; i < res.Count && i < MAX_EDGES; i++)
             {
                 result[i] = new UnmanagedEdge() {

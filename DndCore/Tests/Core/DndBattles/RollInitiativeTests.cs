@@ -16,9 +16,8 @@ namespace Tests.Core.DndBattles
         public void GetCurrentCreatureInTurn()
         {
             var battle = new DndBattle();
-            battle.Init(new InitiativeListMap());
             var expected = new List<int>() { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-            var result = battle.RollInitiative().Select(x => x.RolledInitiative).ToList();
+            var result = battle.Init(new InitiativeListMap()).Select(x => x.RolledInitiative).ToList();
             Assert.AreEqual(expected, result);
         }
     }

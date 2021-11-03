@@ -11,7 +11,6 @@ public class ActionsManager : MonoBehaviour
     public GameManager GameManager;
     public GameObject[] Buttons;
 
-
     List<IAvailableAction> Actions;
     public void Start()
     {
@@ -32,12 +31,23 @@ public class ActionsManager : MonoBehaviour
         for (int i = 0; i < actions.Count && i < Buttons.Length; i++)
         {
             Buttons[i].gameObject.SetActive(true);
-            Buttons[i].gameObject.GetComponentInChildren<Text>().text = actions[i].ActionType.ToString();
+            Buttons[i].gameObject.GetComponentInChildren<Text>().text = actions[i].Description;
         }
     }
 
     public void SelectAction(int index)
     {
-        GameManager.SelectAction(Actions[index]);
+        switch(Actions[index].ActionType)
+        {
+            case ActionsTypes.Movement:
+                SetActions(new List<IAvailableAction>() {
+                    new CancelMovementAction()
+                    });
+                GameManager.TriggerMovementMode();
+                break;
+            case ActionsTypes.EndTurn:
+                GameManager.NextTurn();
+                break;
+        }
     }
 }

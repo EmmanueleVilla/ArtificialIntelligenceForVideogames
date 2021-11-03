@@ -9,6 +9,7 @@ namespace Logic.Core.Battle
     {
         Movement,
         Action,
-        BonusAction
+        BonusAction,
+        EndTurn
     }
 }

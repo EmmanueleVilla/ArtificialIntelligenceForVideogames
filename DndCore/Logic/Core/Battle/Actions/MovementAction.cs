@@ -9,6 +9,8 @@ namespace Logic.Core.Battle.Actions
     {
         public ActionsTypes ActionType => ActionsTypes.Movement;
 
+        public string Description => "Movement";
+
         public List<Speed> RemainingMovement = new List<Speed>();
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.DI;
 using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using Logic.Core.Graph;
+using Logic.Core.Movements;
 
 namespace Logic.Core
 {
@@ -18,17 +20,20 @@ namespace Logic.Core
 
         private UniformCostSearch Search;
 
+        private List<Tuple<ICreature, List<Speed>>> remainingSpeeds = new List<Tuple<ICreature, List<Speed>>>();
+
         public DndBattle(UniformCostSearch search = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
         }
 
-        public void Init(IMap map)
+        public List<ICreature> Init(IMap map)
         {
             this.map = map;
-        }
+            foreach(var creature in map.Creatures)
+            {
+                remainingSpeeds.Add(new Tuple<ICreature, List<Speed>>(creature, creature.Movements));
+            }
 
-        public List<ICreature> RollInitiative()
-        {
             foreach (var creature in map.Creatures)
             {
                 Console.WriteLine(string.Format("{0} rolled {1}", creature, creature.RollInitiative()));
@@ -40,18 +45,14 @@ namespace Logic.Core
 
         public ICreature GetCreatureInTurn()
         {
-            if(initiativeOrder.Count == 0)
-            {
-                RollInitiative();
-            }
             return initiativeOrder[turnIndex];
         }
 
-        public List<IAvailableAction> GetAvailableActions(ICreature creature)
+        public List<IAvailableAction> GetAvailableActions()
         {
-            //TODO deplete used movement
             return new List<IAvailableAction>() {
-                new MovementAction() { RemainingMovement = creature.Movements }
+                new MovementAction() { RemainingMovement = remainingSpeeds.First(x => x.Item1 == GetCreatureInTurn()).Item2 },
+                new EndTurnAction()
             };
         }
 
@@ -60,13 +61,23 @@ namespace Logic.Core
             turnIndex++;
             if(turnIndex >= map.Creatures.Count)
             {
+                remainingSpeeds.Clear();
+                foreach (var creature in map.Creatures)
+                {
+                    remainingSpeeds.Add(new Tuple<ICreature, List<Speed>>(creature, creature.Movements));
+                }
                 turnIndex = 0;
             }
         }
 
-        public List<Edge> GetReachableCells(ICreature creature)
+        public List<Edge> GetReachableCells()
         {
-            return Search.Search(map.GetCellOccupiedBy(creature), map);
+            return Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
+        }
+
+        public List<Edge> GetPathsTo(List<Edge> searched, int x, int y)
+        {
+            return searched.Where(edge => edge.Destination.X == x && edge.Destination.Y == y).ToList();
         }
     }
 }

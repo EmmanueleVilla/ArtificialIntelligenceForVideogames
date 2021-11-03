@@ -20,7 +20,7 @@ namespace Tests.Core.DndBattles.Mock
 
         public override Sizes Size => throw new NotImplementedException();
 
-        public override List<Speed> Movements => throw new NotImplementedException();
+        public override List<Speed> Movements => new List<Speed>();
 
         public override List<Attack> Attacks => throw new NotImplementedException();
 

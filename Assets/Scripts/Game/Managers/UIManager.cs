@@ -1,9 +1,11 @@
+using Assets.Scripts.Jobs;
 using Core.Map;
 using Logic.Core.Creatures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -123,5 +125,24 @@ public class UIManager : MonoBehaviour
             }
         }
         yield return null;
+    }
+
+    internal void HighlightMovement(NativeArray<UnmanagedEdge> result)
+    {
+        foreach (var tile in tiles)
+        {
+            if (!result.Any(res => res.X == tile.Y && res.Y == tile.X && res.Speed > 0))
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
+            }
+        }
+    }
+
+    internal void ResetMovementHighlight()
+    {
+        foreach (var tile in tiles)
+        {
+            tile.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        }
     }
 }
