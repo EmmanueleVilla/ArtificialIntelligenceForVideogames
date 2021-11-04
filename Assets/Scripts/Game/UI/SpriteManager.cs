@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpriteManager : MonoBehaviour
 {
+    public SpriteRenderer knob;
+
     GameManager GameManager;
 
     public int X;

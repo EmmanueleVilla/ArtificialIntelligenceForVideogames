@@ -9,6 +9,7 @@ namespace Logic.Core.Battle
 {
     public interface IDndBattle
     {
+        List<CellInfo> GetPathTo(Edge edge);
         List<ICreature> Init(IMap map);
         ICreature GetCreatureInTurn();
         void NextTurn();

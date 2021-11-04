@@ -1,6 +1,9 @@
 using Assets.Scripts.Jobs;
+using Core.DI;
 using Core.Map;
+using Logic.Core.Battle;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +20,7 @@ public class UIManager : MonoBehaviour
     public CreaturePrefabProvider CreaturePrefabProvider;
     List<SpriteManager> tiles = new List<SpriteManager>();
 
+    GameObject creatureInTurn;
     List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();
 
     void Start()
@@ -31,6 +35,7 @@ public class UIManager : MonoBehaviour
             if (indicator.Item1.Id == e.Id)
             {
                 indicator.Item2.Show();
+                creatureInTurn = indicator.Item2.gameObject;
             }
             else
             {
@@ -78,7 +83,11 @@ public class UIManager : MonoBehaviour
                             height--;
                         } while (height >= 0);
                     }
-                    go.GetComponent<SpriteRenderer>().sortingOrder = (x * map.Height - y + map.Height) * 10;
+                    var sprites = go.GetComponentsInChildren<SpriteRenderer>();
+                    foreach (var sprite in sprites)
+                    {
+                        sprite.sortingOrder += (x * map.Height - y + map.Height) * 10;
+                    }
                     var spriteManager = go.GetComponent<SpriteManager>();
                     tiles.Add(spriteManager);
                     spriteManager.X = x;
@@ -107,8 +116,8 @@ public class UIManager : MonoBehaviour
                     var indicator = creature.GetComponent<InitiativeIndicator>();
                     indicator.Hide();
                     initiativeIndicators.Add(new Tuple<ICreature, InitiativeIndicator>(cell.Creature, indicator));
-                    creature.transform.parent = go.transform;
-                    creature.transform.localPosition = Vector3.zero;
+                    creature.transform.parent = MapRoot.transform;
+                    creature.transform.localPosition = go.transform.localPosition;
                     var cells = map.GetCellsOccupiedBy(yPos, xPos);
                     var max = cells.OrderByDescending(c => c.Y).ThenBy(c => c.X).First();
                     var tile = tiles.FirstOrDefault(tile => tile.X == max.Y && tile.Y == max.X);
@@ -118,7 +127,7 @@ public class UIManager : MonoBehaviour
                         foreach (var renderer in creature.GetComponentsInChildren<SpriteRenderer>())
                         {
                             renderer.sortingOrder =
-                                tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + offset++;
+                                tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + 1 + offset++;
                         }
                     }
                 }
@@ -127,7 +136,43 @@ public class UIManager : MonoBehaviour
         yield return null;
     }
 
-    internal void HighlightMovement(NativeArray<UnmanagedEdge> result)
+    internal void MoveTo(int destinationX, int destinationY)
+    {
+        var target = tiles.First(tile => tile.X == destinationY && tile.Y == destinationX).transform.localPosition;
+        Debug.Log(string.Format("From {0} to {1}", creatureInTurn.transform.localPosition, target));
+        this.StartCoroutine(
+            MoveToIterator(
+                creatureInTurn,
+                creatureInTurn.transform.localPosition,
+                target,
+                5f)
+            );
+    }
+
+    private IEnumerator MoveToIterator(GameObject go, Vector3 start, Vector3 end, float time)
+    {
+        var now = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - now < time)
+        {
+            var newPos = Vector3.Lerp(start, end, (Time.realtimeSinceStartup - now) / time);
+            go.transform.localPosition = newPos;
+            yield return null;
+        }
+    }
+
+    internal void ShowPath(List<CellInfo> cellPath, UnmanagedEdge end, Color color)
+    {
+        Debug.Log("Coloring path in " + color);
+        foreach (var tile in tiles)
+        {
+            if (cellPath.Any(res => res.X == tile.Y && res.Y == tile.X) || (end.X == tile.Y && end.Y == tile.X))
+            {
+                tile.knob.color = color;
+            }
+        }
+    }
+
+    internal void HighlightMovement(List<UnmanagedEdge> result)
     {
         foreach (var tile in tiles)
         {
@@ -138,11 +183,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal void ResetMovementHighlight()
+    internal void ResetMovement()
     {
         foreach (var tile in tiles)
         {
             tile.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+            tile.knob.color = new Color(1, 1, 1, 0);
         }
     }
 }

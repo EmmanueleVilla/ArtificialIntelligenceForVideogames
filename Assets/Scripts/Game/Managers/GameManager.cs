@@ -3,8 +3,10 @@ using Core.DI;
 using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
+using Logic.Core.Graph;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,26 +47,36 @@ public class GameManager : MonoBehaviour
     }
 
     bool InMovementMode = false;
-    public void TriggerMovementMode()
+
+    public void EnterMovementMode()
     {
-        if (!InMovementMode)
-        {
-            this.StartCoroutine(StartMovementMode());
-        } else
-        {
-            UIManager.ResetMovementHighlight();
-            NextMovementAvailableCells.Clear();
-            InMovementMode = false;
-            ActionsManager.SetActions(Battle.GetAvailableActions());
-        }
+        InMovementMode = true;
+        ActionsManager.SetActions(
+            new List<IAvailableAction>() {
+                new CancelMovementAction()
+            });
+        this.StartCoroutine(StartMovementMode());
     }
 
+    internal void ConfirmMovement(int destinationX, int destinationY)
+    {
+        //Battle.MoveTo(destinationX, destinationY)
+        //var path = Battle.GetPathTo(destinationX, destinationY);
+        UIManager.MoveTo(destinationX, destinationY);
+    }
+
+    public void ExitMovementMode()
+    {
+        InMovementMode = false;
+        ActionsManager.SetActions(Battle.GetAvailableActions());
+        UIManager.ResetMovement();
+        NextMovementAvailableCells.Clear();
+    }
 
     List<UnmanagedEdge> NextMovementAvailableCells = new List<UnmanagedEdge>();
 
     IEnumerator StartMovementMode()
     {
-        InMovementMode = true;
 
         NativeArray<UnmanagedEdge> result = new NativeArray<UnmanagedEdge>(MovementSearchJob.MAX_EDGES, Allocator.Persistent);
 
@@ -84,7 +96,7 @@ public class GameManager : MonoBehaviour
 
         handle.Complete();
 
-        UIManager.HighlightMovement(result);
+        UIManager.HighlightMovement(new List<UnmanagedEdge>(result));
 
         NextMovementAvailableCells = result.Where(x => x.Speed > 0).ToList();
 
@@ -114,16 +126,27 @@ public class GameManager : MonoBehaviour
         ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
+    List<Color> colors = new List<Color>() { Color.green, Color.yellow, Color.red, Color.magenta, Color.blue, Color.black };
+
     internal void OnCellClicked(int x, int y)
     {
         if(InMovementMode && NextMovementAvailableCells.Any(edge => edge.X == y && edge.Y == x))
         {
             //check if there are multiple paths
-            var ends = NextMovementAvailableCells.Where(edge => edge.X == y && edge.Y == x).ToList();
+            var ends = NextMovementAvailableCells.Where(edge => edge.X == y && edge.Y == x).OrderBy(x => x.Damage).ToList();
             var actions = new List<IAvailableAction>();
-            foreach(var end in ends)
+            UIManager.ResetMovement();
+            UIManager.HighlightMovement(NextMovementAvailableCells);
+            int index = 0;
+            foreach (var end in ends)
             {
-                actions.Add(new ConfirmMovementAction() { Edge = end });
+                UIManager.ShowPath(Battle.GetPathTo(new Edge(CellInfo.Empty(), map.GetCellInfo(y, x), end.Speed, end.Damage, end.CanEndMovementHere)), end, colors[index]);
+                actions.Add(new ConfirmMovementAction() { Damage = end.Damage, DestinationX = end.X, DestinationY = end.Y, Speed = end.Speed }) ;
+                index++;
+                if(index == colors.Count())
+                {
+                    index = 0;
+                }
             }
             actions.Add(new CancelMovementAction());
             ActionsManager.SetActions(actions);

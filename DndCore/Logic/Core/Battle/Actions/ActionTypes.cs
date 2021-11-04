@@ -7,7 +7,9 @@ namespace Logic.Core.Battle
 {
     public enum ActionsTypes
     {
-        Movement,
+        RequestMovement,
+        CancelMovement,
+        ConfirmMovement,
         Action,
         BonusAction,
         EndTurn

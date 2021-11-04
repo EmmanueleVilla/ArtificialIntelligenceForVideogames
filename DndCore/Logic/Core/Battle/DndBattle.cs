@@ -51,7 +51,7 @@ namespace Logic.Core
         public List<IAvailableAction> GetAvailableActions()
         {
             return new List<IAvailableAction>() {
-                new MovementAction() { RemainingMovement = remainingSpeeds.First(x => x.Item1 == GetCreatureInTurn()).Item2 },
+                new RequestMovementAction() { RemainingMovement = remainingSpeeds.First(x => x.Item1 == GetCreatureInTurn()).Item2 },
                 new EndTurnAction()
             };
         }
@@ -70,9 +70,17 @@ namespace Logic.Core
             }
         }
 
+        List<MemoryEdge> _reachableCellCache;
+
         public List<MemoryEdge> GetReachableCells()
         {
-            return Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
+            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
+            return _reachableCellCache;
+        }
+
+        public List<CellInfo> GetPathTo(Edge edge)
+        {
+            return _reachableCellCache.FirstOrDefault(e => e.Destination.Equals(edge.Destination) && e.Speed == edge.Speed && e.Damage == edge.Damage && e.CanEndMovementHere == edge.CanEndMovementHere).Start;
         }
 
         public List<Edge> GetPathsTo(List<Edge> searched, int x, int y)

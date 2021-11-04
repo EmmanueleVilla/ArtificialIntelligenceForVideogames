@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Logic.Core.Battle.Actions
 {
-    public class MovementAction : IAvailableAction
+    public class RequestMovementAction : IAvailableAction
     {
-        public ActionsTypes ActionType => ActionsTypes.Movement;
+        public ActionsTypes ActionType => ActionsTypes.RequestMovement;
 
         public string Description => "Movement";
 

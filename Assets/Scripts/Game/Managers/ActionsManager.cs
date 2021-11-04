@@ -1,5 +1,6 @@
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,11 +40,15 @@ public class ActionsManager : MonoBehaviour
     {
         switch(Actions[index].ActionType)
         {
-            case ActionsTypes.Movement:
-                SetActions(new List<IAvailableAction>() {
-                    new CancelMovementAction()
-                    });
-                GameManager.TriggerMovementMode();
+            case ActionsTypes.RequestMovement:
+                GameManager.EnterMovementMode();
+                break;
+            case ActionsTypes.CancelMovement:
+                GameManager.ExitMovementMode();
+                break;
+            case ActionsTypes.ConfirmMovement:
+                var action = Actions[index] as ConfirmMovementAction;
+                GameManager.ConfirmMovement(action.DestinationX, action.DestinationY);
                 break;
             case ActionsTypes.EndTurn:
                 GameManager.NextTurn();
