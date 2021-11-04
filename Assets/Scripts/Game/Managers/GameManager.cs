@@ -58,11 +58,19 @@ public class GameManager : MonoBehaviour
         this.StartCoroutine(StartMovementMode());
     }
 
-    internal void ConfirmMovement(int destinationX, int destinationY)
+    internal void ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
     {
         //Battle.MoveTo(destinationX, destinationY)
-        //var path = Battle.GetPathTo(destinationX, destinationY);
-        UIManager.MoveTo(destinationX, destinationY);
+        var end = NextMovementAvailableCells.First(edge =>
+            edge.X == destinationX
+            && edge.Y == destinationY
+            && edge.CanEndMovementHere == true
+            && edge.Damage == damage
+            && edge.Speed == speed
+            );
+        var path = Battle.GetPathTo(new Edge(CellInfo.Empty(), map.GetCellInfo(destinationX, destinationY), end.Speed, end.Damage, end.CanEndMovementHere));
+        path.Add(map.GetCellInfo(end.X, end.Y));
+        UIManager.MoveAlong(path);
     }
 
     public void ExitMovementMode()

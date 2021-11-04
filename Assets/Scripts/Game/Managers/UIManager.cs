@@ -136,19 +136,32 @@ public class UIManager : MonoBehaviour
         yield return null;
     }
 
-    internal void MoveTo(int destinationX, int destinationY)
+    internal void MoveAlong(List<CellInfo> path)
     {
-        var target = tiles.First(tile => tile.X == destinationY && tile.Y == destinationX).transform.localPosition;
-        Debug.Log(string.Format("From {0} to {1}", creatureInTurn.transform.localPosition, target));
-        this.StartCoroutine(
-            MoveToIterator(
-                creatureInTurn,
-                creatureInTurn.transform.localPosition,
-                target,
-                5f)
-            );
+        this.StartCoroutine(MoveAlongIEnumerator(path));
     }
 
+    internal IEnumerator MoveAlongIEnumerator(List<CellInfo> path)
+    {
+        foreach (var cell in path)
+        {
+            var tile = tiles.First(tile => tile.Y == cell.X && tile.X == cell.Y);
+            var target = tile.transform.localPosition;
+
+            int offset = 1;
+            foreach (var renderer in creatureInTurn.GetComponentsInChildren<SpriteRenderer>())
+            {
+                renderer.sortingOrder =
+                    tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + 1 + offset++;
+            }
+
+            yield return StartCoroutine(MoveToIterator(creatureInTurn,
+                creatureInTurn.transform.localPosition,
+                target,
+                0.5f
+                ));
+        }
+    }
     private IEnumerator MoveToIterator(GameObject go, Vector3 start, Vector3 end, float time)
     {
         var now = Time.realtimeSinceStartup;
