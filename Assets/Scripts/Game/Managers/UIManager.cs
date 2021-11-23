@@ -137,25 +137,60 @@ public class UIManager : MonoBehaviour
         yield return null;
     }
 
-    internal void MoveAlong(List<CellInfo> path)
+    internal void MoveAlong(List<MovementEvent> events)
     {
-        this.StartCoroutine(MoveAlongIEnumerator(path));
+        this.StartCoroutine(MoveAlongIEnumerator(events));
     }
 
-    internal IEnumerator MoveAlongIEnumerator(List<CellInfo> path)
+    internal IEnumerator MoveAlongIEnumerator(List<MovementEvent> events)
     {
-        foreach (var cell in path)
+        foreach (var eve in events)
         {
-            var tile = tiles.First(tile => tile.Y == cell.X && tile.X == cell.Y);
-            var target = tile.transform.localPosition;
+            if (eve.type == MovementEvent.Types.Movement)
+            {
+                var tile = tiles.First(tile => tile.Y == eve.Destination.X && tile.X == eve.Destination.Y);
+                var target = tile.transform.localPosition;
 
-            yield return StartCoroutine(MoveToIterator(creatureInTurn,
-                creatureInTurn.transform.localPosition,
-                target,
-                0.5f
-                ));
+                yield return StartCoroutine(MoveToIterator(creatureInTurn,
+                    creatureInTurn.transform.localPosition,
+                    target,
+                    0.25f
+                    ));
+            }
+            if(eve.type == MovementEvent.Types.Falling)
+            {
+                var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
+                yield return StartCoroutine(RedEffect(renderers, 0.25f));
+            }
+            yield return null;
         }
     }
+
+    private IEnumerator RedEffect(List<SpriteRenderer> renderers, float time)
+    {
+        var now = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - now < time)
+        {
+            var newColor = Color.Lerp(Color.white, Color.red, (Time.realtimeSinceStartup - now) / time);
+            foreach(var renderer in renderers)
+            {
+                renderer.color = newColor;
+            }
+            yield return null;
+        }
+
+        now = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - now < time)
+        {
+            var newColor = Color.Lerp(Color.red, Color.white, (Time.realtimeSinceStartup - now) / time);
+            foreach (var renderer in renderers)
+            {
+                renderer.color = newColor;
+            }
+            yield return null;
+        }
+    }
+
     private IEnumerator MoveToIterator(GameObject go, Vector3 start, Vector3 end, float time)
     {
         var now = Time.realtimeSinceStartup;

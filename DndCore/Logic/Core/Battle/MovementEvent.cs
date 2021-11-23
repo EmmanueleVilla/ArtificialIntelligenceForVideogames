@@ -1,11 +1,9 @@
-﻿using Logic.Core.Actions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Core.Map;
+using Logic.Core.Actions;
 
 namespace Logic.Core.Battle
 {
-    public class MovementEvent
+    public struct MovementEvent
     {
         public enum Types
         {
@@ -15,8 +13,8 @@ namespace Logic.Core.Battle
         }
 
         public Types type;
-        public int MovementUsed;
         public int FallingHeight;
         public Attack Attack;
+        public CellInfo Destination;
     }
 }

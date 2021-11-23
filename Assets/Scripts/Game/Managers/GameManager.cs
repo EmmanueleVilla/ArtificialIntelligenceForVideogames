@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
 
     internal void ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
     {
+        ActionsManager.SetActions(new List<IAvailableAction>());
         var end = NextMovementAvailableCells.First(edge =>
             edge.Destination.X == destinationX
             && edge.Destination.Y == destinationY

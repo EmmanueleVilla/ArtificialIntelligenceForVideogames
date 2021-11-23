@@ -11,21 +11,21 @@ namespace benchmark
         static void Main(string[] args)
         {
 
-            var summary = BenchmarkRunner.Run<UCSBenchmark>(
-                new DebugInProcessConfig()
-                );
+            var summary = BenchmarkRunner.Run<UCSBenchmark>();
             Console.ReadLine();
 
-            //Console.WriteLine("Starting..");
-            //var benchmark = new UCSBenchmark();
-            //benchmark.GlobalSetup();
-            //Console.WriteLine("Map Initialized..");
-            //for (int i = 0; i < 5000; i++)
-            //{
-            //    benchmark.FindPathGargantuanCreature();
-            //}
-            //Console.WriteLine("Done.");
-
+            /*
+            Console.WriteLine("Starting..");
+            var benchmark = new UCSBenchmark();
+            benchmark.GlobalSetup();
+            Console.WriteLine("Map Initialized..");
+            for (int i = 0; i < 5000; i++)
+            {
+                benchmark.FindPathGargantuanCreature();
+            }
+            Console.WriteLine("Done.");
+            Console.ReadLine();
+            */
             /*
             Dictionary<int, int> test = new Dictionary<int, int>();
             for(int i=0; i<64;i++)

@@ -38,7 +38,7 @@ namespace Logic.Core.Graph
             if (sizeInCells == 1)
             {
                 // if size is 1, I don't waste time creating the cell list
-                return GetNeedSpeedInternal(creature, from, to, map);
+                return GetNeedSpeedSingleStep(creature, from, to, map);
             }
 
             var maxSpeed = 0;
@@ -62,7 +62,7 @@ namespace Logic.Core.Graph
                         return Edge.Empty(); ;
                     }
 
-                    var edge = GetNeedSpeedInternal(creature, tempFrom, tempTo, map);
+                    var edge = GetNeedSpeedSingleStep(creature, tempFrom, tempTo, map);
                     if (edge.Equals(Edge.Empty()))
                     {
                         return edge;
@@ -88,7 +88,7 @@ namespace Logic.Core.Graph
                         return Edge.Empty();
                     }
 
-                    var edge = GetNeedSpeedInternal(creature, tempFrom, tempTo, map);
+                    var edge = GetNeedSpeedSingleStep(creature, tempFrom, tempTo, map);
                     if (edge.Equals(Edge.Empty()))
                     {
                         return edge;
@@ -119,7 +119,7 @@ namespace Logic.Core.Graph
                 );
         }
 
-        Edge GetNeedSpeedInternal(ICreature creature, CellInfo from, CellInfo to, IMap map)
+        Edge GetNeedSpeedSingleStep(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
             // check if terrain is outside the map
             if (to.Terrain == ' ')
@@ -128,6 +128,7 @@ namespace Logic.Core.Graph
             }
 
             var movementEvents = new List<MovementEvent>();
+            movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Movement, Destination = to });
 
             // check if there is an enemy creature and if I can pass through it
             var occupant = map.GetOccupantCreature(to.X, to.Y);
@@ -169,7 +170,10 @@ namespace Logic.Core.Graph
             {
                 amount += -heightDiff - 1;
                 damage += -(heightDiff / 2) * 4;
-                movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
+                if (damage > 0)
+                {
+                    movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
+                }
             }
 
             switch (to.Terrain)

@@ -41,5 +41,6 @@ namespace Core.Map
                 X.ToString(),
                 Y.ToString());
         }
+
     }
 }

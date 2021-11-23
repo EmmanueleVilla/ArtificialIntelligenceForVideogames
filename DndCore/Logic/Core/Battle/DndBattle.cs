@@ -19,11 +19,13 @@ namespace Logic.Core
         private List<ICreature> initiativeOrder = new List<ICreature>();
 
         private UniformCostSearch Search;
+        private ISpeedCalculator SpeedCalculator;
 
         private List<Tuple<ICreature, List<Speed>>> remainingSpeeds = new List<Tuple<ICreature, List<Speed>>>();
 
-        public DndBattle(UniformCostSearch search = null) {
+        public DndBattle(UniformCostSearch search = null, ISpeedCalculator speedCalculator = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
+            SpeedCalculator = speedCalculator ?? DndModule.Get<ISpeedCalculator>();
         }
 
         public List<ICreature> Init(IMap map)
@@ -77,6 +79,7 @@ namespace Logic.Core
         public void CalculateReachableCells()
         {
             _reachableCellCache = Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
+            //TODO cache also List<MovementEvent>
         }
 
         public List<MemoryEdge> GetReachableCells()
@@ -94,14 +97,18 @@ namespace Logic.Core
             return searched.Where(edge => edge.Destination.X == x && edge.Destination.Y == y).ToList();
         }
 
-        public void MoveAlong(List<CellInfo> path)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<MovementEvent> MoveTo(MemoryEdge end)
         {
-            throw new NotImplementedException();
+            var path = GetPathTo(end);
+            path.Add(map.GetCellInfo(end.Destination.X, end.Destination.Y));
+            var movementEvents = new List<MovementEvent>();
+            for (int i=0; i<path.Count-1; i++)
+            {
+                var edge = SpeedCalculator.GetNeededSpeed(GetCreatureInTurn(), path[i], path[i + 1], map);
+                movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Movement, Destination = edge.Destination });
+                movementEvents.AddRange(edge.MovementEvents);
+            }
+            return movementEvents;
         }
     }
 }
