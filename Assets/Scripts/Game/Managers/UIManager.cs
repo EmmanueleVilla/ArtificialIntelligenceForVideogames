@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using UnityEngine;
+using ILogger = Core.Utils.Log.ILogger;
 
 public class UIManager : MonoBehaviour
 {
@@ -138,6 +139,8 @@ public class UIManager : MonoBehaviour
     }
     internal IEnumerator MoveAlong(List<MovementEvent> events)
     {
+        DndModule.Get<ILogger>().WriteLine("START MOVING");
+        DndModule.Get<ILogger>().WriteLine(string.Join("\n", events.Select(x => x.type)));
         foreach (var eve in events)
         {
             if (eve.type == MovementEvent.Types.Movement)

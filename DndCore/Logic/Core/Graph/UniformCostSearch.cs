@@ -20,12 +20,12 @@ namespace Logic.Core.Graph
             this.speedCalculator = speedCalculator ?? DndModule.Get<ISpeedCalculator>();
         }
 
-        public List<MemoryEdge> Search(CellInfo from, IMap map)
+        public List<MemoryEdge> Search(CellInfo from, IMap map, List<Speed> movementsArg = null)
         {
             logger?.WriteLine("Starting search");
             var result = new List<MemoryEdge>();
             var creature = from.Creature;
-            var movements = creature.Movements;
+            var movements = movementsArg ?? creature.Movements;
             if (movements.TrueForAll(x => x.Item2 <= 0))
             {
                 return result;
@@ -39,7 +39,7 @@ namespace Logic.Core.Graph
                 var best = queue.First().Value;
                 visited.Add((best.Cell.X << 6) + best.Cell.Y);
                 queue.RemoveAt(0);
-                var remainingMovement = from.Creature.Movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
+                var remainingMovement = movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
                 for (int deltaX = -1; deltaX <= 1; deltaX++)
                 {
                     for (int deltaY = -1; deltaY <= 1; deltaY++)

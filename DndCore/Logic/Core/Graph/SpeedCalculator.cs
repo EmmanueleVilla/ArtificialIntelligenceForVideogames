@@ -12,12 +12,14 @@ namespace Logic.Core.Graph
 {
     public class SpeedCalculator : ISpeedCalculator
     {
-        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
+        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map, List<Speed> movementsArg = null)
         {
             if (to.Terrain == ' ')
             {
                 return Edge.Empty();
             }
+
+            var movements = movementsArg ?? creature.Movements;
 
             //Console.Writeline(string.Format("Testing path to: {0},{1}", to.X, to.Y));
             // Check the creature size on the grid
@@ -38,7 +40,7 @@ namespace Logic.Core.Graph
             if (sizeInCells == 1)
             {
                 // if size is 1, I don't waste time creating the cell list
-                return GetNeedSpeedSingleStep(creature, from, to, map);
+                return GetNeedSpeedSingleStep(creature, from, to, map, movements);
             }
 
             var maxSpeed = 0;
@@ -62,10 +64,14 @@ namespace Logic.Core.Graph
                         return Edge.Empty(); ;
                     }
 
-                    var edge = GetNeedSpeedSingleStep(creature, tempFrom, tempTo, map);
+                    var edge = GetNeedSpeedSingleStep(creature, tempFrom, tempTo, map, movements);
                     if (edge.Equals(Edge.Empty()))
                     {
                         return edge;
+                    }
+                    if (movementEvents.Count == 0)
+                    {
+                        movementEvents = edge.MovementEvents;
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
                     if(edge.Damage > maxDamage)
@@ -88,10 +94,14 @@ namespace Logic.Core.Graph
                         return Edge.Empty();
                     }
 
-                    var edge = GetNeedSpeedSingleStep(creature, tempFrom, tempTo, map);
+                    var edge = GetNeedSpeedSingleStep(creature, tempFrom, tempTo, map, movements);
                     if (edge.Equals(Edge.Empty()))
                     {
                         return edge;
+                    }
+                    if (movementEvents.Count == 0)
+                    {
+                        movementEvents = edge.MovementEvents;
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
                     if (edge.Damage > maxDamage)
@@ -119,7 +129,7 @@ namespace Logic.Core.Graph
                 );
         }
 
-        Edge GetNeedSpeedSingleStep(ICreature creature, CellInfo from, CellInfo to, IMap map)
+        Edge GetNeedSpeedSingleStep(ICreature creature, CellInfo from, CellInfo to, IMap map, List<Speed> movements)
         {
             // check if terrain is outside the map
             if (to.Terrain == ' ')
@@ -152,7 +162,7 @@ namespace Logic.Core.Graph
             // I need to climb
             if (heightDiff > 1)
             {
-                var climbingMovement = creature.Movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Climbing);
+                var climbingMovement = movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Climbing);
                 if (climbingMovement != null && climbingMovement.Item2 > 0)
                 {
                     amount += (heightDiff + 1) / 2 - 1;
@@ -180,7 +190,7 @@ namespace Logic.Core.Graph
             {
                 // I need to swim
                 case 'R':
-                    var swimmingMovement = creature.Movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Swimming);
+                    var swimmingMovement = movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Swimming);
                     amount += swimmingMovement != null && swimmingMovement.Item2 > 0 ? 0 : 1;
                     break;
             }

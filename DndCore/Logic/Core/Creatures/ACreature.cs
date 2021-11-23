@@ -27,7 +27,8 @@ namespace Logic.Core.Creatures
         //Abstract fields
         public abstract Loyalties Loyalty { get; }
         public abstract Sizes Size { get; }
-        public abstract List<Speed> Movements { get; set; }
+
+        public abstract List<Speed> Movements { get; }
         public abstract List<Attack> Attacks { get; }
         public abstract bool Disangaged { get; }
 
@@ -39,7 +40,7 @@ namespace Logic.Core.Creatures
         public bool HasAction { get; set; } = true;
         public bool HasBonusAction { get; set; } = true;
         public bool HasReaction { get; set; } = true;
-
+        public int UsedMovement { get; set; }
 
         protected virtual AbilityScores GetAbilityScores()
         {

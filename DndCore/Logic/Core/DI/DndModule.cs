@@ -25,7 +25,7 @@ namespace Core.DI
             factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
         }
 
-        public static void RegisterRules(bool enableLogs = true)
+        public static void RegisterRules(bool enableLogs = true, ILogger logger = null)
         {
             singletons.Clear();
             factories.Clear();
@@ -40,7 +40,14 @@ namespace Core.DI
 
             if(enableLogs)
             {
-                factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
+                if (logger != null)
+                {
+                    factories.Add(typeof(ILogger), () => logger);
+                }
+                else
+                {
+                    factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
+                }
             } else
             {
                 factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger>()));

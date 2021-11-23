@@ -79,9 +79,9 @@ namespace Logic.Core
         public void CalculateReachableCells()
         {
             var creature = GetCreatureInTurn();
-            creature.Movements = remainingSpeeds.First(x => x.Item1 == creature).Item2;
-            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map);
-            //TODO cache also List<MovementEvent>
+            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map, remainingSpeeds.First(x => x.Item1 == creature).Item2);
+            //TODO cache also all the List<MovementEvent>
+            //TODO phase 2: calculate the List<MovementEvent> directly during the search
         }
 
         public List<MemoryEdge> GetReachableCells()
@@ -122,7 +122,6 @@ namespace Logic.Core
             for (int i=0; i<path.Count-1; i++)
             {
                 var edge = SpeedCalculator.GetNeededSpeed(creature, path[i], path[i + 1], map);
-                movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Movement, Destination = edge.Destination });
                 movementEvents.AddRange(edge.MovementEvents);
             }
             return movementEvents;

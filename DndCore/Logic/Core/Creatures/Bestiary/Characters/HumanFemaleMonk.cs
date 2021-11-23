@@ -13,7 +13,7 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override Sizes Size => Sizes.Medium;
 
-        public override List<Speed> Movements { get => new List<Speed>() { new Speed(SpeedTypes.Walking, 8) }; set => throw new NotImplementedException(); }
+        public override List<Speed> Movements { get => new List<Speed>() { new Speed(SpeedTypes.Walking, 8) }; }
 
         public override List<Attack> Attacks => new List<Attack>();
         public override bool Disangaged => false;

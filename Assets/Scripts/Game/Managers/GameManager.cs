@@ -19,7 +19,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
+    public TextLogger TextLogger;
     public MapBuilder MapBuilder;
     public ActionsManager ActionsManager;
     public CameraManager CameraManager;
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Physics.queriesHitTriggers = true;
-        DndModule.RegisterRules();
+        DndModule.RegisterRules(enableLogs: true, logger: TextLogger);
     }
 
     void Start()

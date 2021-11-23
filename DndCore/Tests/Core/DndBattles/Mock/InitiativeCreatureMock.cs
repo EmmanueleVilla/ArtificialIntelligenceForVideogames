@@ -23,7 +23,6 @@ namespace Tests.Core.DndBattles.Mock
         public override List<Speed> Movements
         {
             get => new List<Speed>();
-            set => throw new Exception("NYI");
         }
 
         public override List<Attack> Attacks => throw new NotImplementedException();

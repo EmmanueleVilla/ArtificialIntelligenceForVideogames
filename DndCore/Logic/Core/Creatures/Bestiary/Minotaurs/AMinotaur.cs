@@ -10,7 +10,7 @@ namespace Logic.Core.Creatures.Bestiary
     {
         public override Loyalties Loyalty => Loyalties.Enemy;
 
-        public override List<Speed> Movements { get => new List<Speed>() { new Speed(SpeedTypes.Walking, 6) }; set => throw new NotImplementedException(); }
+        public override List<Speed> Movements { get => new List<Speed>() { new Speed(SpeedTypes.Walking, 6) };}
 
         public override List<Attack> Attacks => new List<Attack>()
         {
