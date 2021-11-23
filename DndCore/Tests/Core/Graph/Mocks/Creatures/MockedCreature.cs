@@ -40,7 +40,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public Sizes Size => _size;
 
-        public List<Speed> Movements => _movements;
+        public List<Speed> Movements { get => _movements; set => throw new NotImplementedException(); }
 
         public List<Attack> Attacks => _attacks;
 

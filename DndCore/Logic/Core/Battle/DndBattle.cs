@@ -78,7 +78,9 @@ namespace Logic.Core
 
         public void CalculateReachableCells()
         {
-            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
+            var creature = GetCreatureInTurn();
+            creature.Movements = remainingSpeeds.First(x => x.Item1 == creature).Item2;
+            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map);
             //TODO cache also List<MovementEvent>
         }
 
@@ -99,13 +101,27 @@ namespace Logic.Core
 
         public List<MovementEvent> MoveTo(MemoryEdge end)
         {
-            map.MoveCreatureTo(GetCreatureInTurn(), end);
+            var creature = GetCreatureInTurn();
+            remainingSpeeds = remainingSpeeds.Select(x =>
+           {
+               if (x.Item1 == creature)
+               {
+                   var newSpeeds = new List<Speed>();
+                   foreach (var speed in x.Item2)
+                   {
+                       newSpeeds.Add(new Speed(speed.Item1, speed.Item2 - end.Speed));
+                   }
+                   return new Tuple<ICreature, List<Speed>>(creature, newSpeeds);
+               }
+               return x;
+           }).ToList();
+            map.MoveCreatureTo(creature, end);
             var path = GetPathTo(end);
             path.Add(map.GetCellInfo(end.Destination.X, end.Destination.Y));
             var movementEvents = new List<MovementEvent>();
             for (int i=0; i<path.Count-1; i++)
             {
-                var edge = SpeedCalculator.GetNeededSpeed(GetCreatureInTurn(), path[i], path[i + 1], map);
+                var edge = SpeedCalculator.GetNeededSpeed(creature, path[i], path[i + 1], map);
                 movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Movement, Destination = edge.Destination });
                 movementEvents.AddRange(edge.MovementEvents);
             }

@@ -17,11 +17,14 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public Sizes Size => Sizes.Medium;
 
-        public List<Speed> Movements => new List<Speed>()
+        public List<Speed> Movements
         {
-            new Speed(SpeedTypes.Walking, 0),
-            new Speed(SpeedTypes.Swimming, -1)
-        };
+            get => new List<Speed>() {
+                new Speed(SpeedTypes.Walking, 0),
+                new Speed(SpeedTypes.Swimming, -1)
+            };
+            set => throw new Exception("NYI");
+        }
 
         public List<Attack> Attacks => new List<Attack>();
 

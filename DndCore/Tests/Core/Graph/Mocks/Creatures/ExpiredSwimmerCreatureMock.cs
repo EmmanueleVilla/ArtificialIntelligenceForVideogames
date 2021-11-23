@@ -18,11 +18,14 @@ namespace Tests.Core.Graph.Mocks.Creatures
         {
             _size = size;
         }
-        public List<Speed> Movements =>
-            new List<Speed>() {
+        public List<Speed> Movements
+        {
+            get => new List<Speed>() {
                 new Speed(SpeedTypes.Walking, 6),
                 new Speed(SpeedTypes.Swimming, 0)
             };
+            set => throw new Exception("NYI");
+        }
 
         public Sizes Size => _size;
 

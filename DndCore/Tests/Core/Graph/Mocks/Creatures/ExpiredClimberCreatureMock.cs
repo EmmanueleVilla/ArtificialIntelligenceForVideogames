@@ -10,11 +10,14 @@ namespace Tests.Core.Graph.Mocks
     class ExpiredClimberCreatureMock : ICreature
     {
         public int Id { get; set; }
-        public List<Speed> Movements =>
-            new List<Speed>() {
+        public List<Speed> Movements
+        {
+            get => new List<Speed>() {
                 new Speed(SpeedTypes.Walking, 10),
                 new Speed(SpeedTypes.Climbing, 0)
             };
+            set => throw new Exception("NYI");
+        }
 
         public Sizes Size => Sizes.Medium;
 

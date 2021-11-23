@@ -136,13 +136,7 @@ public class UIManager : MonoBehaviour
         }
         yield return null;
     }
-
-    internal void MoveAlong(List<MovementEvent> events)
-    {
-        this.StartCoroutine(MoveAlongIEnumerator(events));
-    }
-
-    internal IEnumerator MoveAlongIEnumerator(List<MovementEvent> events)
+    internal IEnumerator MoveAlong(List<MovementEvent> events)
     {
         foreach (var eve in events)
         {

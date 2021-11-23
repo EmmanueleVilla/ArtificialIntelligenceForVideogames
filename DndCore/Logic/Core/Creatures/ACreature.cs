@@ -27,7 +27,7 @@ namespace Logic.Core.Creatures
         //Abstract fields
         public abstract Loyalties Loyalty { get; }
         public abstract Sizes Size { get; }
-        public abstract List<Speed> Movements { get; }
+        public abstract List<Speed> Movements { get; set; }
         public abstract List<Attack> Attacks { get; }
         public abstract bool Disangaged { get; }
 

@@ -207,7 +207,7 @@ namespace Logic.Core.Map.Impl
             SetCell(startCell.X, startCell.Y, startCell);
             occupiedCells.RemoveAll(x => x.Creature == creature);
             threateningAreas.RemoveAll(x => x.Item1 == creature);
-            var keys = occupiedCellsDictionary.Where(x => x.Value == creature).Select(x => x.Key);
+            var keys = occupiedCellsDictionary.Where(x => x.Value == creature).Select(x => x.Key).ToList();
             foreach(var key in keys)
             {
                 occupiedCellsDictionary.Remove(key);

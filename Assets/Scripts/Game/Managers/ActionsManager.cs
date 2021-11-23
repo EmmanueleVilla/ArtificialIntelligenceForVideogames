@@ -48,7 +48,7 @@ public class ActionsManager : MonoBehaviour
                 break;
             case ActionsTypes.ConfirmMovement:
                 var action = Actions[index] as ConfirmMovementAction;
-                GameManager.ConfirmMovement(action.DestinationX, action.DestinationY, action.Damage, action.Speed);
+                this.StartCoroutine(GameManager.ConfirmMovement(action.DestinationX, action.DestinationY, action.Damage, action.Speed));
                 break;
             case ActionsTypes.EndTurn:
                 GameManager.NextTurn();

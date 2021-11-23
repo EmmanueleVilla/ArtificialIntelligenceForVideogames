@@ -12,7 +12,7 @@ namespace Logic.Core.Creatures
         int Id { get; }
         Loyalties Loyalty { get; }
         Sizes Size { get; }
-        List<Speed> Movements { get; }
+        List<Speed> Movements { get; set; }
         List<Attack> Attacks { get; }
         bool Disangaged { get; }
         

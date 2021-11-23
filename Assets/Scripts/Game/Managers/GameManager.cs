@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         this.StartCoroutine(StartMovementMode());
     }
 
-    internal void ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
+    internal IEnumerator ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
     {
         ActionsManager.SetActions(new List<IAvailableAction>());
         var end = NextMovementAvailableCells.First(edge =>
@@ -69,7 +69,8 @@ public class GameManager : MonoBehaviour
             && edge.Speed == speed
             );
         var movementEvents = Battle.MoveTo(end);
-        UIManager.MoveAlong(movementEvents);
+        yield return StartCoroutine(UIManager.MoveAlong(movementEvents));
+        ExitMovementMode();
     }
 
     public void ExitMovementMode()
