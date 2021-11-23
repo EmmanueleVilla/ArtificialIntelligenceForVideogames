@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,11 @@ namespace Tests.Core.Graph.Mocks
         public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
         {
             return new List<ICreature>();
+        }
+
+        public void MoveTo(MemoryEdge edge)
+        {
+            throw new NotImplementedException();
         }
     }
 }

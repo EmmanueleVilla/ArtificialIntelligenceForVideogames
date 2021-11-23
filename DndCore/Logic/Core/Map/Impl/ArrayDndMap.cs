@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,8 +132,6 @@ namespace Logic.Core.Map.Impl
                 threateningAreas.Add(new Tuple<ICreature, List<CellInfo>>(creature, cells));
             }
 
-            creature.Id = Creatures.Max(c => c.Id) + 1;
-
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
 
             return true;
@@ -198,6 +197,11 @@ namespace Logic.Core.Map.Impl
                 }
             }
             return CellInfo.Empty();
+        }
+
+        public void MoveTo(MemoryEdge edge)
+        {
+            throw new NotImplementedException();
         }
     }
 }

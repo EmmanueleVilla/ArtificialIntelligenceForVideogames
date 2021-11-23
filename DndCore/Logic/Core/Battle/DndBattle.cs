@@ -58,6 +58,8 @@ namespace Logic.Core
 
         public void NextTurn()
         {
+            _reachableCellCache.Clear();
+
             turnIndex++;
             if(turnIndex >= map.Creatures.Count)
             {
@@ -70,15 +72,19 @@ namespace Logic.Core
             }
         }
 
-        List<MemoryEdge> _reachableCellCache;
+        List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
+
+        public void CalculateReachableCells()
+        {
+            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
+        }
 
         public List<MemoryEdge> GetReachableCells()
         {
-            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(GetCreatureInTurn()), map);
             return _reachableCellCache;
         }
 
-        public List<CellInfo> GetPathTo(Edge edge)
+        public List<CellInfo> GetPathTo(MemoryEdge edge)
         {
             return _reachableCellCache.FirstOrDefault(e => e.Destination.Equals(edge.Destination) && e.Speed == edge.Speed && e.Damage == edge.Damage && e.CanEndMovementHere == edge.CanEndMovementHere).Start;
         }
@@ -86,6 +92,16 @@ namespace Logic.Core
         public List<Edge> GetPathsTo(List<Edge> searched, int x, int y)
         {
             return searched.Where(edge => edge.Destination.X == x && edge.Destination.Y == y).ToList();
+        }
+
+        public void MoveAlong(List<CellInfo> path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MovementEvent> MoveTo(MemoryEdge end)
+        {
+            throw new NotImplementedException();
         }
     }
 }

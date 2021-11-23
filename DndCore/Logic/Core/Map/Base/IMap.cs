@@ -1,4 +1,5 @@
 ﻿using Logic.Core.Creatures;
+using Logic.Core.Graph;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,5 +17,6 @@ namespace Core.Map
         List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end);
         List<ICreature> Creatures { get; }
         List<CellInfo> GetCellsOccupiedBy(int x, int y);
+        void MoveTo(MemoryEdge edge);
     }
 }

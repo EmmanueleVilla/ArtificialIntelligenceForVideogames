@@ -11,10 +11,14 @@ namespace Logic.Core.Creatures
     public abstract class ACreature : ICreature
     {
         private readonly IDiceRoller roller;
+        private readonly Random random;
+        public int Id { get; private set; }
 
-        protected ACreature(IDiceRoller roller = null)
+        protected ACreature(IDiceRoller roller = null, Random random = null)
         {
             this.roller = roller ?? DndModule.Get<IDiceRoller>();
+            this.random = random ?? DndModule.Get<Random>();
+            Id = this.random.Next(0, int.MaxValue);
         }
 
         //Implemented fields
@@ -36,7 +40,6 @@ namespace Logic.Core.Creatures
         public bool HasBonusAction { get; set; } = true;
         public bool HasReaction { get; set; } = true;
 
-        public int Id { get; set; }
 
         protected virtual AbilityScores GetAbilityScores()
         {
@@ -52,6 +55,16 @@ namespace Logic.Core.Creatures
         public override bool Equals(object obj)
         {
             return Id == (obj as ICreature).Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

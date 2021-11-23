@@ -6,13 +6,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class EncounterProvider: MonoBehaviour
 {
     private int ENCOUNTERS_SIZE = 2;
     internal List<ICreature> BuildEncounter()
     {
-        var encounterIndex = DndModule.Get<System.Random>().Next(0, ENCOUNTERS_SIZE);
+        var encounterIndex = DndModule.Get<Random>().Next(0, ENCOUNTERS_SIZE);
         switch(encounterIndex)
         {
             case 0:

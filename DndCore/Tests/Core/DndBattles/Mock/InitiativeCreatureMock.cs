@@ -11,7 +11,7 @@ namespace Tests.Core.DndBattles.Mock
     class InitiativeCreatureMock : ACreature
     {
         int _initiative;
-        public InitiativeCreatureMock(int initiative, IDiceRoller roller) : base(roller)
+        public InitiativeCreatureMock(int initiative, IDiceRoller roller, Random random) : base(roller, random)
         {
             _initiative = initiative;
         }

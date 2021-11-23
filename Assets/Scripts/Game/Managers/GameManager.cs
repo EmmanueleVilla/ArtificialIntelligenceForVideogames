@@ -60,17 +60,15 @@ public class GameManager : MonoBehaviour
 
     internal void ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
     {
-        //Battle.MoveTo(destinationX, destinationY)
         var end = NextMovementAvailableCells.First(edge =>
-            edge.X == destinationX
-            && edge.Y == destinationY
+            edge.Destination.X == destinationX
+            && edge.Destination.Y == destinationY
             && edge.CanEndMovementHere == true
             && edge.Damage == damage
             && edge.Speed == speed
             );
-        var path = Battle.GetPathTo(new Edge(CellInfo.Empty(), map.GetCellInfo(destinationX, destinationY), end.Speed, end.Damage, end.CanEndMovementHere));
-        path.Add(map.GetCellInfo(end.X, end.Y));
-        UIManager.MoveAlong(path);
+        var movementEvents = Battle.MoveTo(end);
+        UIManager.MoveAlong(movementEvents);
     }
 
     public void ExitMovementMode()
@@ -81,18 +79,13 @@ public class GameManager : MonoBehaviour
         NextMovementAvailableCells.Clear();
     }
 
-    List<UnmanagedEdge> NextMovementAvailableCells = new List<UnmanagedEdge>();
+    List<MemoryEdge> NextMovementAvailableCells = new List<MemoryEdge>();
 
     IEnumerator StartMovementMode()
     {
 
-        NativeArray<UnmanagedEdge> result = new NativeArray<UnmanagedEdge>(MovementSearchJob.MAX_EDGES, Allocator.Persistent);
-
         // Set up the job data
-        var jobData = new MovementSearchJob
-        {
-            result = result
-        };
+        var jobData = new MovementSearchJob();
 
         // Schedule the job
         JobHandle handle = jobData.Schedule();
@@ -104,11 +97,8 @@ public class GameManager : MonoBehaviour
 
         handle.Complete();
 
-        UIManager.HighlightMovement(new List<UnmanagedEdge>(result));
-
-        NextMovementAvailableCells = result.Where(x => x.Speed > 0).ToList();
-
-        result.Dispose();
+        NextMovementAvailableCells = Battle.GetReachableCells().Where(x => x.Speed > 0).ToList();
+        UIManager.HighlightMovement(NextMovementAvailableCells);
     }
 
     public void InitMap()
@@ -138,18 +128,18 @@ public class GameManager : MonoBehaviour
 
     internal void OnCellClicked(int x, int y)
     {
-        if(InMovementMode && NextMovementAvailableCells.Any(edge => edge.X == y && edge.Y == x))
+        if(InMovementMode && NextMovementAvailableCells.Any(edge => edge.Destination.X == y && edge.Destination.Y == x))
         {
             //check if there are multiple paths
-            var ends = NextMovementAvailableCells.Where(edge => edge.X == y && edge.Y == x).OrderBy(x => x.Damage).ToList();
+            var ends = NextMovementAvailableCells.Where(edge => edge.Destination.X == y && edge.Destination.Y == x).OrderBy(x => x.Damage).ToList();
             var actions = new List<IAvailableAction>();
             UIManager.ResetMovement();
             UIManager.HighlightMovement(NextMovementAvailableCells);
             int index = 0;
             foreach (var end in ends)
             {
-                UIManager.ShowPath(Battle.GetPathTo(new Edge(CellInfo.Empty(), map.GetCellInfo(y, x), end.Speed, end.Damage, end.CanEndMovementHere)), end, colors[index]);
-                actions.Add(new ConfirmMovementAction() { Damage = end.Damage, DestinationX = end.X, DestinationY = end.Y, Speed = end.Speed }) ;
+                UIManager.ShowPath(Battle.GetPathTo(end), end, colors[index]);
+                actions.Add(new ConfirmMovementAction() { Damage = end.Damage, DestinationX = end.Destination.X, DestinationY = end.Destination.Y, Speed = end.Speed }) ;
                 index++;
                 if(index == colors.Count())
                 {

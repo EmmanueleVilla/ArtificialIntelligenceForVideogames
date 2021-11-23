@@ -1,4 +1,6 @@
 ﻿using Core.Map;
+using Logic.Core.Battle;
+using Logic.Core.Creatures;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,20 +13,22 @@ namespace Logic.Core.Graph
         public CellInfo Destination;
         public int Speed;
         public int Damage;
+        public List<MovementEvent> MovementEvents;
         public bool CanEndMovementHere;
 
-        public Edge(CellInfo start, CellInfo destination, int speed, int damage, bool canEndMovementHere)
+        public Edge(CellInfo start, CellInfo destination, int speed, int damage, List<MovementEvent> movementEvents, bool canEndMovementHere)
         {
             Start = start;
             Destination = destination;
             Speed = speed;
             Damage = damage;
             CanEndMovementHere = canEndMovementHere;
+            MovementEvents = movementEvents;
         }
 
         public static Edge Empty()
         {
-            return new Edge(CellInfo.Empty(), CellInfo.Empty(), 0, 0, false);
+            return new Edge(CellInfo.Empty(), CellInfo.Empty(), 0, 0, new List<MovementEvent>(), false);
         }
 
 
@@ -44,6 +48,7 @@ namespace Logic.Core.Graph
             return CanEndMovementHere == other.CanEndMovementHere
                 && Speed == other.Speed
                 && Damage == other.Damage
+                && Enumerable.SequenceEqual(MovementEvents, other.MovementEvents)
                 && Destination.X == other.Destination.X
                 && Destination.Y == other.Destination.Y;
         }

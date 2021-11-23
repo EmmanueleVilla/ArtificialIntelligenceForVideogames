@@ -98,6 +98,8 @@ public class UIManager : MonoBehaviour
             offsetRight -= 2.5f;
         }
 
+        var maxSortingOrder = tiles.Max(x => x.GetComponent<SpriteRenderer>().sortingOrder);
+
         foreach (var go in tiles)
         {
             var xPos = go.GetComponent<SpriteManager>().X;
@@ -126,8 +128,7 @@ public class UIManager : MonoBehaviour
                     {
                         foreach (var renderer in creature.GetComponentsInChildren<SpriteRenderer>())
                         {
-                            renderer.sortingOrder =
-                                tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + 1 + offset++;
+                            renderer.sortingOrder = maxSortingOrder + 1 + offset++;
                         }
                     }
                 }
@@ -148,13 +149,6 @@ public class UIManager : MonoBehaviour
             var tile = tiles.First(tile => tile.Y == cell.X && tile.X == cell.Y);
             var target = tile.transform.localPosition;
 
-            int offset = 1;
-            foreach (var renderer in creatureInTurn.GetComponentsInChildren<SpriteRenderer>())
-            {
-                renderer.sortingOrder =
-                    tile.gameObject.GetComponent<SpriteRenderer>().sortingOrder + 1 + offset++;
-            }
-
             yield return StartCoroutine(MoveToIterator(creatureInTurn,
                 creatureInTurn.transform.localPosition,
                 target,
@@ -173,23 +167,22 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal void ShowPath(List<CellInfo> cellPath, UnmanagedEdge end, Color color)
+    internal void ShowPath(List<CellInfo> cellPath, MemoryEdge end, Color color)
     {
-        Debug.Log("Coloring path in " + color);
         foreach (var tile in tiles)
         {
-            if (cellPath.Any(res => res.X == tile.Y && res.Y == tile.X) || (end.X == tile.Y && end.Y == tile.X))
+            if (cellPath.Any(res => res.X == tile.Y && res.Y == tile.X) || (end.Destination.X == tile.Y && end.Destination.Y == tile.X))
             {
                 tile.knob.color = color;
             }
         }
     }
 
-    internal void HighlightMovement(List<UnmanagedEdge> result)
+    internal void HighlightMovement(List<MemoryEdge> result)
     {
         foreach (var tile in tiles)
         {
-            if (!result.Any(res => res.X == tile.Y && res.Y == tile.X && res.Speed > 0))
+            if (!result.Any(res => res.Destination.X == tile.Y && res.Destination.Y == tile.X && res.Speed > 0))
             {
                 tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
             }

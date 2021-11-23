@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Graph;
 using System.Collections.Generic;
 
 namespace Logic.Core.Map
@@ -63,6 +64,11 @@ namespace Logic.Core.Map
         }
 
         public CellInfo GetCellOccupiedBy(ICreature creature)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void MoveTo(MemoryEdge edge)
         {
             throw new System.NotImplementedException();
         }

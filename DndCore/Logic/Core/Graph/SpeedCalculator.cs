@@ -1,6 +1,7 @@
 ﻿using Core.DI;
 using Core.Map;
 using Core.Utils.Log;
+using Logic.Core.Battle;
 using Logic.Core.Creatures;
 using Logic.Core.Movements;
 using System;
@@ -43,6 +44,7 @@ namespace Logic.Core.Graph
             var maxSpeed = 0;
             var maxDamage = 0;
             var canEndMovementHere = true;
+            var movementEvents = new List<MovementEvent>();
 
             var deltaX = to.X - from.X;
             var deltaY = to.Y - from.Y;
@@ -66,7 +68,11 @@ namespace Logic.Core.Graph
                         return edge;
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
-                    maxDamage = Math.Max(maxDamage, edge.Damage);
+                    if(edge.Damage > maxDamage)
+                    {
+                        maxDamage = edge.Damage;
+                        movementEvents = edge.MovementEvents;
+                    }
                     canEndMovementHere &= edge.CanEndMovementHere;
                 }
             }
@@ -88,7 +94,11 @@ namespace Logic.Core.Graph
                         return edge;
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
-                    maxDamage = Math.Max(maxDamage, edge.Damage);
+                    if (edge.Damage > maxDamage)
+                    {
+                        maxDamage = edge.Damage;
+                        movementEvents = edge.MovementEvents;
+                    }
                     canEndMovementHere &= edge.CanEndMovementHere;
                 }
             }
@@ -104,6 +114,7 @@ namespace Logic.Core.Graph
                 to,
                 maxSpeed,
                 maxDamage,
+                movementEvents,
                 canEndMovementHere
                 );
         }
@@ -116,7 +127,7 @@ namespace Logic.Core.Graph
                 return Edge.Empty();
             }
 
-            //Console.Writeline(string.Format("Internal testing path to: {0},{1}", to.X, to.Y));
+            var movementEvents = new List<MovementEvent>();
 
             // check if there is an enemy creature and if I can pass through it
             var occupant = map.GetOccupantCreature(to.X, to.Y);
@@ -158,6 +169,7 @@ namespace Logic.Core.Graph
             {
                 amount += -heightDiff - 1;
                 damage += -(heightDiff / 2) * 4;
+                movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
             }
 
             switch (to.Terrain)
@@ -183,6 +195,8 @@ namespace Logic.Core.Graph
                 {
                     if(enemy.HasReaction)
                     {
+                        var attack = enemy.Attacks.FirstOrDefault(x => x.Type == Actions.AttackTypes.WeaponMelee);
+                        movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Attacks, Attack = attack } );
                         damage += enemy.Attacks
                             .Where(x => x.Type == Actions.AttackTypes.WeaponMelee || x.Type == Actions.AttackTypes.WeaponMeleeReach)
                             .OrderByDescending(x => x.Damage.Select(xx => xx.AverageDamage).Sum())
@@ -192,7 +206,7 @@ namespace Logic.Core.Graph
                 }
             }
 
-            return new Edge(from, to, amount, damage, !occupied);
+            return new Edge(from, to, amount, damage, movementEvents, !occupied);
         }
     }
 }
