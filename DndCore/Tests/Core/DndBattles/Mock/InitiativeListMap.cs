@@ -59,6 +59,11 @@ namespace Tests.Core.DndBattles.Mock
             throw new NotImplementedException();
         }
 
+        public void MoveCreatureTo(ICreature creature, MemoryEdge end)
+        {
+            throw new NotImplementedException();
+        }
+
         public void MoveTo(MemoryEdge edge)
         {
             throw new NotImplementedException();

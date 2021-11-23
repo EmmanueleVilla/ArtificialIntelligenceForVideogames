@@ -99,6 +99,7 @@ namespace Logic.Core
 
         public List<MovementEvent> MoveTo(MemoryEdge end)
         {
+            map.MoveCreatureTo(GetCreatureInTurn(), end);
             var path = GetPathTo(end);
             path.Add(map.GetCellInfo(end.Destination.X, end.Destination.Y));
             var movementEvents = new List<MovementEvent>();

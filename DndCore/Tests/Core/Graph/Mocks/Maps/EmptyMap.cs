@@ -47,6 +47,11 @@ namespace Tests.Core.Graph.Mocks
             return new List<ICreature>();
         }
 
+        public void MoveCreatureTo(ICreature creature, MemoryEdge end)
+        {
+            throw new NotImplementedException();
+        }
+
         public void MoveTo(MemoryEdge edge)
         {
             throw new NotImplementedException();

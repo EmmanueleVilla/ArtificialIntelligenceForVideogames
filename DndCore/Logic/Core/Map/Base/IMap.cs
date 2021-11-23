@@ -17,6 +17,6 @@ namespace Core.Map
         List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end);
         List<ICreature> Creatures { get; }
         List<CellInfo> GetCellsOccupiedBy(int x, int y);
-        void MoveTo(MemoryEdge edge);
+        void MoveCreatureTo(ICreature creature, MemoryEdge end);
     }
 }

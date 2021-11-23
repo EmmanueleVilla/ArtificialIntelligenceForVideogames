@@ -14,6 +14,7 @@ namespace Logic.Core.Map.Impl
         private CellInfo[,] cells;
         public List<CellInfo> occupiedCells = new List<CellInfo>();
         public Dictionary<int,ICreature> occupiedCellsDictionary = new Dictionary<int, ICreature>();
+        public List<Tuple<ICreature, List<CellInfo>>> threateningAreas = new List<Tuple<ICreature, List<CellInfo>>>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -50,8 +51,6 @@ namespace Logic.Core.Map.Impl
         {
             cells[x, y] = info;
         }
-        
-        public List<Tuple<ICreature, List<CellInfo>>> threateningAreas = new List<Tuple<ICreature, List<CellInfo>>>();
         
         public bool AddCreature(ICreature creature, int x, int y)
         {
@@ -112,7 +111,6 @@ namespace Logic.Core.Map.Impl
             {
                 reach = 2;
             }
-
 
             if (reach > 0)
             {
@@ -199,9 +197,26 @@ namespace Logic.Core.Map.Impl
             return CellInfo.Empty();
         }
 
-        public void MoveTo(MemoryEdge edge)
+        public void MoveCreatureTo(ICreature creature, MemoryEdge edge)
         {
-            throw new NotImplementedException();
+            var startCoord = edge.Start.First();
+            var startCell = GetCellInfo(startCoord.X, startCoord.Y);
+            var newCell = CellInfo.Copy(startCell);
+            //newCell.Creature = creature;
+            startCell.Creature = null;
+            SetCell(startCell.X, startCell.Y, startCell);
+            occupiedCells.RemoveAll(x => x.Creature == creature);
+            threateningAreas.RemoveAll(x => x.Item1 == creature);
+            var keys = occupiedCellsDictionary.Where(x => x.Value == creature).Select(x => x.Key);
+            foreach(var key in keys)
+            {
+                occupiedCellsDictionary.Remove(key);
+            }
+
+            if(!AddCreature(creature, edge.Destination.X, edge.Destination.Y))
+            {
+                throw new Exception("Should never happen");
+            }
         }
     }
 }

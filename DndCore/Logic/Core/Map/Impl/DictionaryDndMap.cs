@@ -72,5 +72,10 @@ namespace Logic.Core.Map
         {
             throw new System.NotImplementedException();
         }
+
+        public void MoveCreatureTo(ICreature creature, MemoryEdge end)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
