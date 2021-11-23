@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Actions;
+using Logic.Core.Battle;
 using Logic.Core.Creatures;
 using Logic.Core.Map.Impl;
 using NUnit.Framework;
@@ -36,6 +37,9 @@ namespace Tests.Core.Graph
             map.AddCreature(enemy, 1, 1);
             map.AddCreature(creature, 2, 2);
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(2, result.MovementEvents.Count);
+            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].type);
+            Assert.AreEqual(MovementEvent.Types.Attacks, result.MovementEvents[1].type);
             Assert.AreEqual(10, result.Damage);
         }
 
@@ -61,6 +65,9 @@ namespace Tests.Core.Graph
             map.AddCreature(enemy, 1, 1);
             map.AddCreature(creature, 2, 2);
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(2, result.MovementEvents.Count);
+            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].type);
+            Assert.AreEqual(MovementEvent.Types.Attacks, result.MovementEvents[1].type);
             Assert.AreEqual(15, result.Damage);
         }
 
@@ -85,6 +92,8 @@ namespace Tests.Core.Graph
             map.AddCreature(enemy, 1, 1);
             map.AddCreature(creature, 2, 2);
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(1, result.MovementEvents.Count);
+            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].type);
             Assert.AreEqual(0, result.Damage);
         }
 
@@ -109,6 +118,8 @@ namespace Tests.Core.Graph
             map.AddCreature(enemy, 1, 1);
             map.AddCreature(creature, 2, 2);
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(1, result.MovementEvents.Count);
+            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].type);
             Assert.AreEqual(0, result.Damage);
         }
 
@@ -133,6 +144,8 @@ namespace Tests.Core.Graph
             map.AddCreature(ally, 1, 1);
             map.AddCreature(creature, 2, 2);
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(1, result.MovementEvents.Count);
+            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].type);
             Assert.AreEqual(0, result.Damage);
         }
 
@@ -157,6 +170,8 @@ namespace Tests.Core.Graph
             map.AddCreature(ally, 1, 1);
             map.AddCreature(creature, 2, 2);
             var result = speedCalculator.GetNeededSpeed(creature, map.GetCellInfo(2, 2), map.GetCellInfo(3, 3), map);
+            Assert.AreEqual(1, result.MovementEvents.Count);
+            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].type);
             Assert.AreEqual(0, result.Damage);
         }
     }
