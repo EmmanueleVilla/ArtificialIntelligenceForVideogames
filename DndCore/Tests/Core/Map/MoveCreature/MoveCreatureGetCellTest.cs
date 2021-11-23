@@ -1,4 +1,5 @@
 ﻿using Core.Map;
+using Logic.Core.Battle;
 using Logic.Core.Map.Impl;
 using NUnit.Framework;
 using System;
@@ -28,7 +29,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                map.GetCellInfo(1, 1), 1, 0, true));
+                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
             Assert.Null(map.GetCellInfo(0, 0).Creature);
             Assert.NotNull(map.GetCellInfo(1, 1).Creature);
         }
@@ -48,7 +49,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                map.GetCellInfo(1, 1), 1, 0, true));
+                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
             Assert.AreEqual(1, map.Creatures.Count);
             Assert.AreEqual(creature, map.Creatures[0]);
         }
@@ -68,7 +69,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(one, 0, 0);
             map.MoveCreatureTo(one, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                map.GetCellInfo(1, 1), 1, 0, true));
+                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
             var two = new WalkerCreatureMock();
             map.AddCreature(two, 2, 2);
             Assert.AreEqual(2, map.Creatures.Count);

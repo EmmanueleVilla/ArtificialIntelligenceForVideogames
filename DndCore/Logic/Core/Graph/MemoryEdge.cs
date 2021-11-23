@@ -1,4 +1,5 @@
 ﻿using Core.Map;
+using Logic.Core.Battle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,17 @@ namespace Logic.Core.Graph
     public struct MemoryEdge
     {
         public List<CellInfo> Start;
+        public List<MovementEvent> Events;
         public CellInfo Destination;
         public int Speed;
         public int Damage;
         public bool CanEndMovementHere;
         
-        public MemoryEdge(List<CellInfo> start, CellInfo destination, int speed, int damage, bool canEndMovementHere)
+        public MemoryEdge(List<CellInfo> start, List<MovementEvent> events, CellInfo destination, int speed, int damage, bool canEndMovementHere)
         {
             Start = start;
             Destination = destination;
+            Events = events;
             Speed = speed;
             Damage = damage;
             CanEndMovementHere = canEndMovementHere;
@@ -25,7 +28,7 @@ namespace Logic.Core.Graph
 
         public static MemoryEdge Empty()
         {
-            return new MemoryEdge(new List<CellInfo>(), CellInfo.Empty(), 0, 0, false);
+            return new MemoryEdge(new List<CellInfo>(), new List<MovementEvent>(), CellInfo.Empty(), 0, 0, false);
         }
 
 

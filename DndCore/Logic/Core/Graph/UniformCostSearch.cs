@@ -74,12 +74,15 @@ namespace Logic.Core.Graph
                             }
                             var path = new List<CellInfo>(best.Path);
                             path.Add(edge.Start);
+                            var events = best.Events;
+                            events.AddRange(edge.MovementEvents);
                             var reached = new ReachedCell(to)
                             {
                                 UsedMovement = best.UsedMovement + edge.Speed,
                                 CanEndMovementHere = edge.CanEndMovementHere,
                                 DamageTaken = best.DamageTaken + edge.Damage,
-                                Path = path
+                                Path = path,
+                                Events = events
                             };
                             queue.Add(reached, reached);
                             edge.Speed += best.UsedMovement;
@@ -88,7 +91,7 @@ namespace Logic.Core.Graph
                             {
                                 visited.Add(key);
                             }
-                            result.Add(new MemoryEdge(path, edge.Destination, edge.Speed, edge.Damage, edge.CanEndMovementHere));
+                            result.Add(new MemoryEdge(path, events, edge.Destination, edge.Speed, edge.Damage, edge.CanEndMovementHere));
                         }
                         else
                         {
