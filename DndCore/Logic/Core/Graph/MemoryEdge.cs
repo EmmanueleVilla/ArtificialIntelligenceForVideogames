@@ -9,6 +9,7 @@ namespace Logic.Core.Graph
 {
     public struct MemoryEdge
     {
+        //TODO: Remove List<CellInfo> and rely only on the MovementEvents list
         public List<CellInfo> Start;
         public List<MovementEvent> Events;
         public CellInfo Destination;
@@ -34,18 +35,20 @@ namespace Logic.Core.Graph
 
         public override string ToString()
         {
-            return string.Format("From: {0}, To: {1}, Speed: {2}, Damage: {3}, CanEnd: {4}",
+            return string.Format("From: {0}, To: {1}, Speed: {2}, Damage: {3}, CanEnd: {4}, Events: {5}",
                 Start.Last().X + "," + Start.Last().Y,
                 Destination.X + "," + Destination.Y,
                 Speed,
                 Damage,
-                CanEndMovementHere);
+                CanEndMovementHere,
+                string.Join("-", Events));
         }
 
         public override bool Equals(object obj)
         {
             var other = (MemoryEdge)obj;
             return CanEndMovementHere == other.CanEndMovementHere
+                && Enumerable.SequenceEqual(Events, other.Events)
                 && Speed == other.Speed
                 && Damage == other.Damage
                 && Destination.X == other.Destination.X

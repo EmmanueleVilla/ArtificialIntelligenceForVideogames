@@ -140,10 +140,10 @@ public class UIManager : MonoBehaviour
     internal IEnumerator MoveAlong(List<MovementEvent> events)
     {
         DndModule.Get<ILogger>().WriteLine("START MOVING");
-        DndModule.Get<ILogger>().WriteLine(string.Join("\n", events.Select(x => x.type)));
+        DndModule.Get<ILogger>().WriteLine(string.Join("\n", events.Select(x => x.Type + " " + x.Destination.X + "," + x.Destination.Y)));
         foreach (var eve in events)
         {
-            if (eve.type == MovementEvent.Types.Movement)
+            if (eve.Type == MovementEvent.Types.Movement)
             {
                 var tile = tiles.First(tile => tile.Y == eve.Destination.X && tile.X == eve.Destination.Y);
                 var target = tile.transform.localPosition;
@@ -154,7 +154,7 @@ public class UIManager : MonoBehaviour
                     0.25f
                     ));
             }
-            if(eve.type == MovementEvent.Types.Falling)
+            if(eve.Type == MovementEvent.Types.Falling)
             {
                 var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
                 yield return StartCoroutine(RedEffect(renderers, 0.25f));

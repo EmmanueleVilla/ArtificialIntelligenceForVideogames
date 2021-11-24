@@ -1,6 +1,7 @@
 ﻿using Core.DI;
 using Core.Map;
 using Core.Utils.Log;
+using Logic.Core.Battle;
 using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,6 @@ namespace Logic.Core.Graph
 
         public List<MemoryEdge> Search(CellInfo from, IMap map, List<Speed> movementsArg = null)
         {
-            logger?.WriteLine("Starting search");
             var result = new List<MemoryEdge>();
             var creature = from.Creature;
             var movements = movementsArg ?? creature.Movements;
@@ -74,7 +74,7 @@ namespace Logic.Core.Graph
                             }
                             var path = new List<CellInfo>(best.Path);
                             path.Add(edge.Start);
-                            var events = best.Events;
+                            var events = new List<MovementEvent>(best.Events);
                             events.AddRange(edge.MovementEvents);
                             var reached = new ReachedCell(to)
                             {

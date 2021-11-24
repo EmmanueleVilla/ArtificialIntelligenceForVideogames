@@ -116,15 +116,7 @@ namespace Logic.Core
                return x;
            }).ToList();
             map.MoveCreatureTo(creature, end);
-            var path = GetPathTo(end);
-            path.Add(map.GetCellInfo(end.Destination.X, end.Destination.Y));
-            var movementEvents = new List<MovementEvent>();
-            for (int i=0; i<path.Count-1; i++)
-            {
-                var edge = SpeedCalculator.GetNeededSpeed(creature, path[i], path[i + 1], map);
-                movementEvents.AddRange(edge.MovementEvents);
-            }
-            return movementEvents;
+            return end.Events;
         }
     }
 }

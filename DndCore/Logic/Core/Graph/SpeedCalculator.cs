@@ -71,13 +71,27 @@ namespace Logic.Core.Graph
                     }
                     if (movementEvents.Count == 0)
                     {
-                        movementEvents = edge.MovementEvents;
+                        movementEvents = edge.MovementEvents.Select(@event =>
+                       {
+                           if(@event.Type == MovementEvent.Types.Movement)
+                           {
+                               @event.Destination = to;
+                           }
+                           return @event;
+                       }).ToList();
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
                     if(edge.Damage > maxDamage)
                     {
                         maxDamage = edge.Damage;
-                        movementEvents = edge.MovementEvents;
+                        movementEvents = edge.MovementEvents.Select(@event =>
+                        {
+                            if (@event.Type == MovementEvent.Types.Movement)
+                            {
+                                @event.Destination = to;
+                            }
+                            return @event;
+                        }).ToList();
                     }
                     canEndMovementHere &= edge.CanEndMovementHere;
                 }
@@ -101,13 +115,27 @@ namespace Logic.Core.Graph
                     }
                     if (movementEvents.Count == 0)
                     {
-                        movementEvents = edge.MovementEvents;
+                        movementEvents = edge.MovementEvents.Select(@event =>
+                        {
+                            if (@event.Type == MovementEvent.Types.Movement)
+                            {
+                                @event.Destination = to;
+                            }
+                            return @event;
+                        }).ToList();
                     }
                     maxSpeed = Math.Max(maxSpeed, edge.Speed);
                     if (edge.Damage > maxDamage)
                     {
                         maxDamage = edge.Damage;
-                        movementEvents = edge.MovementEvents;
+                        movementEvents = edge.MovementEvents.Select(@event =>
+                        {
+                            if (@event.Type == MovementEvent.Types.Movement)
+                            {
+                                @event.Destination = to;
+                            }
+                            return @event;
+                        }).ToList();
                     }
                     canEndMovementHere &= edge.CanEndMovementHere;
                 }
@@ -138,7 +166,7 @@ namespace Logic.Core.Graph
             }
 
             var movementEvents = new List<MovementEvent>();
-            movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Movement, Destination = to });
+            movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = to });
 
             // check if there is an enemy creature and if I can pass through it
             var occupant = map.GetOccupantCreature(to.X, to.Y);
@@ -182,7 +210,7 @@ namespace Logic.Core.Graph
                 damage += -(heightDiff / 2) * 4;
                 if (damage > 0)
                 {
-                    movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
+                    movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
                 }
             }
 
@@ -210,7 +238,7 @@ namespace Logic.Core.Graph
                     if(enemy.HasReaction)
                     {
                         var attack = enemy.Attacks.FirstOrDefault(x => x.Type == Actions.AttackTypes.WeaponMelee);
-                        movementEvents.Add(new MovementEvent() { type = MovementEvent.Types.Attacks, Attack = attack } );
+                        movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = attack } );
                         damage += enemy.Attacks
                             .Where(x => x.Type == Actions.AttackTypes.WeaponMelee || x.Type == Actions.AttackTypes.WeaponMeleeReach)
                             .OrderByDescending(x => x.Damage.Select(xx => xx.AverageDamage).Sum())
