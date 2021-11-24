@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
 
         handle.Complete();
 
-        NextMovementAvailableCells = Battle.GetReachableCells().Where(x => x.Speed > 0).ToList();
+        NextMovementAvailableCells = Battle.GetReachableCells().Where(x => x.Speed > 0 && x.CanEndMovementHere).ToList();
         UIManager.HighlightMovement(NextMovementAvailableCells);
     }
 

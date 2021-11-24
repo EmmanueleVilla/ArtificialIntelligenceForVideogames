@@ -43,6 +43,21 @@ namespace Logic.Core.Graph
                 return GetNeedSpeedSingleStep(creature, from, to, map, movements);
             }
 
+            //TODO: unit test to check the fit
+            var fit = true;
+            for (int i = to.X; i < sizeInCells + to.X; i++)
+            {
+                for (int j = to.Y; j < sizeInCells + to.Y; j++)
+                {
+                    var occupiedCell = map.GetCellInfo(i, j);
+                    var occupantCreature = map.GetOccupantCreature(i, j);
+                    if (Math.Abs(from.Height - occupiedCell.Height) > 1 || (occupantCreature != null && occupantCreature != creature))
+                    {
+                        fit = false;
+                    }
+                }
+            }
+
             var maxSpeed = 0;
             var maxDamage = 0;
             var canEndMovementHere = true;
@@ -153,7 +168,7 @@ namespace Logic.Core.Graph
                 maxSpeed,
                 maxDamage,
                 movementEvents,
-                canEndMovementHere
+                canEndMovementHere && fit
                 );
         }
 

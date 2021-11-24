@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 432940}
   - component: {fileID: 21250870}
   - component: {fileID: 4331753976508922501}
+  - component: {fileID: 2412478649853994550}
   m_Layer: 0
   m_Name: A_STONE
   m_TagString: Untagged
@@ -99,6 +100,22 @@ MonoBehaviour:
   knob: {fileID: 8201302565998216792}
   X: 0
   Y: 0
+--- !u!58 &2412478649853994550
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198772}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 2.53}
+  serializedVersion: 2
+  m_Radius: 2.5
 --- !u!1 &4227651706381899582
 GameObject:
   m_ObjectHideFlags: 0

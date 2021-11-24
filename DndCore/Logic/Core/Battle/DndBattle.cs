@@ -19,13 +19,11 @@ namespace Logic.Core
         private List<ICreature> initiativeOrder = new List<ICreature>();
 
         private UniformCostSearch Search;
-        private ISpeedCalculator SpeedCalculator;
 
         private List<Tuple<ICreature, List<Speed>>> remainingSpeeds = new List<Tuple<ICreature, List<Speed>>>();
 
-        public DndBattle(UniformCostSearch search = null, ISpeedCalculator speedCalculator = null) {
+        public DndBattle(UniformCostSearch search = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
-            SpeedCalculator = speedCalculator ?? DndModule.Get<ISpeedCalculator>();
         }
 
         public List<ICreature> Init(IMap map)
@@ -80,8 +78,6 @@ namespace Logic.Core
         {
             var creature = GetCreatureInTurn();
             _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map, remainingSpeeds.First(x => x.Item1 == creature).Item2);
-            //TODO cache also all the List<MovementEvent>
-            //TODO phase 2: calculate the List<MovementEvent> directly during the search
         }
 
         public List<MemoryEdge> GetReachableCells()
