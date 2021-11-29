@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Jobs;
 using Core.DI;
 using Core.Map;
+using Logic.Core.Actions;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
@@ -60,10 +61,12 @@ public class GameManager : MonoBehaviour
     }
 
     bool InAttackMode = false;
+    Attack selectedAttack;
 
     public void EnterAttackMode(RequestAttackAction action)
     {
         InAttackMode = true;
+        selectedAttack = action.Attack;
         ActionsManager.SetActions(
             new List<IAvailableAction>()
             {
@@ -85,6 +88,12 @@ public class GameManager : MonoBehaviour
         var movementEvents = Battle.MoveTo(end);
         yield return StartCoroutine(UIManager.MoveAlong(movementEvents));
         ExitMovementMode();
+    }
+
+    internal void ConfirmAttack(ConfirmAttackAction confirmAttackAction)
+    {
+        Battle.Attack(confirmAttackAction);
+        ExitAttackMode();
     }
 
     public void ExitAttackMode()
@@ -151,6 +160,22 @@ public class GameManager : MonoBehaviour
 
     internal void OnCellClicked(int x, int y)
     {
+        if(InAttackMode)
+        {
+            var creature = map.GetOccupantCreature(y, x);
+            if (creature != null)
+            {
+                var actions = new List<IAvailableAction>();
+                actions.Add(new ConfirmAttackAction()
+                {
+                    Creature = creature,
+                    Attack = selectedAttack
+                });
+                actions.Add(new CancelAttackAction());
+                ActionsManager.SetActions(actions);
+            }
+        }
+
         if(InMovementMode && NextMovementAvailableCells.Any(edge => edge.Destination.X == y && edge.Destination.Y == x))
         {
             //check if there are multiple paths

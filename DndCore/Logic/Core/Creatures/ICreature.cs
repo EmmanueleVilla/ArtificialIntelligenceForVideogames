@@ -15,6 +15,7 @@ namespace Logic.Core.Creatures
 
         Sizes Size { get; }
 
+
         // Defense
 
         int HitPoints { get; }
@@ -53,7 +54,6 @@ namespace Logic.Core.Creatures
         // Initiative --------------------------------------------------------------------------
 
         int RolledInitiative { get; }
-
         void ResetTurn();
     }
 }

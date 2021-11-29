@@ -60,6 +60,10 @@ public class ActionsManager : MonoBehaviour
             case ActionsTypes.CancelAttack:
                 GameManager.ExitAttackMode();
                 break;
+            case ActionsTypes.ConfirmAttack:
+                var confirmAttackAction = Actions[index] as ConfirmAttackAction;
+                GameManager.ConfirmAttack(confirmAttackAction);
+                break;
         }
     }
 }

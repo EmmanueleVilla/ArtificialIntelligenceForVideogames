@@ -23,7 +23,9 @@ public class TextLogger : MonoBehaviour, ILogger
         if (isMainThread())
         {
             var text = Output.text;
-            var lines = string.Join("\n", text.Split('\n').ToList().Take(19));
+            var split = text.Split('\n');
+            var diff = Mathf.Max(0, split.Count() - 19);
+            var lines = string.Join("\n", split.Skip(diff).Take(19));
             lines += "\n" + message;
             Output.text = lines;
         }

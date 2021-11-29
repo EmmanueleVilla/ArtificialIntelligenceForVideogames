@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Core.Map;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
 using Logic.Core.Graph;
 
@@ -17,5 +18,6 @@ namespace Logic.Core.Battle
         List<MemoryEdge> GetReachableCells();
         void CalculateReachableCells();
         List<MovementEvent> MoveTo(MemoryEdge end);
+        void Attack(ConfirmAttackAction confirmAttackAction);
     }
 }

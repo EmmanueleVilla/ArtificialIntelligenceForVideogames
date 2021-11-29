@@ -18,7 +18,7 @@ namespace Tests.Core.DndBattles
         [Test]
         public void GetCurrentCreatureInTurn()
         {
-            var battle = new DndBattle(new UniformCostSearch(
+            var battle = new DndBattle(new ZeroRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new ConsoleLogger()));
             var expected = new List<int>() { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
             var map = new InitiativeListMap();

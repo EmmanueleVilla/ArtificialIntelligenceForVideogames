@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.DI;
 using Core.Map;
+using Core.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
+using Logic.Core.Dice;
 using Logic.Core.Graph;
 using Logic.Core.Movements;
 
@@ -20,9 +22,13 @@ namespace Logic.Core
         private List<ICreature> initiativeOrder = new List<ICreature>();
 
         private UniformCostSearch Search;
+        private IDiceRoller Roller;
+        private ILogger Logger;
 
-        public DndBattle(UniformCostSearch search = null) {
+        public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, ILogger logger = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
+            Roller = roller ?? DndModule.Get<IDiceRoller>();
+            Logger = logger ?? DndModule.Get<ILogger>();
         }
 
         public List<ICreature> Init(IMap map)
@@ -148,6 +154,33 @@ namespace Logic.Core
            }).ToList();
             map.MoveCreatureTo(creature, end);
             return end.Events;
+        }
+
+        public void Attack(ConfirmAttackAction confirmAttackAction)
+        {
+            //TODO: check advantage and disadvantage
+            var toHit = Roller.Roll(RollTypes.Normal, 1, 20, confirmAttackAction.Attack.ToHit);
+            Logger.WriteLine(string.Format("Rolled {0} to hit", toHit));
+
+            //TODO: check critical hit
+            if(toHit >= confirmAttackAction.Creature.ArmorClass)
+            {
+                var totalDamage = 0;
+                foreach(var damage in confirmAttackAction.Attack.Damage)
+                {
+                    totalDamage += Roller.Roll(RollTypes.Normal, damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
+                }
+                //TODO apply other damage effects
+                Logger.WriteLine(string.Format("Inflicted {0} damage", totalDamage));
+                confirmAttackAction.Creature.CurrentHitPoints -= totalDamage;
+                //TODO kill creature if hp < 0
+
+                GetCreatureInTurn().RemainingAttacksPerAction--;
+
+            } else
+            {
+                Logger.WriteLine("Not hit");
+            }
         }
     }
 }

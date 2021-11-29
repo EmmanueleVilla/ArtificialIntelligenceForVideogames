@@ -29,7 +29,7 @@ namespace Logic.Core.Dice
             var total = 0;
             for (int i = 0; i < diceAmount; i++)
             {
-                total += random.Next(dieFaces);
+                total += random.Next(dieFaces) + 1;
             }
             total += modifier;
             return total;
