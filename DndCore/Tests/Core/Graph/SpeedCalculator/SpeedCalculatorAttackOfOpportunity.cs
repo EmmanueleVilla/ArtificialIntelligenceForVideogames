@@ -30,9 +30,9 @@ namespace Tests.Core.Graph
             var creature = new MockedCreature(1, Loyalties.Ally);
             var enemy = new MockedCreature(1, Loyalties.Enemy,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                    new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
-                    }, 0)
+                    }, false, 0)
                     });
             map.AddCreature(enemy, 1, 1);
             map.AddCreature(creature, 2, 2);
@@ -57,7 +57,7 @@ namespace Tests.Core.Graph
             var creature = new MockedCreature(1, Loyalties.Ally);
             var enemy = new MockedCreature(1, Loyalties.Enemy,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                    new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0),
                         new Damage(DamageTypes.Acid, 5, 0, 0, 0)
                     })
@@ -85,7 +85,7 @@ namespace Tests.Core.Graph
             var creature = new MockedCreature(1, Loyalties.Ally, disengaged: true);
             var enemy = new MockedCreature(1, Loyalties.Enemy,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                    new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
                     })
                     });
@@ -111,7 +111,7 @@ namespace Tests.Core.Graph
             var creature = new MockedCreature(1, Loyalties.Ally);
             var enemy = new MockedCreature(1, Loyalties.Enemy,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                    new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
                     })
                     }, hasReactions: false);
@@ -137,7 +137,7 @@ namespace Tests.Core.Graph
             var creature = new MockedCreature(1, Loyalties.Ally);
             var ally = new MockedCreature(1, Loyalties.Ally,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                    new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
                     })
                     }, hasReactions: false);
@@ -163,7 +163,7 @@ namespace Tests.Core.Graph
             var creature = new MockedCreature(1, Loyalties.Enemy);
             var ally = new MockedCreature(1, Loyalties.Enemy,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
+                    new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
                     })
                     }, hasReactions: false);

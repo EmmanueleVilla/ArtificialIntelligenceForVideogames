@@ -236,10 +236,10 @@ namespace Logic.Core.Graph
                 {
                     if(!enemy.ReactionUsed)
                     {
-                        var attack = enemy.Attacks.FirstOrDefault(x => x.Type == Actions.AttackTypes.WeaponMelee);
+                        var attack = enemy.Attacks.FirstOrDefault(x => x.Range <= 2);
                         movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = attack } );
                         damage += enemy.Attacks
-                            .Where(x => x.Type == Actions.AttackTypes.WeaponMelee || x.Type == Actions.AttackTypes.WeaponMeleeReach)
+                            .Where(x => x.Range <= 2)
                             .OrderByDescending(x => x.Damage.Select(xx => xx.AverageDamage).Sum())
                             .First()
                             .Damage.Select(xx => xx.AverageDamage).Sum();

@@ -28,7 +28,7 @@ namespace Tests.Core.Map.AddCreature
             }
             var creature = new MockedCreature(1, Loyalties.Ally,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>())
+                    new Attack("stub", 1, new List<Damage>())
                     });
             map.AddCreature(creature, 1, 1);
 
@@ -59,7 +59,7 @@ namespace Tests.Core.Map.AddCreature
             }
             var creature = new MockedCreature(1, Loyalties.Ally,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMeleeReach, new List<Damage>())
+                    new Attack("stub", 2, new List<Damage>())
                     });
             map.AddCreature(creature, 1, 1);
 
@@ -110,7 +110,7 @@ namespace Tests.Core.Map.AddCreature
             }
             var creature = new MockedCreature(3, Loyalties.Ally,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>())
+                    new Attack("stub", 1, new List<Damage>())
                     });
             map.AddCreature(creature, 0, 0);
 
@@ -161,7 +161,7 @@ namespace Tests.Core.Map.AddCreature
             }
             var creature = new MockedCreature(3, Loyalties.Ally,
                 new List<Attack>() {
-                    new Attack("stub", AttackTypes.WeaponMeleeReach, new List<Damage>())
+                    new Attack("stub", 2, new List<Damage>())
                     });
             map.AddCreature(creature, 0, 0);
 

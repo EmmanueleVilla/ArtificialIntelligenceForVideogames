@@ -40,7 +40,7 @@ namespace Tests.Core.Graph.UCS
                 Loyalties.Enemy,
                 attacks: new List<Attack>()
                 {
-                    new Attack("stub", AttackTypes.WeaponMelee,
+                    new Attack("stub", 1,
                         new List<Damage>() { new Damage(DamageTypes.Acid, 10, 0,0,0) })
                 }
                 );

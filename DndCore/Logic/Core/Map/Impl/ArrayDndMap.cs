@@ -88,12 +88,13 @@ namespace Logic.Core.Map.Impl
             });
 
             var reach = 0;
-            if (creature.Attacks.Any(a => a.Type == Actions.AttackTypes.WeaponMelee))
+
+            if (creature.Attacks.Any(a => a.Range == 1))
             {
                 reach = 1;
             }
 
-            if (creature.Attacks.Any(a => a.Type == Actions.AttackTypes.WeaponMeleeReach))
+            if (creature.Attacks.Any(a => a.Range == 2))
             {
                 reach = 2;
             }

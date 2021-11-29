@@ -10,10 +10,10 @@ namespace Logic.Core.Creatures.Bestiary
     {
         public override List<Attack> Attacks => new List<Attack>()
         {
-            new Attack("Claw", AttackTypes.WeaponRanged, new List<Damage>()
+            new Attack("Claw", 1, new List<Damage>()
             {
                 new Damage(DamageTypes.Piercing, 10, 1, 12, 3)
-            }, 5)
+            }, false, 5)
         };
 
         public override int InitiativeModifier => 3;

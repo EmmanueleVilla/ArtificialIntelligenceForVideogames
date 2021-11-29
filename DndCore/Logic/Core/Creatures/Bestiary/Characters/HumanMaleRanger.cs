@@ -16,14 +16,14 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override List<Attack> Attacks => new List<Attack>()
         {
-            new Attack("Dagger", AttackTypes.WeaponMelee, new List<Damage>()
+            new Attack("Dagger", 1, new List<Damage>()
             {
                 new Damage(DamageTypes.Piercing, 7, 1, 4, 4)
-            }, 7),
-            new Attack("Longbow", AttackTypes.WeaponRanged, new List<Damage>()
+            }, false, 7),
+            new Attack("Longbow", 30, new List<Damage>()
             {
                 new Damage(DamageTypes.Piercing, 9, 1, 8, 4)
-            }, 9)
+            }, false, 9)
         };
 
         public override List<Speed> Movements => new List<Speed>()
