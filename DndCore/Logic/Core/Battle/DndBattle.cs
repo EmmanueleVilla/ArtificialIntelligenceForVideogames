@@ -10,6 +10,7 @@ using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Abilities;
+using Logic.Core.Creatures.Classes;
 using Logic.Core.Dice;
 using Logic.Core.Graph;
 using Logic.Core.Movements;
@@ -67,7 +68,7 @@ namespace Logic.Core
             if(creature is IFlurryOfBlows)
             {
                 var flurry = creature as IFlurryOfBlows;
-                if(!flurry.FlurryOfBlowsUsed && creature.LastAttackUsed != null)
+                if(!flurry.FlurryOfBlowsUsed && creature.LastAttackUsed != null && (creature as IMonk).RemainingKiPoints > 0)
                 {
                     actions.Add(new FlurryOfBlowsAction());
                 }
@@ -222,6 +223,7 @@ namespace Logic.Core
                 case ActionsTypes.FlurryOfBlows:
                     GetCreatureInTurn().RemainingAttacksPerBonusAction++;
                     (GetCreatureInTurn() as IFlurryOfBlows).FlurryOfBlowsUsed = true;
+                    (GetCreatureInTurn() as IMonk).RemainingKiPoints--;
                     break;
             }
         }
