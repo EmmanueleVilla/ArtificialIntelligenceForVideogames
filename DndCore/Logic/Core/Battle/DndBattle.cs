@@ -38,6 +38,7 @@ namespace Logic.Core
             foreach (var creature in map.Creatures)
             {
                 initiativeOrder.Add(creature);
+                creature.RollInitiative();
             }
             initiativeOrder.Sort(new CreatureInitiativeComparer());
             return initiativeOrder;

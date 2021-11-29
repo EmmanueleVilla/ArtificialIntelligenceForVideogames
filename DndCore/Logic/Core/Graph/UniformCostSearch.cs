@@ -21,6 +21,24 @@ namespace Logic.Core.Graph
             this.speedCalculator = speedCalculator ?? DndModule.Get<ISpeedCalculator>();
         }
 
+        struct Delta
+        {
+            public int DeltaX;
+            public int DeltaY;
+        }
+
+        List<Delta> deltas = new List<Delta>()
+        {
+            new Delta() { DeltaX = -1, DeltaY = 0 },
+            new Delta() { DeltaX = 0, DeltaY = -1 },
+            new Delta() { DeltaX = 0, DeltaY = 1 },
+            new Delta() { DeltaX = 1, DeltaY = 0 },
+            new Delta() { DeltaX = -1, DeltaY = -1 },
+            new Delta() { DeltaX = -1, DeltaY = 1 },
+            new Delta() { DeltaX = 1, DeltaY = -1 },
+            new Delta() { DeltaX = 1, DeltaY = 1 }
+        };
+
         public List<MemoryEdge> Search(CellInfo from, IMap map, List<Speed> movementsArg = null)
         {
             var result = new List<MemoryEdge>();
@@ -40,63 +58,55 @@ namespace Logic.Core.Graph
                 visited.Add((best.Cell.X << 6) + best.Cell.Y);
                 queue.RemoveAt(0);
                 var remainingMovement = movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
-                for (int deltaX = -1; deltaX <= 1; deltaX++)
-                {
-                    for (int deltaY = -1; deltaY <= 1; deltaY++)
+                foreach(var delta in deltas) { 
+                    var newX = best.Cell.X + delta.DeltaX;
+                    var newY = best.Cell.Y + delta.DeltaY;
+                    var key = (newX << 6) + newY;
+                    if (visited.Contains(key))
                     {
-                        var newX = best.Cell.X + deltaX;
-                        var newY = best.Cell.Y + deltaY;
-                        if(deltaX == 0 && deltaY == 0)
+                        continue;
+                    }
+                    var to = map.GetCellInfo(newX, newY);
+                    if(to.Terrain == ' ')
+                    {
+                        visited.Add(key);
+                        continue;
+                    }
+                    var edge = speedCalculator.GetNeededSpeed(
+                        from.Creature,
+                        best.Cell,
+                        to,
+                        map);
+                    if (!edge.Equals(Edge.Empty()))
+                    {
+                        if (!remainingMovement.Any(x => x.Item2 - edge.Speed >= 0))
                         {
                             continue;
                         }
-                        var key = (newX << 6) + newY;
-                        if (visited.Contains(key))
+                        var path = new List<CellInfo>(best.Path);
+                        path.Add(edge.Start);
+                        var events = new List<MovementEvent>(best.Events);
+                        events.AddRange(edge.MovementEvents);
+                        var reached = new ReachedCell(to)
                         {
-                            continue;
-                        }
-                        var to = map.GetCellInfo(newX, newY);
-                        if(to.Terrain == ' ')
-                        {
-                            visited.Add(key);
-                            continue;
-                        }
-                        var edge = speedCalculator.GetNeededSpeed(
-                            from.Creature,
-                            best.Cell,
-                            to,
-                            map);
-                        if (!edge.Equals(Edge.Empty()))
-                        {
-                            if (!remainingMovement.Any(x => x.Item2 - edge.Speed >= 0))
-                            {
-                                continue;
-                            }
-                            var path = new List<CellInfo>(best.Path);
-                            path.Add(edge.Start);
-                            var events = new List<MovementEvent>(best.Events);
-                            events.AddRange(edge.MovementEvents);
-                            var reached = new ReachedCell(to)
-                            {
-                                UsedMovement = best.UsedMovement + edge.Speed,
-                                CanEndMovementHere = edge.CanEndMovementHere,
-                                DamageTaken = best.DamageTaken + edge.Damage,
-                                Path = path,
-                                Events = events
-                            };
-                            queue.Add(reached, reached);
-                            edge.Speed += best.UsedMovement;
-                            edge.Damage += best.DamageTaken;
-                            if(edge.Damage == 0)
-                            {
-                                visited.Add(key);
-                            }
-                            result.Add(new MemoryEdge(path, events, edge.Destination, edge.Speed, edge.Damage, edge.CanEndMovementHere));
-                        }
-                        else
+                            UsedMovement = best.UsedMovement + edge.Speed,
+                            CanEndMovementHere = edge.CanEndMovementHere,
+                            DamageTaken = best.DamageTaken + edge.Damage,
+                            Path = path,
+                            Events = events
+                        };
+                        queue.Add(reached, reached);
+                        edge.Speed += best.UsedMovement;
+                        edge.Damage += best.DamageTaken;
+                        if (edge.Damage == 0)
                         {
                             visited.Add(key);
                         }
+                        result.Add(new MemoryEdge(path, events, edge.Destination, edge.Speed, edge.Damage, edge.CanEndMovementHere));
+                    }
+                    else
+                    {
+                        visited.Add(key);
                     }
                 }
             }

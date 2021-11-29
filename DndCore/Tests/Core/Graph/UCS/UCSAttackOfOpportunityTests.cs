@@ -61,15 +61,15 @@ namespace Tests.Core.Graph.UCS
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3)
                     }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) }
-                    }, map.GetCellInfo(1,2), 1, 0 , true),
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) }
+                    }, map.GetCellInfo(1,3), 1, 0 , true),
 
                 //2
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3)
                     }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) }
-                    }, map.GetCellInfo(1,3), 1, 0 , true),
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) }
+                    }, map.GetCellInfo(1,2), 1, 0 , true),
 
                 //3
                 new MemoryEdge(
@@ -93,11 +93,11 @@ namespace Tests.Core.Graph.UCS
                 //5
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3),
-                        map.GetCellInfo(1,2)
+                        map.GetCellInfo(1,3)
                     }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) }
-                    }, map.GetCellInfo(2,1), 2, 0 , true),
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) }
+                    }, map.GetCellInfo(2,3), 2, 0 , true),
 
                 //6
                 new MemoryEdge(new List<CellInfo>() {
@@ -105,8 +105,8 @@ namespace Tests.Core.Graph.UCS
                         map.GetCellInfo(1,2)
                     }, new List<MovementEvent>() {
                         new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) }
-                    }, map.GetCellInfo(2,3), 2, 0 , true),
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) }
+                    }, map.GetCellInfo(2,1), 2, 0 , true),
 
                 //7
                 new MemoryEdge(new List<CellInfo>() {
@@ -146,16 +146,26 @@ namespace Tests.Core.Graph.UCS
                 //10
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3),
-                        map.GetCellInfo(1,2),
-                        map.GetCellInfo(2,1)
+                        map.GetCellInfo(1,3),
+                        map.GetCellInfo(2,3)
                     }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,0) },
-                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
-                    }, map.GetCellInfo(3,0), 3, 10 , true),
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,3) }
+                    }, map.GetCellInfo(3,3), 3, 0 , true),
 
                 //11
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,3),
+                        map.GetCellInfo(2,3)
+                    }, new List<MovementEvent>() {
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,2) },
+                    }, map.GetCellInfo(3,2), 3, 0 , true),
+
+                //12
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3),
                         map.GetCellInfo(1,2),
@@ -166,7 +176,8 @@ namespace Tests.Core.Graph.UCS
                         new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,1) },
                     }, map.GetCellInfo(3,1), 3, 0 , true),
 
-                //12
+
+                //13
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3),
                         map.GetCellInfo(1,2),
@@ -174,20 +185,9 @@ namespace Tests.Core.Graph.UCS
                     }, new List<MovementEvent>() {
                         new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
                         new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,2) },
-                    }, map.GetCellInfo(3,2), 3, 0 , true),
-
-
-                //13
-                new MemoryEdge(new List<CellInfo>() {
-                        map.GetCellInfo(0,3),
-                        map.GetCellInfo(1,2),
-                        map.GetCellInfo(2,3)
-                    }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,3) },
-                    }, map.GetCellInfo(3,3), 3, 0 , true),
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,0) },
+                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
+                    }, map.GetCellInfo(3,0), 3, 10 , true),
 
                 //14
                 new MemoryEdge(new List<CellInfo>() {
@@ -205,6 +205,48 @@ namespace Tests.Core.Graph.UCS
                 //15
                 new MemoryEdge(new List<CellInfo>() {
                         map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,3),
+                        map.GetCellInfo(2,3),
+                        map.GetCellInfo(3,3)
+                    }, new List<MovementEvent>() {
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
+                    }, map.GetCellInfo(4,3), 4, 10 , true),
+
+                //16
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,3),
+                        map.GetCellInfo(2,3),
+                        map.GetCellInfo(3,3)
+                    }, new List<MovementEvent>() {
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,2) },
+                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
+                    }, map.GetCellInfo(4,2), 4, 10 , true),
+
+                //17
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
+                        map.GetCellInfo(1,3),
+                        map.GetCellInfo(2,3),
+                        map.GetCellInfo(3,2)
+                    }, new List<MovementEvent>() {
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,3) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,2) },
+                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,1) },
+                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
+                    }, map.GetCellInfo(4,1), 4, 10 , true),
+
+                //18
+                new MemoryEdge(new List<CellInfo>() {
+                        map.GetCellInfo(0,3),
                         map.GetCellInfo(1,2),
                         map.GetCellInfo(2,1),
                         map.GetCellInfo(3,1)
@@ -215,48 +257,6 @@ namespace Tests.Core.Graph.UCS
                         new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,0) },
                         new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
                     }, map.GetCellInfo(4,0), 4, 10 , true),
-
-                //16
-                new MemoryEdge(new List<CellInfo>() {
-                        map.GetCellInfo(0,3),
-                        map.GetCellInfo(1,2),
-                        map.GetCellInfo(2,1),
-                        map.GetCellInfo(3,1)
-                    }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
-                    }, map.GetCellInfo(4,1), 4, 10 , true),
-
-                //17
-                new MemoryEdge(new List<CellInfo>() {
-                        map.GetCellInfo(0,3),
-                        map.GetCellInfo(1,2),
-                        map.GetCellInfo(2,1),
-                        map.GetCellInfo(3,1)
-                    }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
-                    }, map.GetCellInfo(4,2), 4, 10 , true),
-
-                //18
-                new MemoryEdge(new List<CellInfo>() {
-                        map.GetCellInfo(0,3),
-                        map.GetCellInfo(1,2),
-                        map.GetCellInfo(2,1),
-                        map.GetCellInfo(3,2)
-                    }, new List<MovementEvent>() {
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,1) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(3,2) },
-                        new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(4,3) },
-                        new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = enemy.Attacks.First() }
-                    }, map.GetCellInfo(4,3), 4, 10 , true),
 
                 //19
                 new MemoryEdge(new List<CellInfo>() {

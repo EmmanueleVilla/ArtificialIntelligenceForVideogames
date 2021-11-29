@@ -1,4 +1,7 @@
-﻿using Logic.Core;
+﻿using Core.DI;
+using Core.Utils.Log;
+using Logic.Core;
+using Logic.Core.Graph;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,9 +18,11 @@ namespace Tests.Core.DndBattles
         [Test]
         public void GetCurrentCreatureInTurn()
         {
-            var battle = new DndBattle();
+            var battle = new DndBattle(new UniformCostSearch(
+                new SpeedCalculator(), new ConsoleLogger()));
             var expected = new List<int>() { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-            var result = battle.Init(new InitiativeListMap()).Select(x => x.RolledInitiative).ToList();
+            var map = new InitiativeListMap();
+            var result = battle.Init(map).Select(x => x.RolledInitiative).ToList();
             Assert.AreEqual(expected, result);
         }
     }

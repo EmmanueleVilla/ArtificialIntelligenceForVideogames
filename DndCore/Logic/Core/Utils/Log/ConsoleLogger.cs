@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Core.Utils.Log
 {
-    class ConsoleLogger : ILogger
+    public class ConsoleLogger : ILogger
     {
         public void WriteLine(string message)
         {
-            //Console.Writeline(message);
+            Console.WriteLine(message);
         }
     }
 }
