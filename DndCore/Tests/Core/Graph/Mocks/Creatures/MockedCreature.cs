@@ -67,6 +67,8 @@ namespace Tests.Core.Graph.Mocks.Creatures
         public bool ReactionUsed { get => !_hasReactions; set => throw new NotImplementedException(); }
         public string LastAttackUsed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int RemainingAttacksPerBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ActionUsedNotToAttack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ActionUsedToAttack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void ResetTurn()
         {

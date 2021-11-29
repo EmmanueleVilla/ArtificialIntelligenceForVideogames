@@ -74,7 +74,7 @@ namespace Logic.Core
                 }
             }
 
-            if (!creature.ActionUsed && creature.RemainingAttacksPerAction > 0)
+            if (!creature.ActionUsedNotToAttack && creature.RemainingAttacksPerAction > 0)
             {
                 foreach(var attack in creature.Attacks)
                 {
@@ -209,10 +209,13 @@ namespace Logic.Core
 
             if (confirmAttackAction.ActionEconomy.Contains("(A)")) {
                 GetCreatureInTurn().RemainingAttacksPerAction--;
+                GetCreatureInTurn().ActionUsedToAttack = true;
             }
             if (confirmAttackAction.ActionEconomy.Contains("(B)")) {
                 GetCreatureInTurn().RemainingAttacksPerBonusAction--;
+                GetCreatureInTurn().BonusActionUsed = true;
             }
+            
             GetCreatureInTurn().LastAttackUsed += confirmAttackAction.Attack.Name;
         }
 

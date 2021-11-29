@@ -47,7 +47,9 @@ namespace Logic.Core.Creatures
 
         // Action economy --------------------------------------------------------------------------
 
-        bool ActionUsed { get; set; }
+        bool ActionUsedNotToAttack { get; set; }
+
+        bool ActionUsedToAttack { get; set; }
 
         bool BonusActionUsed { get; set; }
 

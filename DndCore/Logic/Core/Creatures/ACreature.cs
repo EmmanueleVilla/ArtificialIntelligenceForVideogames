@@ -53,13 +53,15 @@ namespace Logic.Core.Creatures
         public List<Speed> RemainingMovement { get; set; }
         public bool Disangaged { get; set; }
         public int RemainingAttacksPerAction { get; set; }
-        public bool ActionUsed { get; set; }
         public bool BonusActionUsed { get; set; }
+        public bool ActionUsedNotToAttack { get; set; }
+        public bool ActionUsedToAttack { get; set; }
         public bool ReactionUsed { get; set; }
         public int CurrentHitPoints { get; set; }
         public int TemporaryHitPoints { get; set; }
         public string LastAttackUsed { get; set; }
         public int RemainingAttacksPerBonusAction { get; set; }
+        
         private int RollInitiative()
         {
             RolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);

@@ -21,7 +21,8 @@ public class InitiativeUIManager : MonoBehaviour
 
     void Update()
     {
-        if(_initiatives != null)
+        //TODO: don't do this at every frame
+        if (_initiatives != null)
         {
             var battle = DndModule.Get<IDndBattle>();
             var creatureInTurn = battle.GetCreatureInTurn();
@@ -33,7 +34,8 @@ public class InitiativeUIManager : MonoBehaviour
                 {
                     builder.Append("> ");
                 }
-                builder.AppendLine(creature.GetType().ToString().Split('.').Last());
+                builder.Append(creature.GetType().ToString().Split('.').Last());
+                builder.AppendLine(string.Format(" {0}/{1}", creature.CurrentHitPoints, creature.HitPoints));
             }
 
             InitiativeText.text = builder.ToString();
