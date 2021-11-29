@@ -27,7 +27,7 @@ namespace Tests.Core.Graph
         {
             var creature = new WalkerCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Gargantuan, Loyalties.Enemy)).CanEndMovementHere);
+            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(4, Loyalties.Enemy)).CanEndMovementHere);
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Tests.Core.Graph
         {
             var creature = new WalkerCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Medium, Loyalties.Ally)).CanEndMovementHere);
+            Assert.AreEqual(false, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(1, Loyalties.Ally)).CanEndMovementHere);
         }
     }
 }

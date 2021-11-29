@@ -13,7 +13,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
     public class MockedCreature : ICreature
     {
         public int Id { get; set; }
-        Sizes _size;
+        int _size;
         Loyalties _loyalty;
         List<Attack> _attacks;
         bool _disengaged;
@@ -21,7 +21,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
         List<Speed> _movements;
 
         public MockedCreature(
-            Sizes size = Sizes.Medium,
+            int size = 1,
             Loyalties loyalty = Loyalties.Ally,
             List<Attack> attacks = null,
             List<Speed> movements = null,
@@ -38,7 +38,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public Loyalties Loyalty => _loyalty;
 
-        public Sizes Size => _size;
+        public int Size => _size;
 
         public List<Speed> Movements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

@@ -69,16 +69,16 @@ namespace Benchmark.Core.Map.Impl
                     fit = map.AddCreature(creature, x, y);
                     switch(creature.Size)
                     {
-                        case Sizes.Medium:
+                        case 1:
                             mediumCell = map.GetCellInfo(x, y);
                             break;
-                        case Sizes.Large:
+                        case 2:
                             largeCell = map.GetCellInfo(x, y);
                             break;
-                        case Sizes.Huge:
+                        case 3:
                             hugeCell = map.GetCellInfo(x, y);
                             break;
-                        case Sizes.Gargantuan:
+                        case 4:
                             gargantuanCell = map.GetCellInfo(x, y);
                             break;
                     }

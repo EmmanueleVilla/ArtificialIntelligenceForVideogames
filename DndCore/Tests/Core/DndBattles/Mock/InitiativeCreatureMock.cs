@@ -20,7 +20,7 @@ namespace Tests.Core.DndBattles.Mock
 
         public override Loyalties Loyalty => throw new NotImplementedException();
 
-        public override Sizes Size => throw new NotImplementedException();
+        public override int Size => throw new NotImplementedException();
 
         public override int CriticalThreshold => throw new NotImplementedException();
 

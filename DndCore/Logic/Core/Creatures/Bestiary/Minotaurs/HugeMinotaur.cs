@@ -8,6 +8,6 @@ namespace Logic.Core.Creatures.Bestiary
 {
     public class HugeMinotaur : AMinotaur
     {
-        public override Sizes Size => Sizes.Huge;
+        public override int Size => 3;
     }
 }

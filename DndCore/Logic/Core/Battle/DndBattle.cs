@@ -64,28 +64,13 @@ namespace Logic.Core
             {
                 foreach(var attack in creature.Attacks)
                 {
-
-                    int sizeInCells = 1;
-                    switch (creature.Size)
-                    {
-                        case Sizes.Large:
-                            sizeInCells = 2;
-                            break;
-                        case Sizes.Huge:
-                            sizeInCells = 3;
-                            break;
-                        case Sizes.Gargantuan:
-                            sizeInCells = 4;
-                            break;
-                    }
-
                     var position = map.GetCellOccupiedBy(creature);
 
                     var cells = new List<CellInfo>();
                     var startI = position.X - attack.Range;
-                    var endI = position.X + sizeInCells + attack.Range;
+                    var endI = position.X + creature.Size + attack.Range;
                     var startJ = position.Y - attack.Range;
-                    var endJ = position.Y + sizeInCells + attack.Range;
+                    var endJ = position.Y + creature.Size + attack.Range;
                     for (int i = startI; i < endI; i++)
                     {
                         for (int j = startJ; j < endJ; j++)

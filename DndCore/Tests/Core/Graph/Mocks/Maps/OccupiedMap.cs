@@ -12,10 +12,10 @@ namespace Tests.Core.Graph.Mocks
 {
     class OccupiedMap : IMap
     {
-        Sizes Size;
+        int Size;
         Loyalties Loyalty;
 
-        public OccupiedMap(Sizes size, Loyalties loyalty)
+        public OccupiedMap(int size, Loyalties loyalty)
         {
             Size = size;
             Loyalty = loyalty;

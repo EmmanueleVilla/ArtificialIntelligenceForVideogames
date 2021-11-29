@@ -21,23 +21,7 @@ namespace Logic.Core.Graph
 
             var movements = creature.RemainingMovement;
 
-            //Console.Writeline(string.Format("Testing path to: {0},{1}", to.X, to.Y));
-            // Check the creature size on the grid
-            int sizeInCells = 1;
-            switch (creature.Size)
-            {
-                case Sizes.Large:
-                    sizeInCells = 2;
-                    break;
-                case Sizes.Huge:
-                    sizeInCells = 3;
-                    break;
-                case Sizes.Gargantuan:
-                    sizeInCells = 4;
-                    break;
-            }
-
-            if (sizeInCells == 1)
+            if (creature.Size == 1)
             {
                 // if size is 1, I don't waste time creating the cell list
                 return GetNeedSpeedSingleStep(creature, from, to, map, movements);
@@ -45,9 +29,9 @@ namespace Logic.Core.Graph
 
             //TODO: unit test to check the fit
             var fit = true;
-            for (int i = to.X; i < sizeInCells + to.X; i++)
+            for (int i = to.X; i < creature.Size + to.X; i++)
             {
-                for (int j = to.Y; j < sizeInCells + to.Y; j++)
+                for (int j = to.Y; j < creature.Size + to.Y; j++)
                 {
                     var occupiedCell = map.GetCellInfo(i, j);
                     var occupantCreature = map.GetOccupantCreature(i, j);
@@ -69,8 +53,8 @@ namespace Logic.Core.Graph
             var movingVertically = deltaY != 0;
             if (movingHorizontal)
             {
-                var xPos = from.X + (deltaX > 0 ? sizeInCells - 1 : 0);
-                for (int y = from.Y; y < from.Y + sizeInCells; y++)
+                var xPos = from.X + (deltaX > 0 ? creature.Size - 1 : 0);
+                for (int y = from.Y; y < from.Y + creature.Size; y++)
                 {
                     var tempFrom = map.GetCellInfo(xPos, y);
                     var tempTo = map.GetCellInfo(xPos + deltaX, y + deltaY);
@@ -113,8 +97,8 @@ namespace Logic.Core.Graph
             }
             if (movingVertically)
             {
-                var yPos = from.Y + (deltaY > 0 ? sizeInCells - 1 : 0);
-                for (int x = from.X; x < from.X + sizeInCells; x++)
+                var yPos = from.Y + (deltaY > 0 ? creature.Size - 1 : 0);
+                for (int x = from.X; x < from.X + creature.Size; x++)
                 {
                     var tempFrom = map.GetCellInfo(x, yPos);
                     var tempTo = map.GetCellInfo(x + deltaX, yPos + deltaY);

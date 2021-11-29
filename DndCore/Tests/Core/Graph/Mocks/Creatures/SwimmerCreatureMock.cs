@@ -12,12 +12,12 @@ namespace Tests.Core.Graph.Mocks
 {
     class SwimmerCreatureMock : ICreature
     {
-        Sizes _size;
-        public SwimmerCreatureMock(Sizes size = Sizes.Medium)
+        int _size;
+        public SwimmerCreatureMock(int size = 1)
         {
             _size = size;
         }
-        public Sizes Size => _size;
+        public int Size => _size;
 
         public int Id => throw new NotImplementedException();
 

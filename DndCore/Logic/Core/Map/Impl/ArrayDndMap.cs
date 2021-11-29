@@ -60,25 +60,11 @@ namespace Logic.Core.Map.Impl
                 return false;
             }
 
-            int sizeInCells = 1;
-            switch (creature.Size)
-            {
-                case Sizes.Large:
-                    sizeInCells = 2;
-                    break;
-                case Sizes.Huge:
-                    sizeInCells = 3;
-                    break;
-                case Sizes.Gargantuan:
-                    sizeInCells = 4;
-                    break;
-            }
-
             var tempOccupiedCells = new List<CellInfo>();
             var fit = true;
-            for (int i = x; i < sizeInCells + x; i++)
+            for (int i = x; i < creature.Size + x; i++)
             {
-                for (int j = y; j < sizeInCells + y; j++)
+                for (int j = y; j < creature.Size + y; j++)
                 {
                     var occupiedCell = GetCellInfo(i, j);
                     if(Math.Abs(cell.Height - occupiedCell.Height) > 1 || GetOccupantCreature(i, j) != null)
@@ -116,9 +102,9 @@ namespace Logic.Core.Map.Impl
             {
                 var cells = new List<CellInfo>();
                 var startI = x - reach;
-                var endI = x + sizeInCells + reach;
+                var endI = x + creature.Size + reach;
                 var startJ = y - reach;
-                var endJ = y + sizeInCells + reach;
+                var endJ = y + creature.Size + reach;
                 for (int i = startI; i < endI; i++)
                 {
                     for (int j = startJ; j < endJ; j++)

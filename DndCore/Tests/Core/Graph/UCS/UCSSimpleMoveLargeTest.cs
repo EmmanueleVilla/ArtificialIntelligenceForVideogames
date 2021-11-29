@@ -28,7 +28,7 @@ namespace Tests.Core.Graph.UCS
             var mapCsv = 
                 "G0,G0,G0\n" +
                 "G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
@@ -46,7 +46,7 @@ namespace Tests.Core.Graph.UCS
             var mapCsv =
                 "G0,G0,G0\n" +
                 "G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 1, 0);
             var from = map.GetCellInfo(1, 0);
@@ -65,7 +65,7 @@ namespace Tests.Core.Graph.UCS
                 "G0,G0\n" +
                 "G0,G0\n" +
                 "G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
@@ -84,7 +84,7 @@ namespace Tests.Core.Graph.UCS
                 "G0,G0\n" +
                 "G0,G0\n" +
                 "G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 1);
             var from = map.GetCellInfo(0, 1);
@@ -102,7 +102,7 @@ namespace Tests.Core.Graph.UCS
             var mapCsv = 
                 "G0,G0,G0,G0\n" +
                 "G0,G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 1, 0);
             var from = map.GetCellInfo(1, 0);
@@ -123,7 +123,7 @@ namespace Tests.Core.Graph.UCS
             var mapCsv = 
                 "G0,G0,G0,G0,G0,G0,G0,G0,G0\n" +
                 "G0,G0,G0,G0,G0,G0,G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
@@ -148,7 +148,7 @@ namespace Tests.Core.Graph.UCS
             var mapCsv =
                 "G0,G0,G0,G0\n" +
                 "G0,G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Large);
+            var creature = new WalkerCreatureMock(2);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
@@ -171,8 +171,8 @@ namespace Tests.Core.Graph.UCS
                 "G0,G0,G0,G0,G0\n" +
                 "G0,G0,G0,G0,G0";
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
-            map.AddCreature(new WalkerCreatureMock(Sizes.Large), 0, 0);
-            map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 2, 0);
+            map.AddCreature(new WalkerCreatureMock(2), 0, 0);
+            map.AddCreature(new WalkerCreatureMock(1), 2, 0);
             var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
             var edgeOne = new MemoryEdge(new List<CellInfo> { from }, new List<MovementEvent>() {
@@ -200,7 +200,7 @@ namespace Tests.Core.Graph.UCS
                 "G0,G0,G3,G3";
 
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
-            map.AddCreature(new WalkerCreatureMock(Sizes.Large), 2, 0);
+            map.AddCreature(new WalkerCreatureMock(2), 2, 0);
             var from = map.GetCellInfo(2, 0);
             var toOne = map.GetCellInfo(1, 0);
             var edgeOne = new MemoryEdge(new List<CellInfo> { from }, new List<MovementEvent>() {

@@ -11,7 +11,7 @@ namespace Logic.Core.Creatures.Bestiary
     {
         public override Loyalties Loyalty => Loyalties.Enemy;
 
-        public override Sizes Size => Sizes.Large;
+        public override int Size => 2;
 
         public override int CriticalThreshold => 20;
 

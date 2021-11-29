@@ -26,7 +26,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Medium, Loyalties.Ally);
+            var creature = new MockedCreature(1, Loyalties.Ally);
             map.AddCreature(creature, 1, 1);
 
             var expected = new List<CellInfo>() {
@@ -46,7 +46,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Large, Loyalties.Ally);
+            var creature = new MockedCreature(2, Loyalties.Ally);
             map.AddCreature(creature, 1, 1);
 
             var expected = new List<CellInfo>() {
@@ -69,7 +69,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Huge, Loyalties.Ally);
+            var creature = new MockedCreature(3, Loyalties.Ally);
             map.AddCreature(creature, 1, 1);
 
             var expected = new List<CellInfo>() {

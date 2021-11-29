@@ -26,7 +26,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Medium, Loyalties.Ally,
+            var creature = new MockedCreature(1, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>())
                     });
@@ -57,7 +57,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Medium, Loyalties.Ally,
+            var creature = new MockedCreature(1, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", AttackTypes.WeaponMeleeReach, new List<Damage>())
                     });
@@ -108,7 +108,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Huge, Loyalties.Ally,
+            var creature = new MockedCreature(3, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>())
                     });
@@ -159,7 +159,7 @@ namespace Tests.Core.Map.AddCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(Sizes.Huge, Loyalties.Ally,
+            var creature = new MockedCreature(3, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", AttackTypes.WeaponMeleeReach, new List<Damage>())
                     });

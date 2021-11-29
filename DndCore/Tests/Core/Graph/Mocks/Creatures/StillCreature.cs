@@ -16,7 +16,7 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public Loyalties Loyalty => throw new NotImplementedException();
 
-        public Sizes Size => throw new NotImplementedException();
+        public int Size => throw new NotImplementedException();
 
         public int HitPoints => throw new NotImplementedException();
 

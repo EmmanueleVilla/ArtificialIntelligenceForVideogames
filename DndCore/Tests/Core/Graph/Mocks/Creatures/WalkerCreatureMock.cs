@@ -9,8 +9,8 @@ namespace Tests.Core.Graph.Mocks
 {
     class WalkerCreatureMock : ICreature
     {
-        Sizes _size;
-        public WalkerCreatureMock(Sizes size = Sizes.Medium)
+        int _size;
+        public WalkerCreatureMock(int size = 1)
         {
             _size = size;
         }
@@ -19,7 +19,7 @@ namespace Tests.Core.Graph.Mocks
 
         public Loyalties Loyalty => Loyalties.Ally;
 
-        public Sizes Size => _size;
+        public int Size => _size;
 
         public int HitPoints => throw new NotImplementedException();
 

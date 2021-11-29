@@ -27,7 +27,7 @@ namespace Tests.Core.Graph.UCS
         public void CanMoveOnlyOneSquare()
         {
             var mapCsv = "G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Medium);
+            var creature = new WalkerCreatureMock(1);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
@@ -43,7 +43,7 @@ namespace Tests.Core.Graph.UCS
         public void CanMoveOnlyFromMiddleToTwoAdjiacentSquare()
         {
             var mapCsv = "G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Medium);
+            var creature = new WalkerCreatureMock(1);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 1, 0);
             var from = map.GetCellInfo(1, 0);
@@ -62,7 +62,7 @@ namespace Tests.Core.Graph.UCS
         public void CanMoveOnlyFromStartToTwoAdjiacentSquare()
         {
             var mapCsv = "G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Medium);
+            var creature = new WalkerCreatureMock(1);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
@@ -84,7 +84,7 @@ namespace Tests.Core.Graph.UCS
         public void CanMoveUntilMovementExpires()
         {
             var mapCsv = "G0,G0,G0,G0,G0,G0,G0,G0,G0";
-            var creature = new WalkerCreatureMock(Sizes.Medium);
+            var creature = new WalkerCreatureMock(1);
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
             map.AddCreature(creature, 0, 0);
             var prev = new List<CellInfo>() { map.GetCellInfo(0, 0) };
@@ -107,8 +107,8 @@ namespace Tests.Core.Graph.UCS
         {
             var mapCsv = "G0,G0,G0";
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
-            map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 0, 0);
-            map.AddCreature(new WalkerCreatureMock(Sizes.Medium), 1, 0);
+            map.AddCreature(new WalkerCreatureMock(1), 0, 0);
+            map.AddCreature(new WalkerCreatureMock(1), 1, 0);
             var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
             var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, new List<MovementEvent>() {

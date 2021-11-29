@@ -13,7 +13,7 @@ namespace Logic.Core.Creatures
 
         Loyalties Loyalty { get; }
 
-        Sizes Size { get; }
+        int Size { get; }
 
 
         // Defense

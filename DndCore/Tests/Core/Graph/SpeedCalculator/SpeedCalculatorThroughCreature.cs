@@ -28,7 +28,7 @@ namespace Tests.Core.Graph
         {
             var creature = new WalkerCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Gargantuan, Loyalties.Enemy)).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(4, Loyalties.Enemy)).Speed);
         }
 
         [Test]
@@ -40,8 +40,8 @@ namespace Tests.Core.Graph
                 "G,G,G,G\n" +
                 " ,G,G,G";
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
-            map.AddCreature(new MockedCreature(Sizes.Medium, Loyalties.Ally), 0, 1);
-            map.AddCreature(new MockedCreature(Sizes.Huge, Loyalties.Enemy), 1, 0);
+            map.AddCreature(new MockedCreature(1, Loyalties.Ally), 0, 1);
+            map.AddCreature(new MockedCreature(3, Loyalties.Enemy), 1, 0);
             Assert.AreEqual(2, speedCalculator.GetNeededSpeed(
                 creature, map.GetCellInfo(0,1),
                 map.GetCellInfo(1, 0),
@@ -53,7 +53,7 @@ namespace Tests.Core.Graph
         {
             var creature = new WalkerCreatureMock();
             var to = new CellInfo('G', 0);
-            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(Sizes.Medium, Loyalties.Ally)).Speed);
+            Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new OccupiedMap(1, Loyalties.Ally)).Speed);
         }
     }
 }
