@@ -6,8 +6,10 @@ using Core.Map;
 using Core.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Abilities;
 using Logic.Core.Dice;
 using Logic.Core.Graph;
 using Logic.Core.Movements;
@@ -60,12 +62,21 @@ namespace Logic.Core
                 actions.Add(movementAction);
             }
 
+            var position = map.GetCellOccupiedBy(creature);
+
+            if(creature is IFlurryOfBlows)
+            {
+                var flurry = creature as IFlurryOfBlows;
+                if(!flurry.FlurryOfBlowsUsed && creature.LastAttackUsed != null)
+                {
+                    actions.Add(new FlurryOfBlowsAction());
+                }
+            }
+
             if (!creature.ActionUsed && creature.RemainingAttacksPerAction > 0)
             {
                 foreach(var attack in creature.Attacks)
                 {
-                    var position = map.GetCellOccupiedBy(creature);
-
                     var cells = new List<CellInfo>();
                     var startI = position.X - attack.Range;
                     var endI = position.X + creature.Size + attack.Range;
@@ -84,6 +95,35 @@ namespace Logic.Core
                     }
 
                     actions.Add(new RequestAttackAction() { Attack = attack, ReachableCells = cells });
+                }
+            }
+
+            if(creature.LastAttackUsed != null
+                && creature.LastAttackUsed.ToLower().Contains("quarterstaff")
+                && creature is IMartialArts
+                && creature.RemainingAttacksPerBonusAction > 0)
+            {
+                var unarmedStrike = creature.Attacks.FirstOrDefault(a => a.Name.ToLower().Contains("unarmed strike"));
+                if(unarmedStrike.Name != null)
+                {
+                    var cells = new List<CellInfo>();
+                    var startI = position.X - unarmedStrike.Range;
+                    var endI = position.X + creature.Size + unarmedStrike.Range;
+                    var startJ = position.Y - unarmedStrike.Range;
+                    var endJ = position.Y + creature.Size + unarmedStrike.Range;
+                    for (int i = startI; i < endI; i++)
+                    {
+                        for (int j = startJ; j < endJ; j++)
+                        {
+                            var occupant = map.GetOccupantCreature(i, j);
+                            if (occupant != null && occupant.Loyalty != creature.Loyalty)
+                            {
+                                cells.Add(map.GetCellInfo(i, j));
+                            }
+                        }
+                    }
+
+                    actions.Add(new RequestAttackAction() { Attack = unarmedStrike, ReachableCells = cells, ActionEconomy = "(B):" });
                 }
             }
 
@@ -147,6 +187,7 @@ namespace Logic.Core
             var toHit = Roller.Roll(RollTypes.Normal, 1, 20, confirmAttackAction.Attack.ToHit);
             Logger.WriteLine(string.Format("Rolled {0} to hit", toHit));
 
+
             //TODO: check critical hit
             if(toHit >= confirmAttackAction.Creature.ArmorClass)
             {
@@ -160,11 +201,28 @@ namespace Logic.Core
                 confirmAttackAction.Creature.CurrentHitPoints -= totalDamage;
                 //TODO kill creature if hp < 0
 
-                GetCreatureInTurn().RemainingAttacksPerAction--;
-
             } else
             {
                 Logger.WriteLine("Not hit");
+            }
+
+            if (confirmAttackAction.ActionEconomy.Contains("(A)")) {
+                GetCreatureInTurn().RemainingAttacksPerAction--;
+            }
+            if (confirmAttackAction.ActionEconomy.Contains("(B)")) {
+                GetCreatureInTurn().RemainingAttacksPerBonusAction--;
+            }
+            GetCreatureInTurn().LastAttackUsed += confirmAttackAction.Attack.Name;
+        }
+
+        public void UseAbility(IAvailableAction availableAction)
+        {
+            switch(availableAction.ActionType)
+            {
+                case ActionsTypes.FlurryOfBlows:
+                    GetCreatureInTurn().RemainingAttacksPerBonusAction++;
+                    (GetCreatureInTurn() as IFlurryOfBlows).FlurryOfBlowsUsed = true;
+                    break;
             }
         }
     }

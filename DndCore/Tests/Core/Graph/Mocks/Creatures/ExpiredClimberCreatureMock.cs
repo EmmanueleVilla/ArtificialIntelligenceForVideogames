@@ -46,6 +46,9 @@ namespace Tests.Core.Graph.Mocks
 
         public int RolledInitiative => throw new NotImplementedException();
 
+        public string LastAttackUsed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int RemainingAttacksPerBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void ResetTurn()
         {
             throw new NotImplementedException();

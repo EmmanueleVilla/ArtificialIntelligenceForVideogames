@@ -64,6 +64,9 @@ public class ActionsManager : MonoBehaviour
                 var confirmAttackAction = Actions[index] as ConfirmAttackAction;
                 GameManager.ConfirmAttack(confirmAttackAction);
                 break;
+            case ActionsTypes.FlurryOfBlows:
+                GameManager.UseAbility(Actions[index]);
+                break;
         }
     }
 }

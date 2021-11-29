@@ -61,12 +61,12 @@ public class GameManager : MonoBehaviour
     }
 
     bool InAttackMode = false;
-    Attack selectedAttack;
+    RequestAttackAction requestedAttack;
 
     public void EnterAttackMode(RequestAttackAction action)
     {
         InAttackMode = true;
-        selectedAttack = action.Attack;
+        requestedAttack = action;
         ActionsManager.SetActions(
             new List<IAvailableAction>()
             {
@@ -88,6 +88,12 @@ public class GameManager : MonoBehaviour
         var movementEvents = Battle.MoveTo(end);
         yield return StartCoroutine(UIManager.MoveAlong(movementEvents));
         ExitMovementMode();
+    }
+
+    internal void UseAbility(IAvailableAction availableAction)
+    {
+        Battle.UseAbility(availableAction);
+        ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
     internal void ConfirmAttack(ConfirmAttackAction confirmAttackAction)
@@ -169,7 +175,8 @@ public class GameManager : MonoBehaviour
                 actions.Add(new ConfirmAttackAction()
                 {
                     Creature = creature,
-                    Attack = selectedAttack
+                    Attack = requestedAttack.Attack,
+                    ActionEconomy = requestedAttack.ActionEconomy
                 });
                 actions.Add(new CancelAttackAction());
                 ActionsManager.SetActions(actions);

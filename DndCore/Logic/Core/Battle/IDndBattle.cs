@@ -19,5 +19,6 @@ namespace Logic.Core.Battle
         void CalculateReachableCells();
         List<MovementEvent> MoveTo(MemoryEdge end);
         void Attack(ConfirmAttackAction confirmAttackAction);
+        void UseAbility(IAvailableAction availableAction);
     }
 }

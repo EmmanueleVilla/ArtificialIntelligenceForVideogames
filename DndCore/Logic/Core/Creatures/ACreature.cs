@@ -22,14 +22,17 @@ namespace Logic.Core.Creatures
             RemainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
+            RemainingAttacksPerBonusAction = 1;
             RollInitiative();
         }
 
-        public void ResetTurn()
+        public virtual void ResetTurn()
         {
             RemainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
+            LastAttackUsed = null;
+            RemainingAttacksPerBonusAction = 1;
         }
 
         //Abstract fields
@@ -55,6 +58,8 @@ namespace Logic.Core.Creatures
         public bool ReactionUsed { get; set; }
         public int CurrentHitPoints { get; set; }
         public int TemporaryHitPoints { get; set; }
+        public string LastAttackUsed { get; set; }
+        public int RemainingAttacksPerBonusAction { get; set; }
         private int RollInitiative()
         {
             RolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);

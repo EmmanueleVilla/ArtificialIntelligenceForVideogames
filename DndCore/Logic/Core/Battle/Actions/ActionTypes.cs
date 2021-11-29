@@ -15,6 +15,7 @@ namespace Logic.Core.Battle
         EndTurn,
         RequestAttack,
         CancelAttack,
-        ConfirmAttack
+        ConfirmAttack,
+        FlurryOfBlows
     }
 }

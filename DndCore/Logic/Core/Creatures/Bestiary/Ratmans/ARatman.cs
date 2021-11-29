@@ -9,6 +9,10 @@ namespace Logic.Core.Creatures.Bestiary
 {
     public abstract class ARatman : ACreature
     {
+        protected ARatman(IDiceRoller roller = null, Random random = null) : base(roller, random)
+        {
+
+        }
         public override Loyalties Loyalty => Loyalties.Enemy;
 
         public override int Size => 1;

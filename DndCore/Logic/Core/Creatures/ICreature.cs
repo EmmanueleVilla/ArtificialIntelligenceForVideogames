@@ -41,6 +41,10 @@ namespace Logic.Core.Creatures
 
         int RemainingAttacksPerAction { get; set; }
 
+        int RemainingAttacksPerBonusAction { get; set; }
+
+        string LastAttackUsed { get; set; }
+
         // Action economy --------------------------------------------------------------------------
 
         bool ActionUsed { get; set; }
