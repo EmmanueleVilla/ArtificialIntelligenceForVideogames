@@ -137,6 +137,8 @@ public class UIManager : MonoBehaviour
         }
         yield return null;
     }
+
+
     internal IEnumerator MoveAlong(List<MovementEvent> events)
     {
         DndModule.Get<ILogger>().WriteLine("START MOVING");
@@ -210,6 +212,23 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
+    internal void HighlightAttack(List<CellInfo> reachableCells)
+    {
+        foreach (var tile in tiles)
+        {
+            if (!reachableCells.Any(res => res.X == tile.Y && res.Y == tile.X))
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
+            }
+        }
+    }
+
+    internal void ResetAttacks()
+    {
+        ResetCellsUI();
+    }
+
     internal void HighlightMovement(List<MemoryEdge> result)
     {
         foreach (var tile in tiles)
@@ -221,7 +240,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal void ResetMovement()
+    internal void ResetCellsUI()
     {
         foreach (var tile in tiles)
         {

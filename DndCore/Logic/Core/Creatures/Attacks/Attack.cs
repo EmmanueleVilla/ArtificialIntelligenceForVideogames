@@ -19,5 +19,21 @@ namespace Logic.Core.Actions
             Type = type;
             Damage = damage;
         }
+
+        public int Range
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case AttackTypes.WeaponMelee:
+                    case AttackTypes.MagicMelee:
+                        return 1;
+                    case AttackTypes.WeaponMeleeReach:
+                        return 2;
+                }
+                return 1;
+            }
+        }
     }
 }

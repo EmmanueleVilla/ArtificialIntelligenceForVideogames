@@ -5,6 +5,7 @@ using Core.DI;
 using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
 using Logic.Core.Graph;
 using Logic.Core.Movements;
@@ -36,7 +37,6 @@ namespace Logic.Core
 
             foreach (var creature in map.Creatures)
             {
-                Console.WriteLine(string.Format("{0} rolled {1}", creature, creature.RollInitiative()));
                 initiativeOrder.Add(creature);
             }
             initiativeOrder.Sort(new CreatureInitiativeComparer());
@@ -50,10 +50,61 @@ namespace Logic.Core
 
         public List<IAvailableAction> GetAvailableActions()
         {
-            return new List<IAvailableAction>() {
-                new RequestMovementAction() { RemainingMovement = remainingSpeeds.First(x => x.Item1 == GetCreatureInTurn()).Item2 },
-                new EndTurnAction()
-            };
+            var creature = GetCreatureInTurn();
+            
+            var actions = new List<IAvailableAction>();
+            var movementAction = new RequestMovementAction() { RemainingMovement = remainingSpeeds.First(x => x.Item1 == creature).Item2 };
+
+            if(movementAction.RemainingMovement.Any(x => x.Item2 > 0))
+            {
+                actions.Add(movementAction);
+            }
+
+            if (creature.HasAction)
+            {
+                foreach(var attack in creature.Attacks)
+                {
+
+                    int sizeInCells = 1;
+                    switch (creature.Size)
+                    {
+                        case Sizes.Large:
+                            sizeInCells = 2;
+                            break;
+                        case Sizes.Huge:
+                            sizeInCells = 3;
+                            break;
+                        case Sizes.Gargantuan:
+                            sizeInCells = 4;
+                            break;
+                    }
+
+                    var position = map.GetCellOccupiedBy(creature);
+
+                    var cells = new List<CellInfo>();
+                    var startI = position.X - attack.Range;
+                    var endI = position.X + sizeInCells + attack.Range;
+                    var startJ = position.Y - attack.Range;
+                    var endJ = position.Y + sizeInCells + attack.Range;
+                    for (int i = startI; i < endI; i++)
+                    {
+                        for (int j = startJ; j < endJ; j++)
+                        {
+                            var occupant = map.GetOccupantCreature(i, j);
+                            if (occupant != null && occupant.Loyalty != creature.Loyalty)
+                            {
+                                cells.Add(map.GetCellInfo(i, j));
+                            }
+                        }
+                    }
+
+                    actions.Add(new RequestAttackAction() { Attack = attack, ReachableCells = cells });
+                }
+            }
+
+            actions.Add(new EndTurnAction());
+
+            return actions;
         }
 
         public void NextTurn()

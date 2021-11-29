@@ -12,6 +12,9 @@ namespace Logic.Core.Battle
         ConfirmMovement,
         Action,
         BonusAction,
-        EndTurn
+        EndTurn,
+        RequestAttack,
+        CancelAttack,
+        ConfirmAttack
     }
 }

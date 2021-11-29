@@ -18,7 +18,7 @@ namespace Logic.Core.Creatures.Bestiary
             {
                 new Damage(DamageTypes.Slashing, 18, 2, 12, 4)
             }),
-            new Attack("Greataxe", AttackTypes.WeaponMelee, new List<Damage>()
+            new Attack("Gore", AttackTypes.WeaponMelee, new List<Damage>()
             {
                 new Damage(DamageTypes.Piercing, 14, 2, 8, 4)
             })

@@ -3,6 +3,7 @@ using Core.DI;
 using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
@@ -58,6 +59,19 @@ public class GameManager : MonoBehaviour
         this.StartCoroutine(StartMovementMode());
     }
 
+    bool InAttackMode = false;
+
+    public void EnterAttackMode(RequestAttackAction action)
+    {
+        InAttackMode = true;
+        ActionsManager.SetActions(
+            new List<IAvailableAction>()
+            {
+                new CancelAttackAction()
+            });
+        UIManager.HighlightAttack(action.ReachableCells);
+    }
+
     internal IEnumerator ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
     {
         ActionsManager.SetActions(new List<IAvailableAction>());
@@ -73,11 +87,18 @@ public class GameManager : MonoBehaviour
         ExitMovementMode();
     }
 
+    public void ExitAttackMode()
+    {
+        InAttackMode = false;
+        ActionsManager.SetActions(Battle.GetAvailableActions());
+        UIManager.ResetAttacks();
+    }
+
     public void ExitMovementMode()
     {
         InMovementMode = false;
         ActionsManager.SetActions(Battle.GetAvailableActions());
-        UIManager.ResetMovement();
+        UIManager.ResetCellsUI();
         NextMovementAvailableCells.Clear();
     }
 
@@ -135,7 +156,7 @@ public class GameManager : MonoBehaviour
             //check if there are multiple paths
             var ends = NextMovementAvailableCells.Where(edge => edge.Destination.X == y && edge.Destination.Y == x).OrderBy(x => x.Damage).ToList();
             var actions = new List<IAvailableAction>();
-            UIManager.ResetMovement();
+            UIManager.ResetCellsUI();
             UIManager.HighlightMovement(NextMovementAvailableCells);
             int index = 0;
             foreach (var end in ends)

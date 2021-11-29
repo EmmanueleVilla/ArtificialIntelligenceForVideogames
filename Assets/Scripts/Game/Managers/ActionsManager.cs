@@ -1,5 +1,6 @@
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,6 +53,12 @@ public class ActionsManager : MonoBehaviour
                 break;
             case ActionsTypes.EndTurn:
                 GameManager.NextTurn();
+                break;
+            case ActionsTypes.RequestAttack:
+                GameManager.EnterAttackMode(Actions[index] as RequestAttackAction);
+                break;
+            case ActionsTypes.CancelAttack:
+                GameManager.ExitAttackMode();
                 break;
         }
     }
