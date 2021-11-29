@@ -9,15 +9,18 @@ namespace Logic.Core.Actions
         public readonly AttackTypes Type;
         public readonly string Name;
         public readonly List<Damage> Damage;
+        public readonly int ToHit;
 
         public Attack(
             string name,
             AttackTypes type,
-            List<Damage> damage)
+            List<Damage> damage,
+            int toHit = 0)
         {
             Name = name;
             Type = type;
             Damage = damage;
+            ToHit = toHit;
         }
 
         public int Range

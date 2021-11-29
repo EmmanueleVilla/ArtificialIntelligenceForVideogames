@@ -19,35 +19,43 @@ namespace Logic.Core.Creatures
             this.roller = roller ?? DndModule.Get<IDiceRoller>();
             this.random = random ?? DndModule.Get<Random>();
             Id = this.random.Next(0, int.MaxValue);
+            RemainingMovement = new List<Speed>(Movements);
+            RemainingAttacksPerAction = AttacksPerAction;
+            CurrentHitPoints = HitPoints;
+            RollInitiative();
         }
 
-        //Implemented fields
-        public int RolledInitiative { get; private set; }
+        public void ResetTurn()
+        {
+            RemainingMovement = new List<Speed>(Movements);
+            RemainingAttacksPerAction = AttacksPerAction;
+            CurrentHitPoints = HitPoints;
+        }
 
         //Abstract fields
         public abstract Loyalties Loyalty { get; }
         public abstract Sizes Size { get; }
-
-        public abstract List<Speed> Movements { get; }
+        public abstract int CriticalThreshold { get; }
         public abstract List<Attack> Attacks { get; }
-        public abstract bool Disangaged { get; }
-
+        public abstract List<Speed> Movements { get; }
         public abstract int InitiativeModifier { get; }
         public abstract RollTypes InitiativeRollType { get; }
+        public abstract int AttacksPerAction { get; }
+        public abstract int HitPoints { get; }
+        public abstract int ArmorClass { get; }
+        public abstract AbilityScores AbilityScores { get; }
 
-        public AbilityScores AbilityScores => GetAbilityScores();
-
-        public bool HasAction { get; set; } = true;
-        public bool HasBonusAction { get; set; } = true;
-        public bool HasReaction { get; set; } = true;
-        public int UsedMovement { get; set; }
-
-        protected virtual AbilityScores GetAbilityScores()
-        {
-            return new AbilityScores(10, 10, 10, 10, 10, 10);
-        }
-
-        public int RollInitiative()
+        //Implemented fields
+        public virtual int RolledInitiative { get; private set; }
+        public List<Speed> RemainingMovement { get; set; }
+        public bool Disangaged { get; set; }
+        public int RemainingAttacksPerAction { get; set; }
+        public bool ActionUsed { get; set; }
+        public bool BonusActionUsed { get; set; }
+        public bool ReactionUsed { get; set; }
+        public int CurrentHitPoints { get; set; }
+        public int TemporaryHitPoints { get; set; }
+        private int RollInitiative()
         {
             RolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);
             return RolledInitiative;
@@ -61,11 +69,6 @@ namespace Logic.Core.Creatures
         public override int GetHashCode()
         {
             return Id;
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
 }

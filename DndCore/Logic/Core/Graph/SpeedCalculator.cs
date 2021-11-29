@@ -12,14 +12,14 @@ namespace Logic.Core.Graph
 {
     public class SpeedCalculator : ISpeedCalculator
     {
-        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map, List<Speed> movementsArg = null)
+        public Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map)
         {
             if (to.Terrain == ' ')
             {
                 return Edge.Empty();
             }
 
-            var movements = movementsArg ?? creature.Movements;
+            var movements = creature.RemainingMovement;
 
             //Console.Writeline(string.Format("Testing path to: {0},{1}", to.X, to.Y));
             // Check the creature size on the grid
@@ -250,7 +250,7 @@ namespace Logic.Core.Graph
                 var enemiesLeft = map.IsLeavingThreateningArea(creature, from, to);
                 foreach (var enemy in enemiesLeft)
                 {
-                    if(enemy.HasReaction)
+                    if(!enemy.ReactionUsed)
                     {
                         var attack = enemy.Attacks.FirstOrDefault(x => x.Type == Actions.AttackTypes.WeaponMelee);
                         movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = attack } );

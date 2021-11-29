@@ -1,30 +1,59 @@
 ﻿using Logic.Core.Actions;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Movements;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Logic.Core.Creatures
 {
     public interface ICreature
     {
-        int Id { get; }
-        Loyalties Loyalty { get; }
-        Sizes Size { get; }
-        List<Speed> Movements { get; }
-        List<Attack> Attacks { get; }
-        bool Disangaged { get; }
-        
-        int RolledInitiative { get; }
-        int RollInitiative();
+        // General --------------------------------------------------------------------------
 
-        //Ability scores
+        int Id { get; }
+
+        Loyalties Loyalty { get; }
+
+        Sizes Size { get; }
+
+        // Defense
+
+        int HitPoints { get; }
+        int CurrentHitPoints { get; set; }
+        int TemporaryHitPoints { get; set; }
+        int ArmorClass { get; }
+
+        // Ability scores --------------------------------------------------------------------------
+
         AbilityScores AbilityScores { get; }
 
-        //Actions values
-        bool HasAction { get; set; }
-        bool HasBonusAction { get; set; }
-        bool HasReaction { get; set; }
+        // Movement --------------------------------------------------------------------------
+
+        List<Speed> Movements { get; }
+
+        List<Speed> RemainingMovement { get; set; }
+
+        // Attacks --------------------------------------------------------------------------
+
+        List<Attack> Attacks { get; }
+
+        int AttacksPerAction { get; }
+
+        int RemainingAttacksPerAction { get; set; }
+
+        // Action economy --------------------------------------------------------------------------
+
+        bool ActionUsed { get; set; }
+
+        bool BonusActionUsed { get; set; }
+
+        bool ReactionUsed { get; set; }
+
+        bool Disangaged { get; set; }
+
+        // Initiative --------------------------------------------------------------------------
+
+        int RolledInitiative { get; }
+
+        void ResetTurn();
     }
 }

@@ -39,11 +39,11 @@ namespace Logic.Core.Graph
             new Delta() { DeltaX = 1, DeltaY = 1 }
         };
 
-        public List<MemoryEdge> Search(CellInfo from, IMap map, List<Speed> movementsArg = null)
+        public List<MemoryEdge> Search(CellInfo from, IMap map)
         {
             var result = new List<MemoryEdge>();
             var creature = from.Creature;
-            var movements = movementsArg ?? creature.Movements;
+            var movements = creature.RemainingMovement;
             if (movements.TrueForAll(x => x.Item2 <= 0))
             {
                 return result;

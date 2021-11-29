@@ -40,21 +40,33 @@ namespace Tests.Core.Graph.Mocks.Creatures
 
         public Sizes Size => _size;
 
-        public List<Speed> Movements { get => _movements; set => throw new NotImplementedException(); }
+        public List<Speed> Movements { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public List<Attack> Attacks => _attacks;
 
-        public bool Disangaged => _disengaged;
+        public bool Disangaged { get => _disengaged; set => throw new NotImplementedException(); }
 
         public int RolledInitiative => throw new System.NotImplementedException();
 
         public AbilityScores AbilityScores => throw new NotImplementedException();
 
-        public bool HasAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool HasBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool HasReaction { get => _hasReactions; set => throw new NotImplementedException(); }
+        public int HitPoints => throw new NotImplementedException();
 
-        public int RollInitiative()
+        public int CurrentHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int TemporaryHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public int ArmorClass => throw new NotImplementedException();
+
+        public List<Speed> RemainingMovement { get => _movements; set => throw new NotImplementedException(); }
+
+        public int AttacksPerAction => throw new NotImplementedException();
+
+        public int RemainingAttacksPerAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ActionUsed { get => false; set => throw new NotImplementedException(); }
+        public bool BonusActionUsed { get => false; set => throw new NotImplementedException(); }
+        public bool ReactionUsed { get => !_hasReactions; set => throw new NotImplementedException(); }
+
+        public void ResetTurn()
         {
             throw new NotImplementedException();
         }

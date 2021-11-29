@@ -32,7 +32,7 @@ namespace Tests.Core.Graph
                 new List<Attack>() {
                     new Attack("stub", AttackTypes.WeaponMelee, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
-                    })
+                    }, 0)
                     });
             map.AddCreature(enemy, 1, 1);
             map.AddCreature(creature, 2, 2);

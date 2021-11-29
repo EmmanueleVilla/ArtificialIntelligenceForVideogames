@@ -7,6 +7,6 @@ namespace Logic.Core.Graph
 {
     public interface ISpeedCalculator
     {
-        Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map, List<Speed> movementsArg = null);
+        Edge GetNeededSpeed(ICreature creature, CellInfo from, CellInfo to, IMap map);
     }
 }

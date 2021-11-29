@@ -21,8 +21,6 @@ namespace Logic.Core
 
         private UniformCostSearch Search;
 
-        private List<Tuple<ICreature, List<Speed>>> remainingSpeeds = new List<Tuple<ICreature, List<Speed>>>();
-
         public DndBattle(UniformCostSearch search = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
         }
@@ -30,15 +28,9 @@ namespace Logic.Core
         public List<ICreature> Init(IMap map)
         {
             this.map = map;
-            foreach(var creature in map.Creatures)
-            {
-                remainingSpeeds.Add(new Tuple<ICreature, List<Speed>>(creature, creature.Movements));
-            }
-
             foreach (var creature in map.Creatures)
             {
                 initiativeOrder.Add(creature);
-                creature.RollInitiative();
             }
             initiativeOrder.Sort(new CreatureInitiativeComparer());
             return initiativeOrder;
@@ -49,19 +41,20 @@ namespace Logic.Core
             return initiativeOrder[turnIndex];
         }
 
+        //TODO Move this to the job
         public List<IAvailableAction> GetAvailableActions()
         {
             var creature = GetCreatureInTurn();
             
             var actions = new List<IAvailableAction>();
-            var movementAction = new RequestMovementAction() { RemainingMovement = remainingSpeeds.First(x => x.Item1 == creature).Item2 };
+            var movementAction = new RequestMovementAction() { RemainingMovement = creature.RemainingMovement };
 
             if(movementAction.RemainingMovement.Any(x => x.Item2 > 0))
             {
                 actions.Add(movementAction);
             }
 
-            if (creature.HasAction)
+            if (!creature.ActionUsed && creature.RemainingAttacksPerAction > 0)
             {
                 foreach(var attack in creature.Attacks)
                 {
@@ -115,10 +108,9 @@ namespace Logic.Core
             turnIndex++;
             if(turnIndex >= map.Creatures.Count)
             {
-                remainingSpeeds.Clear();
                 foreach (var creature in map.Creatures)
                 {
-                    remainingSpeeds.Add(new Tuple<ICreature, List<Speed>>(creature, creature.Movements));
+                    creature.ResetTurn();
                 }
                 turnIndex = 0;
             }
@@ -129,7 +121,7 @@ namespace Logic.Core
         public void CalculateReachableCells()
         {
             var creature = GetCreatureInTurn();
-            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map, remainingSpeeds.First(x => x.Item1 == creature).Item2);
+            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map);
         }
 
         public List<MemoryEdge> GetReachableCells()
@@ -150,18 +142,9 @@ namespace Logic.Core
         public List<MovementEvent> MoveTo(MemoryEdge end)
         {
             var creature = GetCreatureInTurn();
-            remainingSpeeds = remainingSpeeds.Select(x =>
+            creature.RemainingMovement = creature.RemainingMovement.Select(x =>
            {
-               if (x.Item1 == creature)
-               {
-                   var newSpeeds = new List<Speed>();
-                   foreach (var speed in x.Item2)
-                   {
-                       newSpeeds.Add(new Speed(speed.Item1, speed.Item2 - end.Speed));
-                   }
-                   return new Tuple<ICreature, List<Speed>>(creature, newSpeeds);
-               }
-               return x;
+                   return new Speed(x.Item1, x.Item2 - end.Speed);
            }).ToList();
             map.MoveCreatureTo(creature, end);
             return end.Events;

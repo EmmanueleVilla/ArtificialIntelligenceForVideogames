@@ -16,22 +16,28 @@ namespace Tests.Core.DndBattles.Mock
             _initiative = initiative;
         }
 
+        public override int RolledInitiative => _initiative;
+
         public override Loyalties Loyalty => throw new NotImplementedException();
 
         public override Sizes Size => throw new NotImplementedException();
 
-        public override List<Speed> Movements
-        {
-            get => new List<Speed>();
-        }
+        public override int CriticalThreshold => throw new NotImplementedException();
 
         public override List<Attack> Attacks => throw new NotImplementedException();
 
-        public override bool Disangaged => throw new NotImplementedException();
+        public override List<Speed> Movements => new List<Speed>();
 
-        public override int InitiativeModifier => _initiative;
+        public override int InitiativeModifier => 0;
 
-        public override RollTypes InitiativeRollType => RollTypes.Normal;
+        public override RollTypes InitiativeRollType => RollTypes.Advantage;
 
+        public override int AttacksPerAction => 0;
+
+        public override int HitPoints => 0;
+
+        public override int ArmorClass => throw new NotImplementedException();
+
+        public override AbilityScores AbilityScores => throw new NotImplementedException();
     }
 }

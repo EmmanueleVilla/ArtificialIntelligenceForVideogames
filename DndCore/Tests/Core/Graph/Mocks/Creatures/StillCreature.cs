@@ -12,35 +12,46 @@ namespace Tests.Core.Graph.Mocks.Creatures
 {
     class StillCreature : ICreature
     {
-        public int Id { get; set; }
-        public Loyalties Loyalty => Loyalties.Ally;
+        public int Id => throw new NotImplementedException();
 
-        public Sizes Size => Sizes.Medium;
+        public Loyalties Loyalty => throw new NotImplementedException();
 
-        public List<Speed> Movements
-        {
-            get => new List<Speed>() {
-                new Speed(SpeedTypes.Walking, 0),
-                new Speed(SpeedTypes.Swimming, -1)
-            };
-            set => throw new Exception("NYI");
-        }
+        public Sizes Size => throw new NotImplementedException();
 
-        public List<Attack> Attacks => new List<Attack>();
+        public int HitPoints => throw new NotImplementedException();
 
-        public bool Disangaged => false;
+        public int CurrentHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int TemporaryHitPoints { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public int RolledInitiative => throw new System.NotImplementedException();
-
-        public int RollInitiative()
-        {
-            throw new NotImplementedException();
-        }
+        public int ArmorClass => throw new NotImplementedException();
 
         public AbilityScores AbilityScores => throw new NotImplementedException();
 
-        public bool HasAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool HasBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool ICreature.HasReaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Speed> Movements => throw new NotImplementedException();
+
+        public List<Speed> RemainingMovement
+        {
+            get => new List<Speed>() {
+                new Speed(SpeedTypes.Walking, 0),
+                new Speed(SpeedTypes.Swimming, 0)
+            };
+            set => throw new Exception("MOCK");
+        }
+        public List<Attack> Attacks => throw new NotImplementedException();
+
+        public int AttacksPerAction => throw new NotImplementedException();
+
+        public int RemainingAttacksPerAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ActionUsed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool BonusActionUsed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ReactionUsed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Disangaged { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public int RolledInitiative => throw new NotImplementedException();
+
+        public void ResetTurn()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
