@@ -35,7 +35,7 @@ public class InitiativeUIManager : MonoBehaviour
                     builder.Append("> ");
                 }
                 builder.Append(creature.GetType().ToString().Split('.').Last());
-                builder.AppendLine(string.Format(" {0}/{1}", creature.CurrentHitPoints, creature.HitPoints));
+                builder.AppendLine(string.Format(" {0}/{1} + {2}", creature.CurrentHitPoints, creature.HitPoints, creature.TemporaryHitPoints));
             }
 
             InitiativeText.text = builder.ToString();

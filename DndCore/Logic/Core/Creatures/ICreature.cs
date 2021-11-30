@@ -8,7 +8,8 @@ namespace Logic.Core.Creatures
 {
     public enum TemporaryEffects
     {
-        DisadvantageToSufferedAttacks
+        DisadvantageToSufferedAttacks,
+        AdvantageToAttacks
     }
 
     public interface ICreature
@@ -51,6 +52,8 @@ namespace Logic.Core.Creatures
         int RemainingAttacksPerBonusAction { get; set; }
 
         string LastAttackUsed { get; set; }
+
+        int CriticalThreshold { get; }
 
         // Action economy --------------------------------------------------------------------------
 

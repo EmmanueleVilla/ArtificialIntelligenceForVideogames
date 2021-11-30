@@ -178,7 +178,8 @@ public class GameManager : MonoBehaviour
                 var actions = new List<IAvailableAction>();
                 actions.Add(new ConfirmAttackAction()
                 {
-                    Creature = creature,
+                    TargetCreature = creature,
+                    AttackingCreature = Battle.GetCreatureInTurn(),
                     Attack = requestedAttack.Attack,
                     ActionEconomy = requestedAttack.ActionEconomy
                 });

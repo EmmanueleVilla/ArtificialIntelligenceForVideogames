@@ -12,9 +12,10 @@ namespace Logic.Core.Battle.Actions.Attacks
         public string ActionEconomy = "";
         public ActionsTypes ActionType => ActionsTypes.ConfirmAttack;
 
-        public ICreature Creature;
+        public ICreature AttackingCreature;
+        public ICreature TargetCreature;
         public Attack Attack;
 
-        public string Description => string.Format("Confirm attack to {0}", Creature.GetType().ToString().Split('.').Last());
+        public string Description => string.Format("Confirm attack to {0}", TargetCreature.GetType().ToString().Split('.').Last());
     }
 }

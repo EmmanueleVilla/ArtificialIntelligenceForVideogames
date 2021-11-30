@@ -51,7 +51,8 @@ namespace Tests.Core.DndBattles.Monk
             battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
-                Creature = enemy
+                TargetCreature = enemy,
+                AttackingCreature = monk
             });
 
             actions = battle.GetAvailableActions();
@@ -60,7 +61,8 @@ namespace Tests.Core.DndBattles.Monk
             battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("quarterstaff")),
-                Creature = enemy
+                TargetCreature = enemy,
+                AttackingCreature = monk
             });
 
             actions = battle.GetAvailableActions();

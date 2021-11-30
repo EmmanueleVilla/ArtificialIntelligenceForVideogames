@@ -1,5 +1,6 @@
 ﻿using Logic.Core.Actions;
 using Logic.Core.Battle.Actions.Abilities;
+using Logic.Core.Creatures.Abilities;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
 using Logic.Core.Movements;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class DwarfMaleWarrior : ACreature, IFightingSpirit
+    public class DwarfMaleWarrior : ACreature, IFightingSpirit, ISecondWind
     {
         public override Loyalties Loyalty => Loyalties.Ally;
 
@@ -50,5 +51,11 @@ namespace Logic.Core.Creatures.Bestiary
         public int FightingSpiritUsages => 3;
 
         public int FightingSpiritRemaining { get; set; } = 3;
+
+        public int SecondWindTemporaryHitPoints => 5;
+
+        public int SecondWindUsages => 1;
+
+        public int SecondWindRemaining { get; set; } = 1;
     }
 }

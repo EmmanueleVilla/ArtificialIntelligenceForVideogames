@@ -2,6 +2,7 @@
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Abilities;
 using Logic.Core.Creatures.Classes;
 using System;
 using System.Collections;
@@ -42,6 +43,11 @@ public class ResourcesManager : MonoBehaviour
                     builder.AppendLine(String.Format("{0}/{1} Fighting Spirit", fightingSpirit.FightingSpiritRemaining, fightingSpirit.FightingSpiritUsages));
                 }
 
+                var secondWind = creature as ISecondWind;
+                if (secondWind != null)
+                {
+                    builder.AppendLine(String.Format("{0}/{1} Second Wind", secondWind.SecondWindRemaining, secondWind.SecondWindUsages));
+                }
                 builder.AppendLine(string.Format("{0} Action {1} Bonus Action",
                     creature.ActionUsedNotToAttack || creature.ActionUsedToAttack ? "0" : "1",
                     creature.BonusActionUsedNotToAttack || creature.BonusActionUsedToAttack ? "0" : "1"

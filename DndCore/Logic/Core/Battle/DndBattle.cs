@@ -144,16 +144,21 @@ namespace Logic.Core
         {
             var hasAdvantage = false;
             var hasDisadvantage = false;
-            if(confirmAttackAction.Creature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
+            if (confirmAttackAction.TargetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
             {
                 hasDisadvantage = true;
             }
-
-            if(hasDisadvantage && hasAdvantage)
+            if (confirmAttackAction.AttackingCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.AdvantageToAttacks))
+            {
+                hasAdvantage = true;
+            }
+            
+            if (hasDisadvantage && hasAdvantage)
             {
                 hasAdvantage = false;
                 hasDisadvantage = false;
             }
+
             var rollType = RollTypes.Normal;
             if(hasDisadvantage)
             {
@@ -166,18 +171,24 @@ namespace Logic.Core
             var toHit = Roller.Roll(rollType, 1, 20, confirmAttackAction.Attack.ToHit);
             Logger.WriteLine(string.Format("Roll Type {0}, rolled {1} to hit", rollType, toHit));
 
-
-            //TODO: check critical hit
-            if(toHit >= confirmAttackAction.Creature.ArmorClass)
+            var isCritical = toHit >= confirmAttackAction.AttackingCreature.CriticalThreshold;
+            if(toHit >= confirmAttackAction.TargetCreature.ArmorClass || isCritical)
             {
                 var totalDamage = 0;
                 foreach(var damage in confirmAttackAction.Attack.Damage)
                 {
-                    totalDamage += Roller.Roll(RollTypes.Normal, damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
+                    totalDamage += Roller.Roll(RollTypes.Normal, isCritical ? 2 : 1 * damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
                 }
                 //TODO apply other damage effects
-                Logger.WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.Creature.GetType().ToString().Split('.').Last()));
-                confirmAttackAction.Creature.CurrentHitPoints -= totalDamage;
+                Logger.WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.TargetCreature.GetType().ToString().Split('.').Last()));
+
+                confirmAttackAction.TargetCreature.TemporaryHitPoints -= totalDamage;
+
+                if (confirmAttackAction.TargetCreature.TemporaryHitPoints < 0)
+                {
+                    confirmAttackAction.TargetCreature.CurrentHitPoints += confirmAttackAction.TargetCreature.TemporaryHitPoints;
+                    confirmAttackAction.TargetCreature.TemporaryHitPoints = 0;
+                }
                 //TODO kill creature if hp < 0
 
             } else
@@ -265,6 +276,27 @@ namespace Logic.Core
                 case ActionsTypes.Dodge:
                     creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
                     creature.ActionUsedNotToAttack = true;
+                    break;
+                case ActionsTypes.FightingSpirit:
+                    creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.AdvantageToAttacks));
+                    creature.BonusActionUsedNotToAttack = true;
+                    var spirit = creature as IFightingSpirit;
+                    if(spirit != null)
+                    {
+                        spirit.FightingSpiritRemaining--;
+                        creature.TemporaryHitPoints += spirit.FightingSpiritTemporaryHitPoints;
+                    }
+                    DndModule.Get<ILogger>().WriteLine(string.Format("Used Fightning Spirit,  Advantage to attacks until your next turn, +{0} temporary hit points", spirit.FightingSpiritTemporaryHitPoints));
+                    break;
+                case ActionsTypes.SecondWind:
+                    creature.BonusActionUsedNotToAttack = true;
+                    var secondWind = creature as ISecondWind;
+                    if (secondWind != null) {
+                        var heal = Roller.Roll(RollTypes.Normal, 1, 10, secondWind.SecondWindTemporaryHitPoints);
+                        creature.CurrentHitPoints += heal;
+                        creature.CurrentHitPoints = Math.Min(creature.CurrentHitPoints, creature.HitPoints);
+                        secondWind.SecondWindRemaining--;
+                    }
                     break;
             }
         }

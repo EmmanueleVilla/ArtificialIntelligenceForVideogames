@@ -3425,7 +3425,7 @@ MonoBehaviour:
     - Implemented basic attacks
 
     -
-    Implemented Monk skills'
+    Implemented Monk and Warrior'
 --- !u!222 &1106906477
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6338,7 +6338,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 190}
+  m_SizeDelta: {x: 250, y: 190}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2091639439
 MonoBehaviour:

@@ -21,6 +21,7 @@ namespace Logic.Core.Battle
         Dodge,
         FlurryOfBlows,
         PatientDefence,
-        FightingSpirit
+        FightingSpirit,
+        SecondWind
     }
 }
