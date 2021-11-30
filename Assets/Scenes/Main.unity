@@ -2161,7 +2161,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 250}
+  m_SizeDelta: {x: 600, y: 250}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1106906476
 MonoBehaviour:
@@ -2190,7 +2190,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 7
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2203,7 +2203,7 @@ MonoBehaviour:
     - Implemented basic attacks
 
     -
-    Implemented Flurry of blows and martial arts'
+    Implemented Monk skills'
 --- !u!222 &1106906477
 CanvasRenderer:
   m_ObjectHideFlags: 0

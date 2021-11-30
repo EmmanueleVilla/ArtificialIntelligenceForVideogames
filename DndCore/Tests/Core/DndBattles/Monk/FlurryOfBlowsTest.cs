@@ -64,8 +64,12 @@ namespace Tests.Core.DndBattles.Monk
             });
 
             actions = battle.GetAvailableActions();
-            Assert.True(actions.First(action => action.Description.ToLower().Contains("flurry of blows")) != null);
-            Assert.True(actions.First(action => action.Description.ToLower().Contains("(b): unarmed")) != null);
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("flurry of blows")) != null);
+            foreach(var action in actions)
+            {
+                Console.WriteLine(action.Description);
+            }
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) != null);
         }
     }
 }

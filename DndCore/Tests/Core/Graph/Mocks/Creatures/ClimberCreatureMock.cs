@@ -51,6 +51,8 @@ namespace Tests.Core.Graph.Mocks
         public int RemainingAttacksPerBonusAction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool ActionUsedNotToAttack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool ActionUsedToAttack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool BonusActionUsedToAttack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool BonusActionUsedNotToAttack { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void ResetTurn()
         {

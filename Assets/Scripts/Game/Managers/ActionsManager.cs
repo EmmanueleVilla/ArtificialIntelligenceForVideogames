@@ -65,6 +65,8 @@ public class ActionsManager : MonoBehaviour
                 GameManager.ConfirmAttack(confirmAttackAction);
                 break;
             case ActionsTypes.FlurryOfBlows:
+            case ActionsTypes.Disengage:
+            case ActionsTypes.Dash:
                 GameManager.UseAbility(Actions[index]);
                 break;
         }

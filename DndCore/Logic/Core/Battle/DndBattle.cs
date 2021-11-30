@@ -102,8 +102,12 @@ namespace Logic.Core
             if(creature.LastAttackUsed != null
                 && creature.LastAttackUsed.ToLower().Contains("quarterstaff")
                 && creature is IMartialArts
-                && creature.RemainingAttacksPerBonusAction > 0)
+                && !creature.BonusActionUsedNotToAttack)
             {
+                if(!creature.BonusActionUsedToAttack)
+                {
+                    creature.RemainingAttacksPerBonusAction = 1;
+                }
                 var unarmedStrike = creature.Attacks.FirstOrDefault(a => a.Name.ToLower().Contains("unarmed strike"));
                 if(unarmedStrike.Name != null)
                 {
@@ -124,8 +128,14 @@ namespace Logic.Core
                         }
                     }
 
-                    actions.Add(new RequestAttackAction() { Attack = unarmedStrike, ReachableCells = cells, ActionEconomy = "(B):" });
+                    actions.Add(new RequestAttackAction() { Attack = unarmedStrike, ReachableCells = cells, ActionEconomy = "B" });
                 }
+            }
+
+            if (creature is IMonk && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack)
+            {
+                actions.Add(new DisengageAction() { ActionEconomy = "B" });
+                actions.Add(new DashAction() { ActionEconomy = "B" });
             }
 
             actions.Add(new EndTurnAction());
@@ -171,7 +181,7 @@ namespace Logic.Core
             return searched.Where(edge => edge.Destination.X == x && edge.Destination.Y == y).ToList();
         }
 
-        public List<MovementEvent> MoveTo(MemoryEdge end)
+        public IEnumerable<MovementEvent> MoveTo(MemoryEdge end)
         {
             var creature = GetCreatureInTurn();
             creature.RemainingMovement = creature.RemainingMovement.Select(x =>
@@ -179,7 +189,15 @@ namespace Logic.Core
                    return new Speed(x.Item1, x.Item2 - end.Speed);
            }).ToList();
             map.MoveCreatureTo(creature, end);
-            return end.Events;
+            foreach(var e in end.Events)
+            {
+                if(e.Type == MovementEvent.Types.Falling)
+                {
+                    e.Damage = Roller.Roll(RollTypes.Normal, e.FallingHeight, 6, 0);
+                    creature.CurrentHitPoints -= e.Damage;
+                }
+                yield return e;
+            }
         }
 
         public void Attack(ConfirmAttackAction confirmAttackAction)
@@ -198,7 +216,7 @@ namespace Logic.Core
                     totalDamage += Roller.Roll(RollTypes.Normal, damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
                 }
                 //TODO apply other damage effects
-                Logger.WriteLine(string.Format("Inflicted {0} damage", totalDamage));
+                Logger.WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.Creature.GetType().ToString().Split('.').Last()));
                 confirmAttackAction.Creature.CurrentHitPoints -= totalDamage;
                 //TODO kill creature if hp < 0
 
@@ -207,13 +225,13 @@ namespace Logic.Core
                 Logger.WriteLine("Not hit");
             }
 
-            if (confirmAttackAction.ActionEconomy.Contains("(A)")) {
+            if (confirmAttackAction.ActionEconomy.Contains("A")) {
                 GetCreatureInTurn().RemainingAttacksPerAction--;
                 GetCreatureInTurn().ActionUsedToAttack = true;
             }
-            if (confirmAttackAction.ActionEconomy.Contains("(B)")) {
+            if (confirmAttackAction.ActionEconomy.Contains("B")) {
                 GetCreatureInTurn().RemainingAttacksPerBonusAction--;
-                GetCreatureInTurn().BonusActionUsed = true;
+                GetCreatureInTurn().BonusActionUsedToAttack = true;
             }
             
             GetCreatureInTurn().LastAttackUsed += confirmAttackAction.Attack.Name;
@@ -221,12 +239,57 @@ namespace Logic.Core
 
         public void UseAbility(IAvailableAction availableAction)
         {
-            switch(availableAction.ActionType)
+            var creature = GetCreatureInTurn();
+            switch (availableAction.ActionType)
             {
                 case ActionsTypes.FlurryOfBlows:
-                    GetCreatureInTurn().RemainingAttacksPerBonusAction++;
-                    (GetCreatureInTurn() as IFlurryOfBlows).FlurryOfBlowsUsed = true;
-                    (GetCreatureInTurn() as IMonk).RemainingKiPoints--;
+                    creature.RemainingAttacksPerBonusAction++;
+                    (creature as IFlurryOfBlows).FlurryOfBlowsUsed = true;
+                    (creature as IMonk).RemainingKiPoints--;
+                    DndModule.Get<ILogger>().WriteLine(string.Format("Used Flurry of Blows, +1 attack in the bonus action, -1 Ki Point"));
+                    break;
+                case ActionsTypes.Dash:
+                    var action = availableAction as DashAction;
+                    creature.RemainingMovement = creature.RemainingMovement.Select(mov =>
+                    {
+                        var baseSpeed = creature.Movements.First(x => x.Item1 == mov.Item1);
+                        return new Speed(mov.Item1, mov.Item2 + baseSpeed.Item2);
+                    }
+                    ).ToList();
+                    if(action.ActionEconomy == "A")
+                    {
+                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Dash, doubled movement"));
+                        creature.ActionUsedNotToAttack = true;
+                    }
+                    if (action.ActionEconomy == "B")
+                    {
+                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Dash, doubled movement, -1 Ki Point"));
+                        creature.BonusActionUsedNotToAttack = true;
+                        var monk = creature as IMonk;
+                        if (monk != null)
+                        {
+                            monk.RemainingKiPoints--;
+                        }
+                    }
+                    break;
+                case ActionsTypes.Disengage:
+                    creature.Disangaged = true;
+                    var disAction = availableAction as DisengageAction;
+                    if (disAction.ActionEconomy == "A")
+                    {
+                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Disengage"));
+                        creature.ActionUsedNotToAttack = true;
+                    }
+                    if (disAction.ActionEconomy == "B")
+                    {
+                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Disengage, -1 Ki Point"));
+                        creature.BonusActionUsedNotToAttack = true;
+                        var monk = creature as IMonk;
+                        if(monk != null)
+                        {
+                            monk.RemainingKiPoints--;
+                        }
+                    }
                     break;
             }
         }

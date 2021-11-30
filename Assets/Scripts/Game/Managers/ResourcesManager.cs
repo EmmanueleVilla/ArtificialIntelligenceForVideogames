@@ -36,9 +36,9 @@ public class ResourcesManager : MonoBehaviour
                     builder.AppendLine(String.Format("{0}/{1} Ki points", monk.RemainingKiPoints, monk.KiPoints));
                 }
 
-                builder.AppendLine(string.Format("{0} Action ☐ Bonus Action",
-                    creature.ActionUsedNotToAttack || creature.ActionUsedToAttack ? "☒" : "☐",
-                    creature.BonusActionUsed ? "☒" : "☐"
+                builder.AppendLine(string.Format("{0} Action {1} Bonus Action",
+                    creature.ActionUsedNotToAttack || creature.ActionUsedToAttack ? "0" : "1",
+                    creature.BonusActionUsedNotToAttack || creature.BonusActionUsedToAttack ? "0" : "1"
                     ));
 
                 builder.AppendLine(string.Format("Action attacks: {0}", creature.RemainingAttacksPerAction));

@@ -44,6 +44,7 @@
      <Compile Include="Assets\Scripts\Game\Builders\MapBuilder.cs" />
      <Compile Include="Assets\Scripts\Jobs\VeryTimeConsumingJob.cs" />
      <Compile Include="Assets\Scripts\Game\Managers\SoundManager.cs" />
+     <Compile Include="Assets\Scripts\Game\Managers\ResourcesManager.cs" />
      <Compile Include="Assets\Scripts\Game\Managers\UIManager.cs" />
      <Compile Include="Assets\Scripts\Game\UI\SpriteManager.cs" />
      <Compile Include="Assets\Scripts\Game\UI\InitiativeIndicator.cs" />
@@ -53,7 +54,6 @@
      <Compile Include="Assets\Scripts\Game\Providers\Prefabs\TerrainPrefabProvider.cs" />
      <Compile Include="Assets\Scripts\Game\Managers\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\UI\TextLogger.cs" />
-     <Compile Include="Assets\Scripts\Game\Managers\ResourcesManager.cs" />
      <None Include="Assets\Assets_DevilsWorkShop\Low_Poly_Pixel_2D_Blocks_DevilsWorkShop_v04\License.txt" />
      <None Include="Assets\Maps\river.txt" />
     <Reference Include="UnityEngine">

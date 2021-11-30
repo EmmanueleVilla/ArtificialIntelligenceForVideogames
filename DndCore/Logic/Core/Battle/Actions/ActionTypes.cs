@@ -16,6 +16,9 @@ namespace Logic.Core.Battle
         RequestAttack,
         CancelAttack,
         ConfirmAttack,
-        FlurryOfBlows
+        Disengage,
+        Dash,
+        FlurryOfBlows,
+        PatientDefence
     }
 }

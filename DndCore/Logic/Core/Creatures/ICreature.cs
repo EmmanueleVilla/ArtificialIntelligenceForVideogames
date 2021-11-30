@@ -51,7 +51,8 @@ namespace Logic.Core.Creatures
 
         bool ActionUsedToAttack { get; set; }
 
-        bool BonusActionUsed { get; set; }
+        bool BonusActionUsedToAttack { get; set; }
+        bool BonusActionUsedNotToAttack { get; set; }
 
         bool ReactionUsed { get; set; }
 

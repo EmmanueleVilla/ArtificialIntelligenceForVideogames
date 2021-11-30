@@ -3,7 +3,7 @@ using Logic.Core.Actions;
 
 namespace Logic.Core.Battle
 {
-    public struct MovementEvent
+    public class MovementEvent
     {
         public enum Types
         {
@@ -16,7 +16,7 @@ namespace Logic.Core.Battle
         public int FallingHeight;
         public Attack Attack;
         public CellInfo Destination;
-
+        public int Damage;
         public override string ToString()
         {
             return string.Format("type:{0}, destination:{1}, attack:{2}, falling:{3}", 
@@ -31,6 +31,16 @@ namespace Logic.Core.Battle
                 && Destination.Y == other.Destination.Y
                 && FallingHeight == other.FallingHeight
                 && Attack.Name == other.Attack.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1024929324;
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            hashCode = hashCode * -1521134295 + FallingHeight.GetHashCode();
+            hashCode = hashCode * -1521134295 + Attack.GetHashCode();
+            hashCode = hashCode * -1521134295 + Destination.GetHashCode();
+            return hashCode;
         }
     }
 }

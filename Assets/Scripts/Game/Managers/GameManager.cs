@@ -17,7 +17,7 @@ using System.Text;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
-using UnityEngine.UI;
+using ILogger = Core.Utils.Log.ILogger;
 
 public class GameManager : MonoBehaviour
 {
@@ -151,14 +151,18 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(UIManager.DrawMap(map));
         Initiatives = Battle.Init(map);
         InitiativesRolled?.Invoke(this, Initiatives);
-        TurnStarted?.Invoke(this, Battle.GetCreatureInTurn());
+        var creature = Battle.GetCreatureInTurn();
+        TurnStarted?.Invoke(this, creature);
+        DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
         ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
     internal void NextTurn()
     {
         Battle.NextTurn();
-        TurnStarted?.Invoke(this, Battle.GetCreatureInTurn());
+        var creature = Battle.GetCreatureInTurn();
+        DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
+        TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
