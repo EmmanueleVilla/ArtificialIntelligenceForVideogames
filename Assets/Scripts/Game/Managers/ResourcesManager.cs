@@ -30,7 +30,7 @@ public class ResourcesManager : MonoBehaviour
             if (creature != null && creature.Loyalty == Loyalties.Ally)
             {
                 builder.AppendLine(String.Format("{0}/{1} HP, {2} CA", creature.CurrentHitPoints, creature.HitPoints, creature.ArmorClass));
-                var monk = creature as IMonk;
+                var monk = creature as IKiPointsOwner;
                 if (monk != null)
                 {
                     builder.AppendLine(String.Format("{0}/{1} Ki points", monk.RemainingKiPoints, monk.KiPoints));
