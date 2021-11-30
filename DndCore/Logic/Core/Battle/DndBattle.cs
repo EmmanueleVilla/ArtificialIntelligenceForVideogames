@@ -74,6 +74,11 @@ namespace Logic.Core
                 }
             }
 
+            if(creature is IMonk && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack && (creature as IMonk).RemainingKiPoints > 0)
+            {
+                actions.Add(new PatientDefenseAction() { ActionEconomy = "B" } );
+            }
+
             if (!creature.ActionUsedNotToAttack && creature.RemainingAttacksPerAction > 0)
             {
                 foreach(var attack in creature.Attacks)
@@ -218,9 +223,29 @@ namespace Logic.Core
 
         public void Attack(ConfirmAttackAction confirmAttackAction)
         {
-            //TODO: check advantage and disadvantage
-            var toHit = Roller.Roll(RollTypes.Normal, 1, 20, confirmAttackAction.Attack.ToHit);
-            Logger.WriteLine(string.Format("Rolled {0} to hit", toHit));
+            var hasAdvantage = false;
+            var hasDisadvantage = false;
+            if(confirmAttackAction.Creature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
+            {
+                hasDisadvantage = true;
+            }
+
+            if(hasDisadvantage && hasAdvantage)
+            {
+                hasAdvantage = false;
+                hasDisadvantage = false;
+            }
+            var rollType = RollTypes.Normal;
+            if(hasDisadvantage)
+            {
+                rollType = RollTypes.Disadvantage;
+            }
+            if(hasAdvantage)
+            {
+                rollType = RollTypes.Advantage;
+            }
+            var toHit = Roller.Roll(rollType, 1, 20, confirmAttackAction.Attack.ToHit);
+            Logger.WriteLine(string.Format("Roll Type {0}, rolled {1} to hit", rollType, toHit));
 
 
             //TODO: check critical hit

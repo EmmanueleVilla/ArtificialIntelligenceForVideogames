@@ -67,6 +67,7 @@ public class ActionsManager : MonoBehaviour
             case ActionsTypes.FlurryOfBlows:
             case ActionsTypes.Disengage:
             case ActionsTypes.Dash:
+            case ActionsTypes.PatientDefence:
                 GameManager.UseAbility(Actions[index]);
                 break;
         }
