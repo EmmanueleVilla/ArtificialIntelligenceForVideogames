@@ -1,8 +1,10 @@
 ﻿using Core.Map;
 using Core.Utils.Log;
 using Logic.Core;
+using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Abilities;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Dice;
 using Logic.Core.Graph;
@@ -22,7 +24,7 @@ namespace Tests.Core.DndBattles.Monk
     class FlurryOfBlowsTest
     {
         [Test]
-        public void GetCurrentCreatureInTurn()
+        public void FlurryOfBlowsAvailableAndNumberOfBonusAttacks()
         {
             var battle = new DndBattle(new ZeroRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new ConsoleLogger()));
@@ -48,6 +50,8 @@ namespace Tests.Core.DndBattles.Monk
 
             var actions = battle.GetAvailableActions();
             Assert.True(actions.All(action => action.Description != "Flurry of blows"));
+
+            // First attack with unarmed
             battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
@@ -56,8 +60,11 @@ namespace Tests.Core.DndBattles.Monk
             });
 
             actions = battle.GetAvailableActions();
+
+            // I can't use Flurry of blows
             Assert.True(actions.First(action => action.Description == "Flurry of blows") != null);
 
+            // Second attack with quarterstaff
             battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("quarterstaff")),
@@ -66,12 +73,46 @@ namespace Tests.Core.DndBattles.Monk
             });
 
             actions = battle.GetAvailableActions();
+
+            // I can use Flurry of blows
             Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("flurry of blows")) != null);
-            foreach(var action in actions)
-            {
-                Console.WriteLine(action.Description);
-            }
+
+            // I can make another attack as bonus action
+            Assert.True((monk as IMartialArts).BonusAttackTriggered);
             Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) != null);
+
+            battle.Attack(new ConfirmAttackAction()
+            {
+                Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
+                TargetCreature = enemy,
+                AttackingCreature = monk,
+                ActionEconomy = "(B)"
+            });
+
+            actions = battle.GetAvailableActions();
+
+            // I don't have other bonus action attacks
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) == null);
+
+            battle.UseAbility(new FlurryOfBlowsAction());
+
+            actions = battle.GetAvailableActions();
+
+            // Now I have an additional bonus attack
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) != null);
+
+            battle.Attack(new ConfirmAttackAction()
+            {
+                Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
+                TargetCreature = enemy,
+                AttackingCreature = monk,
+                ActionEconomy = "(B)"
+            });
+
+            actions = battle.GetAvailableActions();
+
+            // And no more
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) == null);
         }
     }
 }

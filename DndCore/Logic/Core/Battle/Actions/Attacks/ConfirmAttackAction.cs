@@ -9,7 +9,7 @@ namespace Logic.Core.Battle.Actions.Attacks
 {
     public class ConfirmAttackAction : IAvailableAction
     {
-        public string ActionEconomy = "";
+        public string ActionEconomy = "A";
         public ActionsTypes ActionType => ActionsTypes.ConfirmAttack;
 
         public ICreature AttackingCreature;

@@ -197,15 +197,19 @@ namespace Logic.Core
             }
 
             if (confirmAttackAction.ActionEconomy.Contains("A")) {
-                GetCreatureInTurn().RemainingAttacksPerAction--;
-                GetCreatureInTurn().ActionUsedToAttack = true;
+                confirmAttackAction.AttackingCreature.RemainingAttacksPerAction--;
+                confirmAttackAction.AttackingCreature.ActionUsedToAttack = true;
+                if(confirmAttackAction.AttackingCreature is IMartialArts && confirmAttackAction.Attack.Name.ToLower().Contains("quarterstaff"))
+                {
+                    (confirmAttackAction.AttackingCreature as IMartialArts).BonusAttackTriggered = true;
+                }
             }
             if (confirmAttackAction.ActionEconomy.Contains("B")) {
-                GetCreatureInTurn().RemainingAttacksPerBonusAction--;
-                GetCreatureInTurn().BonusActionUsedToAttack = true;
+                confirmAttackAction.AttackingCreature.RemainingAttacksPerBonusAction--;
+                confirmAttackAction.AttackingCreature.BonusActionUsedToAttack = true;
             }
-            
-            GetCreatureInTurn().LastAttackUsed += confirmAttackAction.Attack.Name;
+
+            confirmAttackAction.AttackingCreature.LastAttackUsed += confirmAttackAction.Attack.Name;
         }
 
         public void UseAbility(IAvailableAction availableAction)

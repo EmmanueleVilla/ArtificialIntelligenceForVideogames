@@ -17,15 +17,10 @@ namespace Logic.Core.Battle.ActionBuilders
             var actions = new List<IAvailableAction>();
             var position = map.GetCellOccupiedBy(creature);
 
-            if (creature.LastAttackUsed != null
-                && creature.LastAttackUsed.ToLower().Contains("quarterstaff")
-                && creature is IMartialArts
-                && !creature.BonusActionUsedNotToAttack)
+            if (creature is IMartialArts
+                && !creature.BonusActionUsedNotToAttack
+                && creature.RemainingAttacksPerBonusAction > 0)
             {
-                if (!creature.BonusActionUsedToAttack)
-                {
-                    creature.RemainingAttacksPerBonusAction = 1;
-                }
                 var unarmedStrike = creature.Attacks.FirstOrDefault(a => a.Name.ToLower().Contains("unarmed strike"));
                 if (unarmedStrike.Name != null)
                 {

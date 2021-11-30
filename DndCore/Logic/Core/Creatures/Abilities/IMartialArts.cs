@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Abilities
 {
-    interface IMartialArts
+    public interface IMartialArts
     {
+        bool BonusAttackTriggered { get; set; }
     }
 }

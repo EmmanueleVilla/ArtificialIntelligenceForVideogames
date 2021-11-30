@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic.Core.Battle.Actions.Abilities
 {
-    class FlurryOfBlowsAction : IAvailableAction
+    public class FlurryOfBlowsAction : IAvailableAction
     {
         public ActionsTypes ActionType => ActionsTypes.FlurryOfBlows;
 

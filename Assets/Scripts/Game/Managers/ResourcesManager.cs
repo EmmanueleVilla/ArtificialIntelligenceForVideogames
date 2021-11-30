@@ -54,6 +54,7 @@ public class ResourcesManager : MonoBehaviour
                     ));
 
                 builder.AppendLine(string.Format("Action attacks: {0}", creature.RemainingAttacksPerAction));
+                builder.AppendLine(string.Format("Bonus action attacks: {0}", creature.RemainingAttacksPerBonusAction));
             }
             ResourcesText.text = builder.ToString();
         } catch(Exception e)

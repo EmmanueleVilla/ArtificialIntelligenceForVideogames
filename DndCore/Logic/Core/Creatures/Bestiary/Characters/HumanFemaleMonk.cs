@@ -20,6 +20,8 @@ namespace Logic.Core.Creatures.Bestiary
             base.ResetTurn();
             RemainingKiPoints = KiPoints;
             FlurryOfBlowsUsed = false;
+            BonusAttackTriggered = false;
+            RemainingAttacksPerBonusAction = 0;
         }
 
         public override Loyalties Loyalty => Loyalties.Ally;
@@ -61,5 +63,22 @@ namespace Logic.Core.Creatures.Bestiary
 
         public int RemainingKiPoints { get; set; } = 5;
         public bool FlurryOfBlowsUsed { get; set; } = false;
+
+        private bool bonusAttackTriggered;
+        public bool BonusAttackTriggered { 
+            get {
+                return bonusAttackTriggered;
+            }
+            set {
+                if (bonusAttackTriggered != value)
+                {
+                    bonusAttackTriggered = value;
+                    if(bonusAttackTriggered)
+                    {
+                        RemainingAttacksPerBonusAction = 1;
+                    }
+                }
+            } 
+        }
     }
 }
