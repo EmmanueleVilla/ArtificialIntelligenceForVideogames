@@ -5,6 +5,7 @@ using Core.DI;
 using Core.Map;
 using Core.Utils.Log;
 using Logic.Core.Battle;
+using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
@@ -27,11 +28,13 @@ namespace Logic.Core
         private UniformCostSearch Search;
         private IDiceRoller Roller;
         private ILogger Logger;
+        private IActionBuildersWrapper ActionBuildersWrapper;
 
-        public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, ILogger logger = null) {
+        public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, IActionBuildersWrapper actionBuildersWrapper = null, ILogger logger = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
             Roller = roller ?? DndModule.Get<IDiceRoller>();
             Logger = logger ?? DndModule.Get<ILogger>();
+            ActionBuildersWrapper = actionBuildersWrapper ?? DndModule.Get<IActionBuildersWrapper>();
         }
 
         public List<ICreature> Init(IMap map)
@@ -56,92 +59,8 @@ namespace Logic.Core
             var creature = GetCreatureInTurn();
             
             var actions = new List<IAvailableAction>();
-            var movementAction = new RequestMovementAction() { RemainingMovement = creature.RemainingMovement };
 
-            if(movementAction.RemainingMovement.Any(x => x.Item2 > 0))
-            {
-                actions.Add(movementAction);
-            }
-
-            var position = map.GetCellOccupiedBy(creature);
-
-            if(creature is IFlurryOfBlows)
-            {
-                var flurry = creature as IFlurryOfBlows;
-                if(!flurry.FlurryOfBlowsUsed && creature.LastAttackUsed != null && (creature as IMonk).RemainingKiPoints > 0)
-                {
-                    actions.Add(new FlurryOfBlowsAction());
-                }
-            }
-
-            if(creature is IMonk && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack && (creature as IMonk).RemainingKiPoints > 0)
-            {
-                actions.Add(new PatientDefenseAction() { ActionEconomy = "B" } );
-            }
-
-            if (!creature.ActionUsedNotToAttack && creature.RemainingAttacksPerAction > 0)
-            {
-                foreach(var attack in creature.Attacks)
-                {
-                    var cells = new List<CellInfo>();
-                    var startI = position.X - attack.Range;
-                    var endI = position.X + creature.Size + attack.Range;
-                    var startJ = position.Y - attack.Range;
-                    var endJ = position.Y + creature.Size + attack.Range;
-                    for (int i = startI; i < endI; i++)
-                    {
-                        for (int j = startJ; j < endJ; j++)
-                        {
-                            var occupant = map.GetOccupantCreature(i, j);
-                            if (occupant != null && occupant.Loyalty != creature.Loyalty)
-                            {
-                                cells.Add(map.GetCellInfo(i, j));
-                            }
-                        }
-                    }
-
-                    actions.Add(new RequestAttackAction() { Attack = attack, ReachableCells = cells });
-                }
-            }
-
-            if(creature.LastAttackUsed != null
-                && creature.LastAttackUsed.ToLower().Contains("quarterstaff")
-                && creature is IMartialArts
-                && !creature.BonusActionUsedNotToAttack)
-            {
-                if(!creature.BonusActionUsedToAttack)
-                {
-                    creature.RemainingAttacksPerBonusAction = 1;
-                }
-                var unarmedStrike = creature.Attacks.FirstOrDefault(a => a.Name.ToLower().Contains("unarmed strike"));
-                if(unarmedStrike.Name != null)
-                {
-                    var cells = new List<CellInfo>();
-                    var startI = position.X - unarmedStrike.Range;
-                    var endI = position.X + creature.Size + unarmedStrike.Range;
-                    var startJ = position.Y - unarmedStrike.Range;
-                    var endJ = position.Y + creature.Size + unarmedStrike.Range;
-                    for (int i = startI; i < endI; i++)
-                    {
-                        for (int j = startJ; j < endJ; j++)
-                        {
-                            var occupant = map.GetOccupantCreature(i, j);
-                            if (occupant != null && occupant.Loyalty != creature.Loyalty)
-                            {
-                                cells.Add(map.GetCellInfo(i, j));
-                            }
-                        }
-                    }
-
-                    actions.Add(new RequestAttackAction() { Attack = unarmedStrike, ReachableCells = cells, ActionEconomy = "B" });
-                }
-            }
-
-            if (creature is IMonk && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack)
-            {
-                actions.Add(new DisengageAction() { ActionEconomy = "B" });
-                actions.Add(new DashAction() { ActionEconomy = "B" });
-            }
+            ActionBuildersWrapper.ActionBuilders.ForEach(x => actions.AddRange(x.Build(map, creature)));
 
             actions.Add(new EndTurnAction());
 
@@ -286,7 +205,7 @@ namespace Logic.Core
                 case ActionsTypes.FlurryOfBlows:
                     creature.RemainingAttacksPerBonusAction++;
                     (creature as IFlurryOfBlows).FlurryOfBlowsUsed = true;
-                    (creature as IMonk).RemainingKiPoints--;
+                    (creature as IKiPointsOwner).RemainingKiPoints--;
                     DndModule.Get<ILogger>().WriteLine(string.Format("Used Flurry of Blows, +1 attack in the bonus action, -1 Ki Point"));
                     break;
                 case ActionsTypes.Dash:
@@ -306,7 +225,7 @@ namespace Logic.Core
                     {
                         DndModule.Get<ILogger>().WriteLine(string.Format("Used Dash, doubled movement, -1 Ki Point"));
                         creature.BonusActionUsedNotToAttack = true;
-                        var monk = creature as IMonk;
+                        var monk = creature as IKiPointsOwner;
                         if (monk != null)
                         {
                             monk.RemainingKiPoints--;
@@ -325,7 +244,7 @@ namespace Logic.Core
                     {
                         DndModule.Get<ILogger>().WriteLine(string.Format("Used Disengage, -1 Ki Point"));
                         creature.BonusActionUsedNotToAttack = true;
-                        var monk = creature as IMonk;
+                        var monk = creature as IKiPointsOwner;
                         if(monk != null)
                         {
                             monk.RemainingKiPoints--;
@@ -335,21 +254,17 @@ namespace Logic.Core
                 case ActionsTypes.PatientDefence:
                     creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
                     var defAction = availableAction as PatientDefenseAction;
-                    if (defAction.ActionEconomy == "A")
+                    DndModule.Get<ILogger>().WriteLine(string.Format("Used Patient Defense,  Disadvantage to suffered attacks until your next turn, -1 Ki Point"));
+                    creature.BonusActionUsedNotToAttack = true;
+                    var monkDef = creature as IKiPointsOwner;
+                    if (monkDef != null)
                     {
-                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Patient Defense, Disadvantage to suffered attacks until your next turn"));
-                        creature.ActionUsedNotToAttack = true;
+                        monkDef.RemainingKiPoints--;
                     }
-                    if (defAction.ActionEconomy == "B")
-                    {
-                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Patient Defense,  Disadvantage to suffered attacks until your next turn, -1 Ki Point"));
-                        creature.BonusActionUsedNotToAttack = true;
-                        var monk = creature as IMonk;
-                        if (monk != null)
-                        {
-                            monk.RemainingKiPoints--;
-                        }
-                    }
+                    break;
+                case ActionsTypes.Dodge:
+                    creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
+                    creature.ActionUsedNotToAttack = true;
                     break;
             }
         }

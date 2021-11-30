@@ -64,10 +64,7 @@ public class ActionsManager : MonoBehaviour
                 var confirmAttackAction = Actions[index] as ConfirmAttackAction;
                 GameManager.ConfirmAttack(confirmAttackAction);
                 break;
-            case ActionsTypes.FlurryOfBlows:
-            case ActionsTypes.Disengage:
-            case ActionsTypes.Dash:
-            case ActionsTypes.PatientDefence:
+            default:
                 GameManager.UseAbility(Actions[index]);
                 break;
         }

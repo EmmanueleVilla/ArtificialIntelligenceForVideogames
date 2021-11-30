@@ -2,6 +2,7 @@
 using Core.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle;
+using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Dice;
 using Logic.Core.Graph;
 using Logic.Core.Map;
@@ -37,6 +38,7 @@ namespace Core.DI
             factories.Add(typeof(IDiceRoller), () => new DiceRoller());
             factories.Add(typeof(UniformCostSearch), () => new UniformCostSearch());
             factories.Add(typeof(ISpeedCalculator), () => new SpeedCalculator());
+            factories.Add(typeof(IActionBuildersWrapper), () => new ActionBuildersWrapper());
 
             if(enableLogs)
             {

@@ -18,6 +18,7 @@ namespace Logic.Core.Battle
         ConfirmAttack,
         Disengage,
         Dash,
+        Dodge,
         FlurryOfBlows,
         PatientDefence
     }

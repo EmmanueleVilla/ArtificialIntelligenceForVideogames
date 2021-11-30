@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class HumanFemaleMonk : ACreature, IMonk, IMartialArts, IFlurryOfBlows
+    public class HumanFemaleMonk : ACreature, IKiPointsOwner, IMartialArts, IFlurryOfBlows
     {
         public HumanFemaleMonk(IDiceRoller roller = null, Random random = null): base(roller, random)
         {

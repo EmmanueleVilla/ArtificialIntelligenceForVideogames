@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Classes
 {
-    public interface IMonk
+    public interface IKiPointsOwner
     {
         int KiPoints { get; }
         int RemainingKiPoints { get; set; }
