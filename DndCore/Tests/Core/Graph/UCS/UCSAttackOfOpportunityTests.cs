@@ -27,7 +27,7 @@ namespace Tests.Core.Graph.UCS
                 "G,G,G,G,G\n" +
                 "G,G,G,G,G";
             var map = new CsvFullMapBuilder().FromCsv(mapCsv);
-            var ally = new MockedCreature(
+            var ally = MockedCreature.Build(
                 1,
                 Loyalties.Ally,
                 movements: new List<Speed>()
@@ -35,7 +35,7 @@ namespace Tests.Core.Graph.UCS
                     new Speed(SpeedTypes.Walking, 99)
                 }
                 );
-            var enemy = new MockedCreature(
+            var enemy = MockedCreature.Build(
                 1,
                 Loyalties.Enemy,
                 attacks: new List<Attack>()

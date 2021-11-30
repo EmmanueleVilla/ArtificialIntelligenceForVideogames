@@ -27,8 +27,8 @@ namespace Tests.Core.Graph
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var enemy = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var enemy = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
@@ -54,8 +54,8 @@ namespace Tests.Core.Graph
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var enemy = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var enemy = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0),
@@ -82,8 +82,8 @@ namespace Tests.Core.Graph
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally, disengaged: true);
-            var enemy = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Ally, disengaged: true);
+            var enemy = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
@@ -108,8 +108,8 @@ namespace Tests.Core.Graph
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var enemy = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var enemy = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
@@ -134,8 +134,8 @@ namespace Tests.Core.Graph
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var ally = new MockedCreature(1, Loyalties.Ally,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var ally = MockedCreature.Build(1, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)
@@ -160,8 +160,8 @@ namespace Tests.Core.Graph
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Enemy);
-            var ally = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Enemy);
+            var ally = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>() {
                         new Damage(DamageTypes.Acid, 10, 0, 0, 0)

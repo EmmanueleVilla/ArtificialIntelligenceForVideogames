@@ -13,7 +13,7 @@ namespace Tests.Core.Graph
     {
         [Test]
         public void CanMoveSimpleWalking() {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G0,G0,G0,  \n" +
@@ -34,7 +34,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CanMoveDifficultTerrain()
         {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G0,G0,G0,  \n" +
@@ -55,7 +55,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CanMoveDifficultTerrainCanSwim()
         {
-            var creature = new SwimmerCreatureMock(3);
+            var creature = SwimmerCreatureMock.Build(1);
 
             var mapCsv = "" +
                 "G0,G0,G0,  \n" +
@@ -76,7 +76,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CantMoveBecauseOfBlockedPath()
         {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G0,G0,G0,  \n" +
@@ -96,7 +96,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CanMoveBecauseHeightDifferenceAboveOnlyOne()
         {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G0,G0,G0,  \n" +
@@ -117,7 +117,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CanMoveBecauseHeightDifferenceBelowOnlyOne()
         {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G1,G1,G1,  \n" +
@@ -138,7 +138,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CantMoveBecauseHeightDifferenceAboveTwo()
         {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G0,G0,G0,  \n" +
@@ -158,7 +158,7 @@ namespace Tests.Core.Graph
         [Test]
         public void CantMoveBecauseHeightDifferenceBelowTwo()
         {
-            var creature = new WalkerCreatureMock(3);
+            var creature = WalkerCreatureMock.Build(3);
 
             var mapCsv = "" +
                 "G2,G2,G2,  \n" +

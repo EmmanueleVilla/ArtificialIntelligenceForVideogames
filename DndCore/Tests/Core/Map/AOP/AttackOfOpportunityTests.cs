@@ -26,8 +26,8 @@ namespace Tests.Core.Map.AOP
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var enemy = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var enemy = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>())
                     });
@@ -49,8 +49,8 @@ namespace Tests.Core.Map.AOP
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var other = new MockedCreature(1, Loyalties.Ally,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var other = MockedCreature.Build(1, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>())
                     });
@@ -72,12 +72,12 @@ namespace Tests.Core.Map.AOP
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally);
-            var enemyOne = new MockedCreature(1, Loyalties.Enemy,
+            var creature = MockedCreature.Build(1, Loyalties.Ally);
+            var enemyOne = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>())
                     });
-            var enemyTwo = new MockedCreature(1, Loyalties.Enemy,
+            var enemyTwo = MockedCreature.Build(1, Loyalties.Enemy,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>())
                     });

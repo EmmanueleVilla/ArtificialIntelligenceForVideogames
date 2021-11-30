@@ -11,7 +11,7 @@ namespace Tests.Core.Graph
         [Test]
         public void NormalCell_OnlyNormalSpeed()
         {
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);
@@ -20,7 +20,7 @@ namespace Tests.Core.Graph
         [Test]
         public void NormalCell_SwimmingSpeed()
         {
-            var creature = new SwimmerCreatureMock();
+            var creature = SwimmerCreatureMock.Build(1);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);
@@ -29,7 +29,7 @@ namespace Tests.Core.Graph
         [Test]
         public void NormalCell_ClimbingSpeed()
         {
-            var creature = new ClimberCreatureMock();
+            var creature = ClimberCreatureMock.Build(1);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);

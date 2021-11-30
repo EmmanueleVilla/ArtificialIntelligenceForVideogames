@@ -34,7 +34,7 @@ namespace Tests.Core.Graph.Mocks
 
         public CellInfo GetCellInfo(int x, int y)
         {
-            return new CellInfo('G', 0, new MockedCreature(Size, Loyalty));
+            return new CellInfo('G', 0, MockedCreature.Build(Size, Loyalty));
         }
 
         public CellInfo GetCellOccupiedBy(ICreature creature)
@@ -49,7 +49,7 @@ namespace Tests.Core.Graph.Mocks
 
         public ICreature GetOccupantCreature(int x, int y)
         {
-            return new MockedCreature(Size, Loyalty);
+            return MockedCreature.Build(Size, Loyalty);
         }
 
         public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)

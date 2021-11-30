@@ -24,7 +24,7 @@ namespace Tests.Core.Map
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            map.AddCreature(new WalkerCreatureMock(), 1, 1);
+            map.AddCreature(WalkerCreatureMock.Build(1), 1, 1);
             Assert.NotNull(map.GetCellInfo(1, 1).Creature);
         }
 
@@ -39,7 +39,7 @@ namespace Tests.Core.Map
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             map.AddCreature(creature, 1, 1);
             Assert.AreEqual(1, map.Creatures.Count);
             Assert.AreEqual(creature, map.Creatures[0]);
@@ -56,9 +56,9 @@ namespace Tests.Core.Map
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var one = new WalkerCreatureMock();
+            var one = WalkerCreatureMock.Build(1);
             map.AddCreature(one, 1, 1);
-            var two = new WalkerCreatureMock();
+            var two = WalkerCreatureMock.Build(1);
             map.AddCreature(two, 2, 2);
             Assert.AreEqual(2, map.Creatures.Count);
             Assert.AreEqual(one, map.Creatures[0]);

@@ -89,12 +89,12 @@ namespace Logic.Core.Map.Impl
 
             var reach = 0;
 
-            if (creature.Attacks.Any(a => a.Range == 1))
+            if (creature.Attacks != null && creature.Attacks.Any(a => a.Range == 1))
             {
                 reach = 1;
             }
 
-            if (creature.Attacks.Any(a => a.Range == 2))
+            if (creature.Attacks != null && creature.Attacks.Any(a => a.Range == 2))
             {
                 reach = 2;
             }

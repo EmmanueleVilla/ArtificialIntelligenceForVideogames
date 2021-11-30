@@ -11,7 +11,7 @@ namespace Tests.Core.Graph
         [Test]
         public void SwimmingCell_OnlyNormalSpeed()
         {
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             var to = new CellInfo('R', 0);
             Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);
@@ -20,7 +20,7 @@ namespace Tests.Core.Graph
         [Test]
         public void SwimmingCell_SwimmingSpeed()
         {
-            var creature = new SwimmerCreatureMock();
+            var creature = SwimmerCreatureMock.Build(1);
             var to = new CellInfo('R', 0);
             Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);
@@ -29,7 +29,7 @@ namespace Tests.Core.Graph
         [Test]
         public void SwimmingCell_ClimbingSpeed()
         {
-            var creature = new ClimberCreatureMock();
+            var creature = ClimberCreatureMock.Build(1);
             var to = new CellInfo('R', 0);
             Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);
@@ -38,7 +38,7 @@ namespace Tests.Core.Graph
         [Test]
         public void SwimmingCell_ExpiredSwimmingSpeed()
         {
-            var creature = new ExpiredSwimmerCreatureMock();
+            var creature = ExpiredSwimmerCreatureMock.Build(1);
             var to = new CellInfo('R', 0);
             Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Speed);
             Assert.AreEqual(0, speedCalculator.GetNeededSpeed(creature, CellInfo.Empty(), to, new EmptyMap()).Damage);

@@ -27,7 +27,7 @@ namespace Tests.Core.Map.MoveCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally,
+            var creature = MockedCreature.Build(1, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>())
                     });
@@ -61,7 +61,7 @@ namespace Tests.Core.Map.MoveCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(1, Loyalties.Ally,
+            var creature = MockedCreature.Build(1, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", 2, new List<Damage>())
                     });
@@ -115,7 +115,7 @@ namespace Tests.Core.Map.MoveCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(3, Loyalties.Ally,
+            var creature = MockedCreature.Build(3, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", 1, new List<Damage>())
                     });
@@ -170,7 +170,7 @@ namespace Tests.Core.Map.MoveCreature
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
             }
-            var creature = new MockedCreature(3, Loyalties.Ally,
+            var creature = MockedCreature.Build(3, Loyalties.Ally,
                 new List<Attack>() {
                     new Attack("stub", 2, new List<Damage>())
                     });

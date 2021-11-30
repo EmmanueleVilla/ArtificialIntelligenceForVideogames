@@ -17,7 +17,7 @@ namespace Tests.Core.Graph
         public void NullWhenOutsideMap()
         {
             var to = new CellInfo(' ', 0);
-            Assert.AreEqual(Edge.Empty(), speedCalculator.GetNeededSpeed(new WalkerCreatureMock(), CellInfo.Empty(), to, null));
+            Assert.AreEqual(Edge.Empty(), speedCalculator.GetNeededSpeed(WalkerCreatureMock.Build(1), CellInfo.Empty(), to, null));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Tests.Core.Graph
         [Test]
         public void OneLowerCell()
         {
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             var from = new CellInfo('G', 1);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(1, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
@@ -20,7 +20,7 @@ namespace Tests.Core.Graph
         [Test]
         public void TwoLowerCell()
         {
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             var from = new CellInfo('G', 2);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(2, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
@@ -30,7 +30,7 @@ namespace Tests.Core.Graph
         [Test]
         public void ThreeLowerCell()
         {
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             var from = new CellInfo('G', 3);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(3, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
@@ -40,7 +40,7 @@ namespace Tests.Core.Graph
         [Test]
         public void FourLowerCell()
         {
-            var creature = new WalkerCreatureMock();
+            var creature = WalkerCreatureMock.Build(1);
             var from = new CellInfo('G', 4);
             var to = new CellInfo('G', 0);
             Assert.AreEqual(4, speedCalculator.GetNeededSpeed(creature, from, to, new EmptyMap()).Speed);
