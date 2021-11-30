@@ -156,6 +156,22 @@ namespace Logic.Core
                 }
                 turnIndex = 0;
             }
+
+            var creatureInTurn = GetCreatureInTurn();
+            foreach (var creature in map.Creatures)
+            {
+                creature.TemporaryEffectsList = creature.TemporaryEffectsList.Select( x =>
+                {
+                    var remainingTurns = x.Item2;
+                    if (x.Item1 == creatureInTurn)
+                    {
+                        remainingTurns--;
+                    }
+                    var newTuple = new Tuple<ICreature, int, TemporaryEffects>(x.Item1, remainingTurns, x.Item3);
+                    
+                    return newTuple;
+                }).Where(x => x.Item2 > 0).ToList();
+            }
         }
 
         List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
@@ -286,6 +302,25 @@ namespace Logic.Core
                         creature.BonusActionUsedNotToAttack = true;
                         var monk = creature as IMonk;
                         if(monk != null)
+                        {
+                            monk.RemainingKiPoints--;
+                        }
+                    }
+                    break;
+                case ActionsTypes.PatientDefence:
+                    creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
+                    var defAction = availableAction as PatientDefenseAction;
+                    if (defAction.ActionEconomy == "A")
+                    {
+                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Patient Defense, Disadvantage to suffered attacks until your next turn"));
+                        creature.ActionUsedNotToAttack = true;
+                    }
+                    if (defAction.ActionEconomy == "B")
+                    {
+                        DndModule.Get<ILogger>().WriteLine(string.Format("Used Patient Defense,  Disadvantage to suffered attacks until your next turn, -1 Ki Point"));
+                        creature.BonusActionUsedNotToAttack = true;
+                        var monk = creature as IMonk;
+                        if (monk != null)
                         {
                             monk.RemainingKiPoints--;
                         }

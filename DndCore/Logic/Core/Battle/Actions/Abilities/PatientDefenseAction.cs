@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Logic.Core.Battle.Actions.Abilities
 {
-    class PatientDefenceAction : IAvailableAction
+    public class PatientDefenseAction : IAvailableAction
     {
         public string ActionEconomy = "A";
         public ActionsTypes ActionType => ActionsTypes.PatientDefence;
-        public string Description => "(" + ActionEconomy + ") Patient Defence";
+        public string Description => "(" + ActionEconomy + ") Patient Defense";
     }
 }

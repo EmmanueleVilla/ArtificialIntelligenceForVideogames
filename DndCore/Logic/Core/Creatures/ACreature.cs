@@ -67,7 +67,8 @@ namespace Logic.Core.Creatures
         public int TemporaryHitPoints { get; set; }
         public string LastAttackUsed { get; set; }
         public int RemainingAttacksPerBonusAction { get; set; }
-        
+        public List<Tuple<ICreature, int, TemporaryEffects>> TemporaryEffectsList { get; set; } = new List<Tuple<ICreature, int, TemporaryEffects>>();
+
         private int RollInitiative()
         {
             RolledInitiative = roller.Roll(InitiativeRollType, 1, 20, InitiativeModifier);

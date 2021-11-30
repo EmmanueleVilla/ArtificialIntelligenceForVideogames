@@ -1,10 +1,16 @@
 ﻿using Logic.Core.Actions;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Movements;
+using System;
 using System.Collections.Generic;
 
 namespace Logic.Core.Creatures
 {
+    public enum TemporaryEffects
+    {
+        DisadvantageToSufferedAttacks
+    }
+
     public interface ICreature
     {
         // General --------------------------------------------------------------------------
@@ -15,6 +21,7 @@ namespace Logic.Core.Creatures
 
         int Size { get; }
 
+        List<Tuple<ICreature, int, TemporaryEffects>> TemporaryEffectsList { get; set; }
 
         // Defense
 
