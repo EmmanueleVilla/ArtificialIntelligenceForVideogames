@@ -20,6 +20,7 @@ namespace Logic.Core.Battle
         Dash,
         Dodge,
         FlurryOfBlows,
-        PatientDefence
+        PatientDefence,
+        FightingSpirit
     }
 }

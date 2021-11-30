@@ -13,7 +13,8 @@ namespace Logic.Core.Battle.ActionBuilders
             new BaseActionsBuilder(),
             new FlurryOfBlowsActionBuilder(),
             new BaseKiPointsActionBuilder(),
-            new MartialArtsActionBuilder()
+            new MartialArtsActionBuilder(),
+            new FightingSpiritActionBuilder()
         };
     }
 }

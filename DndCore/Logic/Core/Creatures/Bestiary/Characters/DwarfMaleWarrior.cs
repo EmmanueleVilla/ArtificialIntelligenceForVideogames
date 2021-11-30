@@ -1,4 +1,5 @@
 ﻿using Logic.Core.Actions;
+using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
 using Logic.Core.Movements;
@@ -6,13 +7,18 @@ using System.Collections.Generic;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class DwarfMaleWarrior : ACreature
+    public class DwarfMaleWarrior : ACreature, IFightingSpirit
     {
         public override Loyalties Loyalty => Loyalties.Ally;
 
         public override int Size => 1;
 
         public override int CriticalThreshold => 19;
+
+        public override void ResetTurn()
+        {
+            base.ResetTurn();
+        }
 
         public override List<Attack> Attacks => new List<Attack>()
         {
@@ -38,5 +44,11 @@ namespace Logic.Core.Creatures.Bestiary
         public override int ArmorClass => 18;
 
         public override AbilityScores AbilityScores { get; } = new AbilityScores(16, 14, 16, 12, 9, 10);
+
+        public int FightingSpiritTemporaryHitPoints => 5;
+
+        public int FightingSpiritUsages => 3;
+
+        public int FightingSpiritRemaining { get; set; } = 3;
     }
 }

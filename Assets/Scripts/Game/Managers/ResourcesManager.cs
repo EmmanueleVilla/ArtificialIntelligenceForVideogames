@@ -1,5 +1,6 @@
 ﻿using Core.DI;
 using Logic.Core.Battle;
+using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Classes;
 using System;
@@ -34,6 +35,11 @@ public class ResourcesManager : MonoBehaviour
                 if (monk != null)
                 {
                     builder.AppendLine(String.Format("{0}/{1} Ki points", monk.RemainingKiPoints, monk.KiPoints));
+                }
+                var fightingSpirit = creature as IFightingSpirit;
+                if(fightingSpirit != null)
+                {
+                    builder.AppendLine(String.Format("{0}/{1} Fighting Spirit", fightingSpirit.FightingSpiritRemaining, fightingSpirit.FightingSpiritUsages));
                 }
 
                 builder.AppendLine(string.Format("{0} Action {1} Bonus Action",
