@@ -16,9 +16,9 @@ namespace Logic.Core.Battle.ActionBuilders
 
             if (!creature.ActionUsedNotToAttack && !creature.ActionUsedToAttack)
             {
-                actions.Add(new DashAction() { ActionEconomy = "A" } );
-                actions.Add(new DisengageAction() { ActionEconomy = "A" });
-                actions.Add(new DodgeAction() { ActionEconomy = "A" });
+                actions.Add(new DashAction() { ActionEconomy = BattleActions.Action } );
+                actions.Add(new DisengageAction() { ActionEconomy = BattleActions.Action });
+                actions.Add(new DodgeAction() { ActionEconomy = BattleActions.Action });
             }
 
             return actions;

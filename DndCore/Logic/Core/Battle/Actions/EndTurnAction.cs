@@ -6,6 +6,7 @@ namespace Logic.Core.Battle.Actions
 {
     public class EndTurnAction : IAvailableAction
     {
+        public BattleActions ActionEconomy { get; set; } = BattleActions.Free;
         public ActionsTypes ActionType => ActionsTypes.EndTurn;
 
         public string Description => "End turn";

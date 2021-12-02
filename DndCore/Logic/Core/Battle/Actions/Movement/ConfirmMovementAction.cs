@@ -8,7 +8,7 @@ namespace Logic.Core.Battle.Actions.Movement
     public class ConfirmMovementAction : IAvailableAction
     {
         public ActionsTypes ActionType => ActionsTypes.ConfirmMovement;
-
+        public BattleActions ActionEconomy { get; set; } = BattleActions.Free;
         public int DestinationX { get; set; }
         public int DestinationY { get; set; }
         public int Speed { get; set; }

@@ -41,7 +41,7 @@ namespace Logic.Core.Battle.ActionBuilders
                         }
                     }
 
-                    actions.Add(new RequestAttackAction() { Attack = unarmedStrike, ReachableCells = cells, ActionEconomy = "B" });
+                    actions.Add(new RequestAttackAction() { Attack = unarmedStrike, ReachableCells = cells, ActionEconomy = BattleActions.BonusAction });
                 }
             }
             return actions;

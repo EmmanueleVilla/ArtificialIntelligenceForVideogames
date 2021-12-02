@@ -1,6 +1,7 @@
 ﻿using Core.Map;
 using Core.Utils.Log;
 using Logic.Core;
+using Logic.Core.Battle;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
@@ -79,34 +80,34 @@ namespace Tests.Core.DndBattles.Monk
 
             // I can make another attack as bonus action
             Assert.True((monk as IMartialArts).BonusAttackTriggered);
-            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) != null);
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("unarmed") && action.ActionEconomy == BattleActions.BonusAction) != null);
 
             battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
                 TargetCreature = enemy,
                 AttackingCreature = monk,
-                ActionEconomy = "(B)"
+                ActionEconomy = BattleActions.BonusAction
             });
 
             actions = battle.GetAvailableActions();
 
             // I don't have other bonus action attacks
-            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) == null);
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("unarmed") && action.ActionEconomy == BattleActions.BonusAction) == null);
 
             battle.UseAbility(new FlurryOfBlowsAction());
 
             actions = battle.GetAvailableActions();
 
             // Now I have an additional bonus attack
-            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) != null);
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("unarmed") && action.ActionEconomy == BattleActions.BonusAction) != null);
 
             battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
                 TargetCreature = enemy,
                 AttackingCreature = monk,
-                ActionEconomy = "(B)"
+                ActionEconomy = BattleActions.BonusAction
             });
 
             actions = battle.GetAvailableActions();

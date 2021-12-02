@@ -6,7 +6,7 @@ namespace Logic.Core.Battle.Actions.Abilities
 {
     class FightingSpiritAction : IAvailableAction
     {
-        public string ActionEconomy = "B";
+        public BattleActions ActionEconomy { get; set; } = BattleActions.BonusAction;
         public ActionsTypes ActionType => ActionsTypes.FightingSpirit;
         public string Description => "(" + ActionEconomy + ") Fighting Spirit";
     }

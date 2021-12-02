@@ -17,7 +17,7 @@ namespace Logic.Core.Battle.ActionBuilders
             var secondWind = creature as ISecondWind;
             if (secondWind != null && secondWind.SecondWindRemaining > 0 && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack)
             {
-                actions.Add(new SecondWindAction() { ActionEconomy = "B" });
+                actions.Add(new SecondWindAction() { ActionEconomy = BattleActions.BonusAction });
             }
 
             return actions;

@@ -17,9 +17,9 @@ namespace Logic.Core.Battle.ActionBuilders
 
             if (creature is IKiPointsOwner && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack && (creature as IKiPointsOwner).RemainingKiPoints > 0)
             {
-                actions.Add(new PatientDefenseAction() { ActionEconomy = "B" });
-                actions.Add(new DisengageAction() { ActionEconomy = "B" });
-                actions.Add(new DashAction() { ActionEconomy = "B" });
+                actions.Add(new PatientDefenseAction() { ActionEconomy = BattleActions.BonusAction });
+                actions.Add(new DisengageAction() { ActionEconomy = BattleActions.BonusAction });
+                actions.Add(new DashAction() { ActionEconomy = BattleActions.BonusAction });
             }
 
             return actions;

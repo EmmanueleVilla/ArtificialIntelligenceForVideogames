@@ -196,7 +196,7 @@ namespace Logic.Core
                 Logger.WriteLine("Not hit");
             }
 
-            if (confirmAttackAction.ActionEconomy.Contains("A")) {
+            if (confirmAttackAction.ActionEconomy == BattleActions.Action) {
                 confirmAttackAction.AttackingCreature.RemainingAttacksPerAction--;
                 confirmAttackAction.AttackingCreature.ActionUsedToAttack = true;
                 if(confirmAttackAction.AttackingCreature is IMartialArts && confirmAttackAction.Attack.Name.ToLower().Contains("quarterstaff"))
@@ -204,7 +204,7 @@ namespace Logic.Core
                     (confirmAttackAction.AttackingCreature as IMartialArts).BonusAttackTriggered = true;
                 }
             }
-            if (confirmAttackAction.ActionEconomy.Contains("B")) {
+            if (confirmAttackAction.ActionEconomy == BattleActions.BonusAction) {
                 confirmAttackAction.AttackingCreature.RemainingAttacksPerBonusAction--;
                 confirmAttackAction.AttackingCreature.BonusActionUsedToAttack = true;
             }
@@ -231,12 +231,12 @@ namespace Logic.Core
                         return new Speed(mov.Item1, mov.Item2 + baseSpeed.Item2);
                     }
                     ).ToList();
-                    if(action.ActionEconomy == "A")
+                    if(action.ActionEconomy == BattleActions.Action)
                     {
                         DndModule.Get<ILogger>().WriteLine(string.Format("Used Dash, doubled movement"));
                         creature.ActionUsedNotToAttack = true;
                     }
-                    if (action.ActionEconomy == "B")
+                    if (action.ActionEconomy == BattleActions.BonusAction)
                     {
                         DndModule.Get<ILogger>().WriteLine(string.Format("Used Dash, doubled movement, -1 Ki Point"));
                         creature.BonusActionUsedNotToAttack = true;
@@ -250,12 +250,12 @@ namespace Logic.Core
                 case ActionsTypes.Disengage:
                     creature.Disangaged = true;
                     var disAction = availableAction as DisengageAction;
-                    if (disAction.ActionEconomy == "A")
+                    if (disAction.ActionEconomy == BattleActions.Action)
                     {
                         DndModule.Get<ILogger>().WriteLine(string.Format("Used Disengage"));
                         creature.ActionUsedNotToAttack = true;
                     }
-                    if (disAction.ActionEconomy == "B")
+                    if (disAction.ActionEconomy == BattleActions.BonusAction)
                     {
                         DndModule.Get<ILogger>().WriteLine(string.Format("Used Disengage, -1 Ki Point"));
                         creature.BonusActionUsedNotToAttack = true;

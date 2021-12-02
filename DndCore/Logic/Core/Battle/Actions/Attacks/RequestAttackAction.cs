@@ -6,7 +6,7 @@ namespace Logic.Core.Battle.Actions.Attacks
 {
     public class RequestAttackAction : IAvailableAction
     {
-        public string ActionEconomy = "A";
+        public BattleActions ActionEconomy { get; set; } = BattleActions.Action;
         public Attack Attack;
 
         public ActionsTypes ActionType => ActionsTypes.RequestAttack;

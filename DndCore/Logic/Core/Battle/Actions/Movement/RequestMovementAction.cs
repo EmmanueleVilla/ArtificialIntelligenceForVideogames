@@ -8,6 +8,7 @@ namespace Logic.Core.Battle.Actions
 {
     public class RequestMovementAction : IAvailableAction
     {
+        public BattleActions ActionEconomy { get; set; } = BattleActions.Free;
         public ActionsTypes ActionType => ActionsTypes.RequestMovement;
 
         public string Description => "(M) " + string.Join(",", RemainingMovement.Select(x => string.Format(x.Item1 +"="+(x.Item2*1.5)+"m")));
