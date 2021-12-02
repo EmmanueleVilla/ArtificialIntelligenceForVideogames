@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Abilities
 {
-    interface ISpellCaster
+    public interface ISpellCaster
     {
         Dictionary<int,int> SpellSlots { get; }
         Dictionary<int, int> RemainingSpellSlots { get; set; }

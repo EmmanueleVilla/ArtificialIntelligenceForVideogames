@@ -9,7 +9,8 @@ namespace Logic.Core.Creatures
     public enum TemporaryEffects
     {
         DisadvantageToSufferedAttacks,
-        AdvantageToAttacks
+        AdvantageToAttacks,
+        SpeedReducedByTwo
     }
 
     public interface ICreature

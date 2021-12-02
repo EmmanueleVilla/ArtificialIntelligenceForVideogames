@@ -1,4 +1,6 @@
 ﻿using Logic.Core.Actions;
+using Logic.Core.Creatures.Abilities;
+using Logic.Core.Creatures.Abilities.Spells;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
 using Logic.Core.Movements;
@@ -6,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class ElfFemaleWizard : ACreature
+    public class ElfFemaleWizard : ACreature, ISpellCaster
     {
         public override Loyalties Loyalty => Loyalties.Ally;
 
@@ -38,5 +40,15 @@ namespace Logic.Core.Creatures.Bestiary
         public override int ArmorClass => 12;
 
         public override AbilityScores AbilityScores { get; } = new AbilityScores(8, 14, 13, 16, 15, 11);
+
+        public Dictionary<int, int> SpellSlots => new Dictionary<int, int>() { { 1, 4 }, { 2, 3 }, { 3, 2 } };
+
+        public Dictionary<int, int> RemainingSpellSlots { get; set; } = new Dictionary<int, int>() { { 0, int.MaxValue }, { 1, 4 }, { 2, 3 }, { 3, 2 } };
+
+        public List<ISpell> Spells => new List<ISpell> { 
+            new RayOfFrost(),
+            new FalseLife(),
+            new MagicMissile()
+        };
     }
 }

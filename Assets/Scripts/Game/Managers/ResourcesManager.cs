@@ -7,6 +7,7 @@ using Logic.Core.Creatures.Classes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,6 +42,20 @@ public class ResourcesManager : MonoBehaviour
                 if(fightingSpirit != null)
                 {
                     builder.AppendLine(String.Format("{0}/{1} Fighting Spirit", fightingSpirit.FightingSpiritRemaining, fightingSpirit.FightingSpiritUsages));
+                }
+
+                var caster = creature as ISpellCaster;
+                if(caster != null)
+                {
+                    var slots = caster.RemainingSpellSlots.ToList().OrderBy(x => x.Key);
+                    foreach(var slot in slots)
+                    {
+                        if(slot.Key == 0)
+                        {
+                            continue;
+                        }
+                        builder.AppendLine(string.Format("Level {0} slot: {1}", slot.Key, slot.Value));
+                    }
                 }
 
                 var secondWind = creature as ISecondWind;

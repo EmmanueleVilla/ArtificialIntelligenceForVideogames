@@ -22,6 +22,9 @@ namespace Logic.Core.Battle
         FlurryOfBlows,
         PatientDefence,
         FightingSpirit,
-        SecondWind
+        SecondWind,
+        RequestSpell,
+        CancelSpell,
+        ConfirmSpell
     }
 }

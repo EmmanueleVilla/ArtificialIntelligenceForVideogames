@@ -2,6 +2,7 @@ using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
+using Logic.Core.Battle.Actions.Spells;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,12 @@ public class ActionsManager : MonoBehaviour
             case ActionsTypes.ConfirmAttack:
                 var confirmAttackAction = Actions[index] as ConfirmAttackAction;
                 GameManager.ConfirmAttack(confirmAttackAction);
+                break;
+            case ActionsTypes.RequestSpell:
+                GameManager.EnterSpellMode(Actions[index] as RequestSpellAction);
+                break;
+            case ActionsTypes.CancelSpell:
+                GameManager.ExitSpellMode();
                 break;
             default:
                 GameManager.UseAbility(Actions[index]);

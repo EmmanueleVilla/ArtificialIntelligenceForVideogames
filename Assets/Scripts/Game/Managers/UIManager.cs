@@ -211,6 +211,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    internal void HighlightSpell(List<CellInfo> reachableCells)
+    {
+        foreach (var tile in tiles)
+        {
+            if (!reachableCells.Any(res => res.X == tile.Y && res.Y == tile.X))
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
+            }
+        }
+    }
+
+    internal void ResetSpells()
+    {
+        ResetCellsUI();
+    }
 
     internal void HighlightAttack(List<CellInfo> reachableCells)
     {

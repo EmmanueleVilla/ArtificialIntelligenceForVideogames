@@ -6,6 +6,7 @@ using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
+using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
@@ -49,7 +50,16 @@ public class GameManager : MonoBehaviour
     }
 
     bool InMovementMode = false;
-
+    bool InSpellMode = false;
+    public void EnterSpellMode(RequestSpellAction action)
+    {
+        InSpellMode = true;
+        ActionsManager.SetActions(
+            new List<IAvailableAction>() {
+                new CancelSpellAction()
+            });
+        UIManager.HighlightSpell(action.ReachableCells);
+    }
     public void EnterMovementMode()
     {
         InMovementMode = true;
@@ -105,6 +115,13 @@ public class GameManager : MonoBehaviour
     public void ExitAttackMode()
     {
         InAttackMode = false;
+        ActionsManager.SetActions(Battle.GetAvailableActions());
+        UIManager.ResetAttacks();
+    }
+
+    internal void ExitSpellMode()
+    {
+        InSpellMode = false;
         ActionsManager.SetActions(Battle.GetAvailableActions());
         UIManager.ResetAttacks();
     }

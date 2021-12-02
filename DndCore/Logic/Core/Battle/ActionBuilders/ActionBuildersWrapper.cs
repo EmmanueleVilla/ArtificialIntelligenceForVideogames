@@ -10,12 +10,13 @@ namespace Logic.Core.Battle.ActionBuilders
         {
             new MovementActionBuilder(),
             new AttacksActionBuilder(),
-            new BaseActionsBuilder(),
             new FlurryOfBlowsActionBuilder(),
             new BaseKiPointsActionBuilder(),
             new MartialArtsActionBuilder(),
             new FightingSpiritActionBuilder(),
-            new SecondWindActionBuilder()
+            new SecondWindActionBuilder(),
+            new SpellCasterActionBuilder(),
+            new BaseActionsBuilder(),
         };
     }
 }

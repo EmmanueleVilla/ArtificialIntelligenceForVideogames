@@ -18,6 +18,7 @@ namespace Logic.Core.Actions
         Psychic,
         Radiant,
         Slashing,
-        Thunder
+        Thunder,
+        Heal
     }
 }
