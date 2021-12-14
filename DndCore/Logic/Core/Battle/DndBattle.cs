@@ -343,6 +343,7 @@ namespace Logic.Core
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
                 creature.TemporaryHitPoints += temporary;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
+                DndModule.Get<ILogger>().WriteLine(string.Format("Obtained {0} temp hit points", temporary));
             }
 
             if (confirmSpellAction.Spell is MagicMissile)
@@ -351,6 +352,7 @@ namespace Logic.Core
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
                 creature.CurrentHitPoints -= damage;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
+                DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1}", damage, creature.GetType().ToString().Split('.').Last()));
             }
 
             if (confirmSpellAction.Spell is RayOfFrost)
@@ -364,6 +366,7 @@ namespace Logic.Core
                     TemporaryEffects.SpeedReducedByTwo
                     ));
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
+                DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1} and reduced their speed by 2 squares", damage, creature.GetType().ToString().Split('.').Last()));
             }
 
             return list;
