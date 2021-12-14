@@ -1,21 +1,26 @@
 ﻿using Core.Map;
 using Logic.Core.Actions;
+using Logic.Core.Creatures;
 
 namespace Logic.Core.Battle
 {
-    public class MovementEvent
+    public class GameEvent
     {
         public enum Types
         {
             Movement,
             Falling,
-            Attacks
+            Attacks,
+            AttackMissed,
+            SelfAbility
         }
 
         public Types Type;
         public int FallingHeight;
         public Attack Attack;
         public CellInfo Destination;
+        public ICreature Attacker;
+        public ICreature Attacked;
         public int Damage;
         public override string ToString()
         {
@@ -25,7 +30,7 @@ namespace Logic.Core.Battle
 
         public override bool Equals(object obj)
         {
-            var other = (MovementEvent)obj;
+            var other = (GameEvent)obj;
             return Type == other.Type
                 && Destination.X == other.Destination.X
                 && Destination.Y == other.Destination.Y

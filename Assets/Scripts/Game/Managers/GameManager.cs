@@ -95,8 +95,8 @@ public class GameManager : MonoBehaviour
             && edge.Damage == damage
             && edge.Speed == speed
             );
-        var movementEvents = Battle.MoveTo(end);
-        yield return StartCoroutine(UIManager.MoveAlong(movementEvents));
+        var GameEvents = Battle.MoveTo(end);
+        yield return StartCoroutine(UIManager.MoveAlong(GameEvents));
         ExitMovementMode();
     }
 
@@ -106,9 +106,11 @@ public class GameManager : MonoBehaviour
         ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
-    internal void ConfirmAttack(ConfirmAttackAction confirmAttackAction)
+    internal IEnumerator ConfirmAttack(ConfirmAttackAction confirmAttackAction)
     {
-        Battle.Attack(confirmAttackAction);
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        var events = Battle.Attack(confirmAttackAction);
+        yield return this.StartCoroutine(UIManager.ShowGameEvents(events));
         ExitAttackMode();
     }
 

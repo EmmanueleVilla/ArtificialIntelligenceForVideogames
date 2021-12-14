@@ -34,7 +34,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
 
             var expected = new List<CellInfo>() {
                 new CellInfo('G', 0, null, 0, 0),
@@ -68,7 +68,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
 
             var expected = new List<CellInfo>() {
                 new CellInfo(' ', 0, null, -1, -1),
@@ -122,7 +122,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
 
             var expected = new List<CellInfo>() {
                 new CellInfo('G', 0, null, 0, 0),
@@ -177,7 +177,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 1, 1);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(1, 1) },
-                new List<MovementEvent>(), map.GetCellInfo(0, 0), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(0, 0), 1, 0, true));
 
             var expected = new List<CellInfo>() {
                 new CellInfo(' ', 0, null, -2, -2),

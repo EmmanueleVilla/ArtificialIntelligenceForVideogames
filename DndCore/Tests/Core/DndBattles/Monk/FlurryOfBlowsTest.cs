@@ -53,7 +53,7 @@ namespace Tests.Core.DndBattles.Monk
             Assert.True(actions.All(action => action.Description != "Flurry of blows"));
 
             // First attack with unarmed
-            battle.Attack(new ConfirmAttackAction()
+            var result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
                 TargetCreature = enemy,
@@ -66,7 +66,7 @@ namespace Tests.Core.DndBattles.Monk
             Assert.True(actions.First(action => action.Description == "Flurry of blows") != null);
 
             // Second attack with quarterstaff
-            battle.Attack(new ConfirmAttackAction()
+            result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("quarterstaff")),
                 TargetCreature = enemy,
@@ -82,7 +82,7 @@ namespace Tests.Core.DndBattles.Monk
             Assert.True((monk as IMartialArts).BonusAttackTriggered);
             Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("unarmed") && action.ActionEconomy == BattleActions.BonusAction) != null);
 
-            battle.Attack(new ConfirmAttackAction()
+            result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
                 TargetCreature = enemy,
@@ -95,14 +95,14 @@ namespace Tests.Core.DndBattles.Monk
             // I don't have other bonus action attacks
             Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("unarmed") && action.ActionEconomy == BattleActions.BonusAction) == null);
 
-            battle.UseAbility(new FlurryOfBlowsAction());
+            result = battle.UseAbility(new FlurryOfBlowsAction());
 
             actions = battle.GetAvailableActions();
 
             // Now I have an additional bonus attack
             Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("unarmed") && action.ActionEconomy == BattleActions.BonusAction) != null);
 
-            battle.Attack(new ConfirmAttackAction()
+            result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
                 TargetCreature = enemy,

@@ -27,7 +27,7 @@ namespace Tests.Core.Graph
             var to = new CellInfo('G', 0, null, 1, 1);
             var result = speedCalculator.GetNeededSpeed(creature, from, to, map);
             Assert.AreEqual(1, result.MovementEvents.Count);
-            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].Type);
+            Assert.AreEqual(GameEvent.Types.Movement, result.MovementEvents[0].Type);
             Assert.AreEqual(1, result.Speed);
         }
 
@@ -48,7 +48,7 @@ namespace Tests.Core.Graph
             var to = new CellInfo('G', 0, null, 1, 1);
             var result = speedCalculator.GetNeededSpeed(creature, from, to, map);
             Assert.AreEqual(1, result.MovementEvents.Count);
-            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].Type);
+            Assert.AreEqual(GameEvent.Types.Movement, result.MovementEvents[0].Type);
             Assert.AreEqual(2, result.Speed);
         }
 
@@ -69,7 +69,7 @@ namespace Tests.Core.Graph
             var to = new CellInfo('G', 0, null, 1, 1);
             var result = speedCalculator.GetNeededSpeed(creature, from, to, map);
             Assert.AreEqual(1, result.MovementEvents.Count);
-            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].Type);
+            Assert.AreEqual(GameEvent.Types.Movement, result.MovementEvents[0].Type);
             Assert.AreEqual(1, result.Speed);
         }
 
@@ -110,7 +110,7 @@ namespace Tests.Core.Graph
             var to = new CellInfo('G', 0, null, 1, 1);
             var result = speedCalculator.GetNeededSpeed(creature, from, to, map);
             Assert.AreEqual(1, result.MovementEvents.Count);
-            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].Type);
+            Assert.AreEqual(GameEvent.Types.Movement, result.MovementEvents[0].Type);
             Assert.AreEqual(1, result.Speed);
         }
 
@@ -131,7 +131,7 @@ namespace Tests.Core.Graph
             var to = new CellInfo('G', 0, null, 1, 1);
             var result = speedCalculator.GetNeededSpeed(creature, from, to, map);
             Assert.AreEqual(1, result.MovementEvents.Count);
-            Assert.AreEqual(MovementEvent.Types.Movement, result.MovementEvents[0].Type);
+            Assert.AreEqual(GameEvent.Types.Movement, result.MovementEvents[0].Type);
             Assert.AreEqual(1, result.Speed);
         }
 

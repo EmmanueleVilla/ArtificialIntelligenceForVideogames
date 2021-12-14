@@ -121,7 +121,7 @@ namespace Logic.Core
             return searched.Where(edge => edge.Destination.X == x && edge.Destination.Y == y).ToList();
         }
 
-        public IEnumerable<MovementEvent> MoveTo(MemoryEdge end)
+        public IEnumerable<GameEvent> MoveTo(MemoryEdge end)
         {
             var creature = GetCreatureInTurn();
             creature.RemainingMovement = creature.RemainingMovement.Select(x =>
@@ -131,7 +131,7 @@ namespace Logic.Core
             map.MoveCreatureTo(creature, end);
             foreach(var e in end.Events)
             {
-                if(e.Type == MovementEvent.Types.Falling)
+                if(e.Type == GameEvent.Types.Falling)
                 {
                     e.Damage = Roller.Roll(RollTypes.Normal, e.FallingHeight, 6, 0);
                     creature.CurrentHitPoints -= e.Damage;
@@ -140,8 +140,9 @@ namespace Logic.Core
             }
         }
 
-        public void Attack(ConfirmAttackAction confirmAttackAction)
+        public List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction)
         {
+            var list = new List<GameEvent>();
             var hasAdvantage = false;
             var hasDisadvantage = false;
             if (confirmAttackAction.TargetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
@@ -189,11 +190,27 @@ namespace Logic.Core
                     confirmAttackAction.TargetCreature.CurrentHitPoints += confirmAttackAction.TargetCreature.TemporaryHitPoints;
                     confirmAttackAction.TargetCreature.TemporaryHitPoints = 0;
                 }
+
+                list.Add(new GameEvent
+                {
+                    Type = GameEvent.Types.Attacks,
+                    Attacker = confirmAttackAction.AttackingCreature,
+                    Attacked = confirmAttackAction.TargetCreature,
+                    Attack = confirmAttackAction.Attack
+                });
+
                 //TODO kill creature if hp < 0
 
             } else
             {
                 Logger.WriteLine("Not hit");
+                list.Add(new GameEvent
+                {
+                    Type = GameEvent.Types.AttackMissed,
+                    Attacker = confirmAttackAction.AttackingCreature,
+                    Attacked = confirmAttackAction.TargetCreature,
+                    Attack = confirmAttackAction.Attack
+                });
             }
 
             if (confirmAttackAction.ActionEconomy == BattleActions.Action) {
@@ -210,9 +227,11 @@ namespace Logic.Core
             }
 
             confirmAttackAction.AttackingCreature.LastAttackUsed += confirmAttackAction.Attack.Name;
+
+            return list;
         }
 
-        public void UseAbility(IAvailableAction availableAction)
+        public List<GameEvent> UseAbility(IAvailableAction availableAction)
         {
             var creature = GetCreatureInTurn();
             switch (availableAction.ActionType)
@@ -303,6 +322,13 @@ namespace Logic.Core
                     }
                     break;
             }
+
+            return new List<GameEvent> { 
+                new GameEvent
+                {
+                    Type = GameEvent.Types.SelfAbility
+                }
+            };
         }
     }
 }

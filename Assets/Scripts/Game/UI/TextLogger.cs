@@ -24,8 +24,8 @@ public class TextLogger : MonoBehaviour, ILogger
         {
             var text = Output.text;
             var split = text.Split('\n');
-            var diff = Mathf.Max(0, split.Count() - 17);
-            var lines = string.Join("\n", split.Skip(diff).Take(19));
+            var diff = Mathf.Max(0, split.Count() - 10);
+            var lines = string.Join("\n", split.Skip(diff).Take(10));
             lines += "\n" + message;
             Output.text = lines;
         }

@@ -10,7 +10,7 @@ namespace Logic.Core.Graph
         public readonly CellInfo Cell;
 
         public List<CellInfo> Path = new List<CellInfo>();
-        public List<MovementEvent> Events = new List<MovementEvent>();
+        public List<GameEvent> Events = new List<GameEvent>();
         public int UsedMovement;
         public int DamageTaken;
         public bool CanEndMovementHere;

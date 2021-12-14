@@ -85,7 +85,7 @@ namespace Logic.Core.Graph
                         }
                         var path = new List<CellInfo>(best.Path);
                         path.Add(edge.Start);
-                        var events = new List<MovementEvent>(best.Events);
+                        var events = new List<GameEvent>(best.Events);
                         events.AddRange(edge.MovementEvents);
                         var reached = new ReachedCell(to)
                         {

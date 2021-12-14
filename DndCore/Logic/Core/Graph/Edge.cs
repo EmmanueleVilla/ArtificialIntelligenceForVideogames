@@ -13,10 +13,10 @@ namespace Logic.Core.Graph
         public CellInfo Destination;
         public int Speed;
         public int Damage;
-        public List<MovementEvent> MovementEvents;
+        public List<GameEvent> MovementEvents;
         public bool CanEndMovementHere;
 
-        public Edge(CellInfo start, CellInfo destination, int speed, int damage, List<MovementEvent> movementEvents, bool canEndMovementHere)
+        public Edge(CellInfo start, CellInfo destination, int speed, int damage, List<GameEvent> movementEvents, bool canEndMovementHere)
         {
             Start = start;
             Destination = destination;
@@ -28,7 +28,7 @@ namespace Logic.Core.Graph
 
         public static Edge Empty()
         {
-            return new Edge(CellInfo.Empty(), CellInfo.Empty(), 0, 0, new List<MovementEvent>(), false);
+            return new Edge(CellInfo.Empty(), CellInfo.Empty(), 0, 0, new List<GameEvent>(), false);
         }
 
 

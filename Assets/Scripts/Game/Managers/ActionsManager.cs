@@ -63,7 +63,7 @@ public class ActionsManager : MonoBehaviour
                 break;
             case ActionsTypes.ConfirmAttack:
                 var confirmAttackAction = Actions[index] as ConfirmAttackAction;
-                GameManager.ConfirmAttack(confirmAttackAction);
+                this.StartCoroutine(GameManager.ConfirmAttack(confirmAttackAction));
                 break;
             case ActionsTypes.RequestSpell:
                 GameManager.EnterSpellMode(Actions[index] as RequestSpellAction);

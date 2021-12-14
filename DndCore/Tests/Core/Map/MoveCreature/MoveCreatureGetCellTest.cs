@@ -29,7 +29,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
             Assert.Null(map.GetCellInfo(0, 0).Creature);
             Assert.NotNull(map.GetCellInfo(1, 1).Creature);
         }
@@ -49,7 +49,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(creature, 0, 0);
             map.MoveCreatureTo(creature, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
             Assert.AreEqual(1, map.Creatures.Count);
             Assert.AreEqual(creature, map.Creatures[0]);
         }
@@ -69,7 +69,7 @@ namespace Tests.Core.Map.MoveCreature
             map.AddCreature(one, 0, 0);
             map.MoveCreatureTo(one, new Logic.Core.Graph.MemoryEdge(
                 new List<CellInfo>() { map.GetCellInfo(0, 0) },
-                new List<MovementEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
+                new List<GameEvent>(), map.GetCellInfo(1, 1), 1, 0, true));
             var two = WalkerCreatureMock.Build(1);
             map.AddCreature(two, 2, 2);
             Assert.AreEqual(2, map.Creatures.Count);

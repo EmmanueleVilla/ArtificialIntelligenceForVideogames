@@ -45,7 +45,7 @@ namespace Logic.Core.Graph
             var maxSpeed = 0;
             var maxDamage = 0;
             var canEndMovementHere = true;
-            var movementEvents = new List<MovementEvent>();
+            var movementEvents = new List<GameEvent>();
 
             var deltaX = to.X - from.X;
             var deltaY = to.Y - from.Y;
@@ -72,7 +72,7 @@ namespace Logic.Core.Graph
                     {
                         movementEvents = edge.MovementEvents.Select(@event =>
                        {
-                           if(@event.Type == MovementEvent.Types.Movement)
+                           if(@event.Type == GameEvent.Types.Movement)
                            {
                                @event.Destination = to;
                            }
@@ -85,7 +85,7 @@ namespace Logic.Core.Graph
                         maxDamage = edge.Damage;
                         movementEvents = edge.MovementEvents.Select(@event =>
                         {
-                            if (@event.Type == MovementEvent.Types.Movement)
+                            if (@event.Type == GameEvent.Types.Movement)
                             {
                                 @event.Destination = to;
                             }
@@ -116,7 +116,7 @@ namespace Logic.Core.Graph
                     {
                         movementEvents = edge.MovementEvents.Select(@event =>
                         {
-                            if (@event.Type == MovementEvent.Types.Movement)
+                            if (@event.Type == GameEvent.Types.Movement)
                             {
                                 @event.Destination = to;
                             }
@@ -129,7 +129,7 @@ namespace Logic.Core.Graph
                         maxDamage = edge.Damage;
                         movementEvents = edge.MovementEvents.Select(@event =>
                         {
-                            if (@event.Type == MovementEvent.Types.Movement)
+                            if (@event.Type == GameEvent.Types.Movement)
                             {
                                 @event.Destination = to;
                             }
@@ -164,8 +164,8 @@ namespace Logic.Core.Graph
                 return Edge.Empty();
             }
 
-            var movementEvents = new List<MovementEvent>();
-            movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = to });
+            var movementEvents = new List<GameEvent>();
+            movementEvents.Add(new GameEvent() { Type = GameEvent.Types.Movement, Destination = to });
 
             // check if there is an enemy creature and if I can pass through it
             var occupant = map.GetOccupantCreature(to.X, to.Y);
@@ -209,7 +209,7 @@ namespace Logic.Core.Graph
                 damage += -(heightDiff / 2) * 4;
                 if (damage > 0)
                 {
-                    movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
+                    movementEvents.Add(new GameEvent() { Type = GameEvent.Types.Falling, FallingHeight = Math.Abs(heightDiff / 2) });
                 }
             }
 
@@ -237,7 +237,7 @@ namespace Logic.Core.Graph
                     if(!enemy.ReactionUsed)
                     {
                         var attack = enemy.Attacks.FirstOrDefault(x => x.Range <= 2);
-                        movementEvents.Add(new MovementEvent() { Type = MovementEvent.Types.Attacks, Attack = attack } );
+                        movementEvents.Add(new GameEvent() { Type = GameEvent.Types.Attacks, Attack = attack } );
                         damage += enemy.Attacks
                             .Where(x => x.Range <= 2)
                             .OrderByDescending(x => x.Damage.Select(xx => xx.AverageDamage).Sum())

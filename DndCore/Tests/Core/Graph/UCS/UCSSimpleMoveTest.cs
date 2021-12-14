@@ -32,8 +32,8 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 0, 0);
             var from = map.GetCellInfo(0, 0);
             var to = map.GetCellInfo(1, 0);
-            var edge = new MemoryEdge(new List<CellInfo>() { from }, new List<MovementEvent>() {
-            new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,0) } }, to, 1, 0, true);
+            var edge = new MemoryEdge(new List<CellInfo>() { from }, new List<GameEvent>() {
+            new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(1,0) } }, to, 1, 0, true);
             var expected = new List<MemoryEdge>() { edge };
             var actual = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map);
             Assert.AreEqual(expected, actual);
@@ -48,11 +48,11 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 1, 0);
             var from = map.GetCellInfo(1, 0);
             var toOne = map.GetCellInfo(0, 0);
-            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, new List<MovementEvent>(){
-            new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(0,0) } }, toOne, 1, 0, true);
+            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, new List<GameEvent>(){
+            new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(0,0) } }, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from }, new List<MovementEvent>(){
-            new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,0) } }, toTwo, 1, 0, true);
+            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from }, new List<GameEvent>(){
+            new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(2,0) } }, toTwo, 1, 0, true);
             var expected = new List<MemoryEdge>() { edgeOne, edgeTwo };
             var actual = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map);
             Assert.AreEqual(expected, actual);
@@ -69,13 +69,13 @@ namespace Tests.Core.Graph.UCS
             var toOne = map.GetCellInfo(1, 0);
             var edgeOne = new MemoryEdge(
                 new List<CellInfo>() { from },
-                new List<MovementEvent>() {
-                    new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,0) }
+                new List<GameEvent>() {
+                    new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(1,0) }
                 }, toOne, 1, 0, true);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from, toOne }, new List<MovementEvent>() {
-                    new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,0) },
-                    new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,0) }
+            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from, toOne }, new List<GameEvent>() {
+                    new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(1,0) },
+                    new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(2,0) }
                 }, toTwo, 2, 0, true);
             Assert.AreEqual(new List<MemoryEdge>() { edgeOne, edgeTwo }, new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map));
         }
@@ -89,12 +89,12 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(creature, 0, 0);
             var prev = new List<CellInfo>() { map.GetCellInfo(0, 0) };
             var expected = new List<MemoryEdge>();
-            var events = new List<MovementEvent>();
+            var events = new List<GameEvent>();
             for (int i = 1; i <= 6; i++)
             {
                 var to = map.GetCellInfo(i, 0);
-                events.Add(new MovementEvent() { Type = MovementEvent.Types.Movement, Destination = to });
-                var edge = new MemoryEdge(new List<CellInfo>(prev), new List<MovementEvent>(events), to, i, 0, true);
+                events.Add(new GameEvent() { Type = GameEvent.Types.Movement, Destination = to });
+                var edge = new MemoryEdge(new List<CellInfo>(prev), new List<GameEvent>(events), to, i, 0, true);
                 expected.Add(edge);
                 prev.Add(edge.Destination);
             }
@@ -111,13 +111,13 @@ namespace Tests.Core.Graph.UCS
             map.AddCreature(WalkerCreatureMock.Build(1), 1, 0);
             var from = map.GetCellInfo(0, 0);
             var toOne = map.GetCellInfo(1, 0);
-            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, new List<MovementEvent>() {
-                    new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,0) }
+            var edgeOne = new MemoryEdge(new List<CellInfo>() { from }, new List<GameEvent>() {
+                    new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(1,0) }
                 }, toOne, 2, 0, false);
             var toTwo = map.GetCellInfo(2, 0);
-            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from, toOne }, new List<MovementEvent>() {
-                    new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(1,0) },
-                    new MovementEvent { Type = MovementEvent.Types.Movement, Destination = map.GetCellInfo(2,0) }
+            var edgeTwo = new MemoryEdge(new List<CellInfo>() { from, toOne }, new List<GameEvent>() {
+                    new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(1,0) },
+                    new GameEvent { Type = GameEvent.Types.Movement, Destination = map.GetCellInfo(2,0) }
                 }, toTwo, 3, 0, true);
             var expected = new List<MemoryEdge>() { edgeOne, edgeTwo };
             var actual = new UniformCostSearch(speedCalculator: new SpeedCalculator()).Search(from, map);

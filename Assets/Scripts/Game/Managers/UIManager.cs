@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     public CreaturePrefabProvider CreaturePrefabProvider;
     List<SpriteManager> tiles = new List<SpriteManager>();
 
-    GameObject creatureInTurn;
+    public static GameObject creatureInTurn;
     List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();
 
     void Start()
@@ -138,12 +138,31 @@ public class UIManager : MonoBehaviour
         yield return null;
     }
 
-
-    internal IEnumerator MoveAlong(IEnumerable<MovementEvent> events)
+    internal IEnumerator ShowGameEvents(List<GameEvent> events)
     {
         foreach (var eve in events)
         {
-            if (eve.Type == MovementEvent.Types.Movement)
+            if (eve.Type == GameEvent.Types.Attacks)
+            {
+                GameObject target = null;
+                foreach (var indicator in initiativeIndicators)
+                {
+                    if (indicator.Item1.Id == eve.Attacked.Id)
+                    {
+                        target = indicator.Item2.gameObject;
+                    }
+                }
+                var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
+                yield return StartCoroutine(RedEffect(renderers, 0.25f));
+            }
+        }
+    }
+
+    internal IEnumerator MoveAlong(IEnumerable<GameEvent> events)
+    {
+        foreach (var eve in events)
+        {
+            if (eve.Type == GameEvent.Types.Movement)
             {
                 var tile = tiles.First(tile => tile.Y == eve.Destination.X && tile.X == eve.Destination.Y);
                 var target = tile.transform.localPosition;
@@ -154,7 +173,7 @@ public class UIManager : MonoBehaviour
                     0.25f
                     ));
             }
-            if(eve.Type == MovementEvent.Types.Falling)
+            if(eve.Type == GameEvent.Types.Falling)
             {
                 var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
                 DndModule.Get<ILogger>().WriteLine(string.Format("Taking {0} fall damage", eve.Damage));
