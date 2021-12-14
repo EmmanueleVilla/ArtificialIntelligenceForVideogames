@@ -21,7 +21,7 @@ namespace Logic.Core.Battle.Actions.Spells
 
         public BattleActions ActionEconomy { get; set; }
 
-        public ActionsTypes ActionType => ActionsTypes.RequestSpell;
+        public ActionsTypes ActionType => ActionsTypes.ConfirmSpell;
 
         public string Description => "Confirm " + Spell.Name + " at " + "(" + Target.X + "," + Target.Y + ")";
     }

@@ -18,7 +18,7 @@ namespace Logic.Core.Battle.ActionBuilders
             if (creature is IFlurryOfBlows)
             {
                 var flurry = creature as IFlurryOfBlows;
-                if (!flurry.FlurryOfBlowsUsed && creature.LastAttackUsed != null && (creature as IKiPointsOwner).RemainingKiPoints > 0)
+                if (!flurry.FlurryOfBlowsUsed && !creature.BonusActionUsedNotToAttack && creature.LastAttackUsed != null && (creature as IKiPointsOwner).RemainingKiPoints > 0)
                 {
                     actions.Add(new FlurryOfBlowsAction());
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.DI;
 using Logic.Core.Actions;
 using Logic.Core.Creatures.Scores;
@@ -13,13 +14,14 @@ namespace Logic.Core.Creatures
         private readonly IDiceRoller roller;
         private readonly Random random;
         public int Id { get; private set; }
+        private List<Speed> _remainingMovement;
 
         protected ACreature(IDiceRoller roller = null, Random random = null)
         {
             this.roller = roller ?? DndModule.Get<IDiceRoller>();
             this.random = random ?? DndModule.Get<Random>();
             Id = this.random.Next(0, int.MaxValue);
-            RemainingMovement = new List<Speed>(Movements);
+            _remainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             RemainingAttacksPerBonusAction = 0;
@@ -28,7 +30,7 @@ namespace Logic.Core.Creatures
 
         public virtual void ResetTurn()
         {
-            RemainingMovement = new List<Speed>(Movements);
+            _remainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             LastAttackUsed = null;
@@ -55,7 +57,19 @@ namespace Logic.Core.Creatures
 
         //Implemented fields
         public virtual int RolledInitiative { get; private set; }
-        public List<Speed> RemainingMovement { get; set; }
+        public List<Speed> RemainingMovement {
+            get {
+                var minus = 0;
+                if(TemporaryEffectsList.FirstOrDefault(x => x.Item3 == TemporaryEffects.SpeedReducedByTwo) != null)
+                {
+                    minus = 2;
+                }
+                return _remainingMovement.Select(x => new Speed(x.Item1, x.Item2 - minus)).ToList();
+            }
+            set {
+                _remainingMovement = value;
+            }
+        }
         public bool Disangaged { get; set; }
         public int RemainingAttacksPerAction { get; set; }
         public bool ActionUsedNotToAttack { get; set; }

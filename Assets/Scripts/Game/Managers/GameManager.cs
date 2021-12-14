@@ -8,6 +8,7 @@ using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Abilities.Spells;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
 using System;
@@ -51,9 +52,12 @@ public class GameManager : MonoBehaviour
 
     bool InMovementMode = false;
     bool InSpellMode = false;
+    ISpell spell = null;
     public void EnterSpellMode(RequestSpellAction action)
     {
+        Debug.Log("enter spell mode");
         InSpellMode = true;
+        spell = action.Spell;
         ActionsManager.SetActions(
             new List<IAvailableAction>() {
                 new CancelSpellAction()
@@ -110,6 +114,14 @@ public class GameManager : MonoBehaviour
     {
         ActionsManager.SetActions(new List<IAvailableAction>());
         var events = Battle.Attack(confirmAttackAction);
+        yield return this.StartCoroutine(UIManager.ShowGameEvents(events));
+        ExitAttackMode();
+    }
+
+    internal IEnumerator ConfirmSpell(ConfirmSpellAction confirmSpellAction)
+    {
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        var events = Battle.Spell(confirmSpellAction);
         yield return this.StartCoroutine(UIManager.ShowGameEvents(events));
         ExitAttackMode();
     }
@@ -189,6 +201,17 @@ public class GameManager : MonoBehaviour
 
     internal void OnCellClicked(int x, int y)
     {
+        if(InSpellMode)
+        {
+            var actions = new List<IAvailableAction>();
+            actions.Add(new ConfirmSpellAction(Battle.GetCreatureInTurn(), spell)
+            {
+                Target = map.GetCellInfo(x, y)
+            }); ;
+            actions.Add(new CancelSpellAction());
+            ActionsManager.SetActions(actions);
+        }
+
         if(InAttackMode)
         {
             var creature = map.GetOccupantCreature(y, x);

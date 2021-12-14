@@ -68,6 +68,9 @@ public class ActionsManager : MonoBehaviour
             case ActionsTypes.RequestSpell:
                 GameManager.EnterSpellMode(Actions[index] as RequestSpellAction);
                 break;
+            case ActionsTypes.ConfirmSpell:
+                this.StartCoroutine(GameManager.ConfirmSpell(Actions[index] as ConfirmSpellAction));
+                break;
             case ActionsTypes.CancelSpell:
                 GameManager.ExitSpellMode();
                 break;

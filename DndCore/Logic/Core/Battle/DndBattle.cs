@@ -9,8 +9,10 @@ using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
+using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Abilities;
+using Logic.Core.Creatures.Abilities.Spells;
 using Logic.Core.Creatures.Classes;
 using Logic.Core.Dice;
 using Logic.Core.Graph;
@@ -329,6 +331,42 @@ namespace Logic.Core
                     Type = GameEvent.Types.SelfAbility
                 }
             };
+        }
+
+        public List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction)
+        {
+            var list = new List<GameEvent>();
+
+            if(confirmSpellAction.Spell is FalseLife)
+            {
+                var temporary = Roller.Roll(RollTypes.Normal, 1, 4, 4);
+                var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
+                creature.TemporaryHitPoints += temporary;
+                GetCreatureInTurn().ActionUsedNotToAttack = true;
+            }
+
+            if (confirmSpellAction.Spell is MagicMissile)
+            {
+                var damage = Roller.Roll(RollTypes.Normal, 1, 4, 1) * 3;
+                var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
+                creature.CurrentHitPoints -= damage;
+                GetCreatureInTurn().ActionUsedNotToAttack = true;
+            }
+
+            if (confirmSpellAction.Spell is RayOfFrost)
+            {
+                var damage = Roller.Roll(RollTypes.Normal, 1, 8, 0);
+                var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
+                creature.CurrentHitPoints -= damage;
+                creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(
+                    confirmSpellAction.Caster,
+                    1,
+                    TemporaryEffects.SpeedReducedByTwo
+                    ));
+                GetCreatureInTurn().ActionUsedNotToAttack = true;
+            }
+
+            return list;
         }
     }
 }
