@@ -30,6 +30,7 @@ namespace Core.DI
         {
             singletons.Clear();
             factories.Clear();
+            singletonsFactories.Clear();
 
             singletonsFactories.Add(typeof(Random), () => new Random());
             singletonsFactories.Add(typeof(IDndBattle), () => new DndBattle());

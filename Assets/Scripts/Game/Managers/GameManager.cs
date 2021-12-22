@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Battle = DndModule.Get<IDndBattle>();
+        var newBattle = Battle.Copy();
     }
 
     IEnumerator SetAvailableActions()

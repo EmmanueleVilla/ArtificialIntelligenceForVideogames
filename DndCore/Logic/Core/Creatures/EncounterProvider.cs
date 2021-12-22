@@ -1,23 +1,22 @@
-using Core.DI;
-using Core.Map;
-using Logic.Core.Creatures;
+﻿using Core.DI;
 using Logic.Core.Creatures.Bestiary;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Random = System.Random;
+using System.Linq;
+using System.Text;
 
-public class EncounterProvider: MonoBehaviour
+namespace Logic.Core.Creatures
 {
-    private int ENCOUNTERS_SIZE = 2;
-    internal List<ICreature> BuildEncounter()
+    public class EncounterProvider
     {
-        var encounterIndex = DndModule.Get<Random>().Next(0, ENCOUNTERS_SIZE);
-        switch(encounterIndex)
+        private int ENCOUNTERS_SIZE = 2;
+        internal List<ICreature> BuildEncounter()
         {
-            case 0:
-                return new List<ICreature>() {
+            var encounterIndex = DndModule.Get<Random>().Next(0, ENCOUNTERS_SIZE);
+            switch (encounterIndex)
+            {
+                case 0:
+                    return new List<ICreature>() {
                     new RatmanWithBow(),
                     new RatmanWithClaw(),
                     new RatmanWithDagger(),
@@ -27,9 +26,9 @@ public class EncounterProvider: MonoBehaviour
                     new HumanFemaleMonk(),
                     new DwarfMaleWarrior(),
                     new ElfFemaleWizard()
-                };
-            case 1:
-                return new List<ICreature>() {
+                }.Select(x => x.Init()).ToList();
+                case 1:
+                    return new List<ICreature>() {
                     new RatmanWithBow(),
                     new LargeMinotaur(),
                     new RatmanWithStaff(),
@@ -38,8 +37,10 @@ public class EncounterProvider: MonoBehaviour
                     new HumanFemaleMonk(),
                     new DwarfMaleWarrior(),
                     new ElfFemaleWizard()
-                };
+                }.Select(x => x.Init()).ToList();
+            }
+            throw new Exception("Invalid encounterIndex " + encounterIndex);
         }
-        throw new Exception("Invalid encounterIndex " + encounterIndex);
     }
+
 }

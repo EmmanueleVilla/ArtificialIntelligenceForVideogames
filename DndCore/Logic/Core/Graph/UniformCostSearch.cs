@@ -43,6 +43,10 @@ namespace Logic.Core.Graph
         {
             var result = new List<MemoryEdge>();
             var creature = from.Creature;
+            if(creature == null || creature.RemainingMovement == null)
+            {
+                creature.ToString();
+            }
             var movements = creature.RemainingMovement;
             if (movements.TrueForAll(x => x.Item2 <= 0))
             {

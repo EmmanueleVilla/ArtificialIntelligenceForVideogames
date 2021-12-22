@@ -17,30 +17,33 @@ using Logic.Core.Creatures.Classes;
 using Logic.Core.Dice;
 using Logic.Core.Graph;
 using Logic.Core.Movements;
+using Newtonsoft.Json;
 
 namespace Logic.Core
 {
     public class DndBattle: IDndBattle
     {
-        private IMap map;
-        private int turnIndex = 0;
+        public IMap map;
+        public int turnIndex = 0;
 
-        private List<ICreature> initiativeOrder = new List<ICreature>();
+        public List<int> initiativeOrder = new List<int>();
 
-        private UniformCostSearch Search;
-        private IDiceRoller Roller;
-        private ILogger Logger;
-        private IActionBuildersWrapper ActionBuildersWrapper;
+        public UniformCostSearch Search;
+        public IDiceRoller Roller;
+        public ILogger Logger;
+        public IActionBuildersWrapper ActionBuildersWrapper;
 
-        List<IAvailableAction> _cachedActions = new List<IAvailableAction>();
-        List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
+        public List<IAvailableAction> _cachedActions = new List<IAvailableAction>();
+        public List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
+
+        public IMap Map => map;
 
         public IDndBattle Copy()
         {
-            var copy = new DndBattle(Roller, Search, ActionBuildersWrapper, Logger);
-            copy.turnIndex = turnIndex;
-            //copy.initiativeOrder = initiativeOrder.Select(x => x.Copy()).ToList();
-            return copy;
+            var settings = new JsonSerializerSettings();
+            settings.TypeNameHandling = TypeNameHandling.Auto;
+            var serialized = JsonConvert.SerializeObject(this, settings);
+            return JsonConvert.DeserializeObject<DndBattle>(serialized, settings);
         }
 
         public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, IActionBuildersWrapper actionBuildersWrapper = null, ILogger logger = null) {
@@ -50,20 +53,23 @@ namespace Logic.Core
             ActionBuildersWrapper = actionBuildersWrapper ?? DndModule.Get<IActionBuildersWrapper>();
         }
 
-        public List<ICreature> Init(IMap map)
+        public List<int> Init(IMap map)
         {
             this.map = map;
+            var temp = new List<ICreature>();
             foreach (var creature in map.Creatures)
             {
-                initiativeOrder.Add(creature);
+                temp.Add(creature);
             }
-            initiativeOrder.Sort(new CreatureInitiativeComparer());
-            return initiativeOrder;
+            temp.Sort(new CreatureInitiativeComparer());
+            var ids = temp.Select(x => x.Id).ToList();
+            initiativeOrder = new List<int>(ids);
+            return ids;
         }
 
         public ICreature GetCreatureInTurn()
         {
-            return initiativeOrder[turnIndex];
+            return map.Creatures.First(x => x.Id == initiativeOrder[turnIndex]);
         }
 
         public void BuildAvailableActions(ICreature creature = null)
@@ -103,11 +109,11 @@ namespace Logic.Core
                 creature.TemporaryEffectsList = creature.TemporaryEffectsList.Select( x =>
                 {
                     var remainingTurns = x.Item2;
-                    if (x.Item1 == creatureInTurn)
+                    if (x.Item1 == creatureInTurn.Id)
                     {
                         remainingTurns--;
                     }
-                    var newTuple = new Tuple<ICreature, int, TemporaryEffects>(x.Item1, remainingTurns, x.Item3);
+                    var newTuple = new Tuple<int, int, TemporaryEffects>(x.Item1, remainingTurns, x.Item3);
                     
                     return newTuple;
                 }).Where(x => x.Item2 > 0).ToList();
@@ -187,7 +193,7 @@ namespace Logic.Core
             var toHit = Roller.Roll(rollType, 1, 20, confirmAttackAction.Attack.ToHit);
             Logger.WriteLine(string.Format("Roll Type {0}, rolled {1} to hit", rollType, toHit));
 
-            var isCritical = toHit >= confirmAttackAction.AttackingCreature.CriticalThreshold;
+            var isCritical = (toHit - confirmAttackAction.Attack.ToHit) >= confirmAttackAction.AttackingCreature.CriticalThreshold;
             if(toHit >= confirmAttackAction.TargetCreature.ArmorClass || isCritical)
             {
                 var totalDamage = 0;
@@ -301,7 +307,7 @@ namespace Logic.Core
                     }
                     break;
                 case ActionsTypes.PatientDefence:
-                    creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
+                    creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(creature.Id, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
                     var defAction = availableAction as PatientDefenseAction;
                     DndModule.Get<ILogger>().WriteLine(string.Format("Used Patient Defense,  Disadvantage to suffered attacks until your next turn, -1 Ki Point"));
                     creature.BonusActionUsedNotToAttack = true;
@@ -312,11 +318,11 @@ namespace Logic.Core
                     }
                     break;
                 case ActionsTypes.Dodge:
-                    creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
+                    creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(creature.Id, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
                     creature.ActionUsedNotToAttack = true;
                     break;
                 case ActionsTypes.FightingSpirit:
-                    creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(creature, 1, TemporaryEffects.AdvantageToAttacks));
+                    creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(creature.Id, 1, TemporaryEffects.AdvantageToAttacks));
                     creature.BonusActionUsedNotToAttack = true;
                     var spirit = creature as IFightingSpirit;
                     if(spirit != null)
@@ -373,8 +379,8 @@ namespace Logic.Core
                 var damage = Roller.Roll(RollTypes.Normal, 1, 8, 0);
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
                 creature.CurrentHitPoints -= damage;
-                creature.TemporaryEffectsList.Add(new Tuple<ICreature, int, TemporaryEffects>(
-                    confirmSpellAction.Caster,
+                creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
+                    confirmSpellAction.Caster.Id,
                     1,
                     TemporaryEffects.SpeedReducedByTwo
                     ));

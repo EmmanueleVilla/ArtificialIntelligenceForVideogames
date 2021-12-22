@@ -34,9 +34,11 @@ namespace Tests.Core.DndBattles.TemporaryEffectsTests
                 }
             }
             var monk = new HumanFemaleMonk(new DiceRoller(), new Random());
+            monk.Init();
             map.AddCreature(monk, 1, 1);
 
             var enemy = new RatmanWithBow(new DiceRoller(), new Random());
+            enemy.Init();
             map.AddCreature(enemy, 2, 2);
 
             battle.Init(map);
@@ -51,14 +53,14 @@ namespace Tests.Core.DndBattles.TemporaryEffectsTests
             battle.UseAbility(new PatientDefenseAction());
 
             Assert.AreEqual(1, creature.TemporaryEffectsList.Count);
-            Assert.AreEqual(creature, creature.TemporaryEffectsList[0].Item1);
+            Assert.AreEqual(creature.Id, creature.TemporaryEffectsList[0].Item1);
             Assert.AreEqual(1, creature.TemporaryEffectsList[0].Item2);
             Assert.AreEqual(TemporaryEffects.DisadvantageToSufferedAttacks, creature.TemporaryEffectsList[0].Item3);
 
             battle.NextTurn();
 
             Assert.AreEqual(1, creature.TemporaryEffectsList.Count);
-            Assert.AreEqual(creature, creature.TemporaryEffectsList[0].Item1);
+            Assert.AreEqual(creature.Id, creature.TemporaryEffectsList[0].Item1);
             Assert.AreEqual(1, creature.TemporaryEffectsList[0].Item2);
             Assert.AreEqual(TemporaryEffects.DisadvantageToSufferedAttacks, creature.TemporaryEffectsList[0].Item3);
 

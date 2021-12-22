@@ -23,7 +23,7 @@ namespace Logic.Core.Creatures
 
         int Size { get; }
 
-        List<Tuple<ICreature, int, TemporaryEffects>> TemporaryEffectsList { get; set; }
+        List<Tuple<int, int, TemporaryEffects>> TemporaryEffectsList { get; set; }
 
         // Defense
 
@@ -73,5 +73,8 @@ namespace Logic.Core.Creatures
 
         int RolledInitiative { get; }
         void ResetTurn();
+
+        // Init ---------------------------------------------------------------------------------
+        ICreature Init();
     }
 }

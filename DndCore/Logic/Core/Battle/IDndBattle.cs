@@ -12,7 +12,8 @@ namespace Logic.Core.Battle
     public interface IDndBattle
     {
         List<CellInfo> GetPathTo(MemoryEdge edge);
-        List<ICreature> Init(IMap map);
+        List<int> Init(IMap map);
+        IMap Map { get; }
         ICreature GetCreatureInTurn();
         void NextTurn();
         void BuildAvailableActions(ICreature creature = null);

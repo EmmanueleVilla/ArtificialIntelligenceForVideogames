@@ -30,6 +30,10 @@ namespace Logic.Core.Battle
 
         public override bool Equals(object obj)
         {
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
             var other = (GameEvent)obj;
             return Type == other.Type
                 && Destination.X == other.Destination.X

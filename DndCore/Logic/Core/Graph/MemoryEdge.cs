@@ -46,6 +46,10 @@ namespace Logic.Core.Graph
 
         public override bool Equals(object obj)
         {
+            if(obj.GetType() != this.GetType())
+            {
+                return false;
+            }
             var other = (MemoryEdge)obj;
             return CanEndMovementHere == other.CanEndMovementHere
                 && Enumerable.SequenceEqual(Events, other.Events)

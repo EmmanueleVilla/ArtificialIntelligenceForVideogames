@@ -38,9 +38,11 @@ namespace Tests.Core.DndBattles.Monk
                 }
             }
             var monk = new HumanFemaleMonk(new DiceRoller(), new Random());
+            monk.Init();
             map.AddCreature(monk, 1, 1);
 
             var enemy = new RatmanWithBow(new DiceRoller(), new Random());
+            enemy.Init();
             map.AddCreature(enemy, 2, 2);
 
             battle.Init(map);

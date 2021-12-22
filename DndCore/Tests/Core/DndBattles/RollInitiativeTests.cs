@@ -22,7 +22,7 @@ namespace Tests.Core.DndBattles
                 new SpeedCalculator(), new ConsoleLogger()));
             var expected = new List<int>() { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
             var map = new InitiativeListMap();
-            var result = battle.Init(map).Select(x => x.RolledInitiative).ToList();
+            var result = battle.Init(map);
             Assert.AreEqual(expected, result);
         }
     }

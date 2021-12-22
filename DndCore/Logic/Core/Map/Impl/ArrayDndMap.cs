@@ -11,7 +11,7 @@ namespace Logic.Core.Map.Impl
     {
         public readonly int Width;
         public readonly int Height;
-        private CellInfo[,] cells;
+        public CellInfo[,] cells;
         public List<CellInfo> occupiedCells = new List<CellInfo>();
         public Dictionary<int,ICreature> occupiedCellsDictionary = new Dictionary<int, ICreature>();
         public List<Tuple<ICreature, List<CellInfo>>> threateningAreas = new List<Tuple<ICreature, List<CellInfo>>>();
@@ -174,7 +174,7 @@ namespace Logic.Core.Map.Impl
                 for (int j = 0; j < Height; j++)
                 {
                     var cell = GetCellInfo(i, j);
-                    if (cell.Creature == creature)
+                    if (cell.Creature != null && cell.Creature.Id == creature.Id)
                     {
                         return cell;
                     }

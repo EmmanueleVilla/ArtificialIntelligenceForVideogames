@@ -1,4 +1,5 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
 using Core.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle.ActionBuilders;
@@ -19,7 +20,8 @@ namespace Tests.Core.GOAP.Actions
         [Test]
         public void ActionSequenceBuilderBaseTest()
         {
-            var battle = new DndBattle(new ZeroRoller(), new UniformCostSearch(
+            DndModule.RegisterRules(false);
+            var battle = new DndBattle(new AlwaysHitRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new ConsoleLogger()), new ActionBuildersWrapper(), new ConsoleLogger());
             var map = new ArrayDndMap(10, 10, CellInfo.Empty());
             for (int i = 0; i < 5; i++)
@@ -30,9 +32,11 @@ namespace Tests.Core.GOAP.Actions
                 }
             }
             var monk = new HumanFemaleMonk(new DiceRoller(new Random()), new Random());
+            monk.Init();
             map.AddCreature(monk, 1, 1);
 
             var enemy = new RatmanWithBow(new DiceRoller(new Random()), new Random());
+            enemy.Init();
             map.AddCreature(enemy, 2, 2);
 
             battle.Init(map);

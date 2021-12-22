@@ -6,6 +6,6 @@ namespace Logic.Core.GOAP.Actions
 {
     interface IActionSequenceBuilder
     {
-        List<List<IAvailableAction>> GetAvailableActions(IDndBattle battle);
+        List<ActionList> GetAvailableActions(IDndBattle battle);
     }
 }

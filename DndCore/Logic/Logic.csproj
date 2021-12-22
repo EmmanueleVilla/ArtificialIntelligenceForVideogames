@@ -19,6 +19,9 @@
     <Folder Include="Core\Creatures\Bestiary\Characters\" />
     <Folder Include="Core\Creatures\Scores\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)\..\Assets\$(ProjectName).dll&quot;" />
   </Target>

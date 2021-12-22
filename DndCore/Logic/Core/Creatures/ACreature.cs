@@ -13,19 +13,24 @@ namespace Logic.Core.Creatures
     {
         private readonly IDiceRoller roller;
         private readonly Random random;
-        public int Id { get; private set; }
-        private List<Speed> _remainingMovement;
+        public int Id { get; set; }
+        public List<Speed> _remainingMovement;
 
-        protected ACreature(IDiceRoller roller = null, Random random = null)
+        protected ACreature(IDiceRoller roller = null, Random random = null, int id = -1)
         {
             this.roller = roller ?? DndModule.Get<IDiceRoller>();
             this.random = random ?? DndModule.Get<Random>();
+            this.Id = id;
+        }
+        public ICreature Init()
+        {
             Id = this.random.Next(0, int.MaxValue);
             _remainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             RemainingAttacksPerBonusAction = 0;
             RollInitiative();
+            return this;
         }
         
         public virtual void ResetTurn()
@@ -81,7 +86,7 @@ namespace Logic.Core.Creatures
         public int TemporaryHitPoints { get; set; }
         public string LastAttackUsed { get; set; }
         public int RemainingAttacksPerBonusAction { get; set; }
-        public List<Tuple<ICreature, int, TemporaryEffects>> TemporaryEffectsList { get; set; } = new List<Tuple<ICreature, int, TemporaryEffects>>();
+        public List<Tuple<int, int, TemporaryEffects>> TemporaryEffectsList { get; set; } = new List<Tuple<int, int, TemporaryEffects>>();
 
         private int RollInitiative()
         {
@@ -91,6 +96,10 @@ namespace Logic.Core.Creatures
 
         public override bool Equals(object obj)
         {
+            if(obj as ICreature == null)
+            {
+                return false;
+            }
             return Id == (obj as ICreature).Id;
         }
 
