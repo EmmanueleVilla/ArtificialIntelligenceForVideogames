@@ -9,6 +9,6 @@ namespace Logic.Core.Battle
 {
     public interface IActionsBuilder
     {
-        List<IAvailableAction> Build(IMap map, ICreature creature);
+        List<IAvailableAction> Build(IDndBattle dndBattle, IMap map, ICreature creature);
     }
 }

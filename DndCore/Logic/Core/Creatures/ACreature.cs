@@ -27,7 +27,7 @@ namespace Logic.Core.Creatures
             RemainingAttacksPerBonusAction = 0;
             RollInitiative();
         }
-
+        
         public virtual void ResetTurn()
         {
             _remainingMovement = new List<Speed>(Movements);

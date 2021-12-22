@@ -1,4 +1,5 @@
-﻿using Logic.Core.Movements;
+﻿using Core.Map;
+using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Logic.Core.Battle.Actions
     {
         public BattleActions ActionEconomy { get; set; } = BattleActions.Free;
         public ActionsTypes ActionType => ActionsTypes.RequestMovement;
-
+        public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => "(M) " + string.Join(",", RemainingMovement.Select(x => string.Format(x.Item1 +"="+(x.Item2*1.5)+"m")));
 
         public List<Speed> RemainingMovement = new List<Speed>();

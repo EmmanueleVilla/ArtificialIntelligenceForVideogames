@@ -32,6 +32,17 @@ namespace Logic.Core
         private ILogger Logger;
         private IActionBuildersWrapper ActionBuildersWrapper;
 
+        List<IAvailableAction> _cachedActions = new List<IAvailableAction>();
+        List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
+
+        public IDndBattle Copy()
+        {
+            var copy = new DndBattle(Roller, Search, ActionBuildersWrapper, Logger);
+            copy.turnIndex = turnIndex;
+            //copy.initiativeOrder = initiativeOrder.Select(x => x.Copy()).ToList();
+            return copy;
+        }
+
         public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, IActionBuildersWrapper actionBuildersWrapper = null, ILogger logger = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
             Roller = roller ?? DndModule.Get<IDiceRoller>();
@@ -55,23 +66,26 @@ namespace Logic.Core
             return initiativeOrder[turnIndex];
         }
 
-        //TODO Move this to the job
-        public List<IAvailableAction> GetAvailableActions()
+        public void BuildAvailableActions(ICreature creature = null)
         {
-            var creature = GetCreatureInTurn();
-            
-            var actions = new List<IAvailableAction>();
+            creature = creature ?? GetCreatureInTurn();
 
-            ActionBuildersWrapper.ActionBuilders.ForEach(x => actions.AddRange(x.Build(map, creature)));
+            _cachedActions = new List<IAvailableAction>();
 
-            actions.Add(new EndTurnAction());
+            ActionBuildersWrapper.ActionBuilders.ForEach(x => _cachedActions.AddRange(x.Build(this, map, creature)));
 
-            return actions;
+            _cachedActions.Add(new EndTurnAction());
+        }
+
+        public List<IAvailableAction> GetAvailableActions(ICreature creature = null)
+        {
+            return _cachedActions;
         }
 
         public void NextTurn()
         {
             _reachableCellCache.Clear();
+            _cachedActions.Clear();
 
             turnIndex++;
             if(turnIndex >= map.Creatures.Count)
@@ -99,13 +113,12 @@ namespace Logic.Core
                 }).Where(x => x.Item2 > 0).ToList();
             }
         }
+        
 
-        List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
-
-        public void CalculateReachableCells()
+        public void CalculateReachableCells(ICreature creature = null)
         {
-            var creature = GetCreatureInTurn();
-            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map);
+            creature = creature ?? GetCreatureInTurn();
+            _reachableCellCache = Search.Search(map.GetCellOccupiedBy(creature), map).Where(x => x.Speed > 0 && x.CanEndMovementHere).ToList();
         }
 
         public List<MemoryEdge> GetReachableCells()

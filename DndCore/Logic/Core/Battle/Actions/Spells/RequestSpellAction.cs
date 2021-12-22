@@ -12,7 +12,7 @@ namespace Logic.Core.Battle.Actions.Spells
         public ICreature Caster;
         public ISpell Spell;
 
-        public List<CellInfo> ReachableCells = new List<CellInfo>();
+        public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public RequestSpellAction(ICreature caster, ISpell spell)
         {
             Caster = caster;

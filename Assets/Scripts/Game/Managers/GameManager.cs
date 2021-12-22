@@ -50,6 +50,24 @@ public class GameManager : MonoBehaviour
         Battle = DndModule.Get<IDndBattle>();
     }
 
+    IEnumerator SetAvailableActions()
+    {
+        // Set up the job data
+        var jobData = new AvailableActionsJob();
+
+        // Schedule the job
+        JobHandle handle = jobData.Schedule();
+
+        while (!handle.IsCompleted)
+        {
+            yield return null;
+        }
+
+        handle.Complete();
+
+        ActionsManager.SetActions(Battle.GetAvailableActions());
+    }
+
     bool InMovementMode = false;
     bool InSpellMode = false;
     ISpell spell = null;
@@ -71,7 +89,7 @@ public class GameManager : MonoBehaviour
             new List<IAvailableAction>() {
                 new CancelMovementAction()
             });
-        this.StartCoroutine(StartMovementMode());
+        StartMovementMode();
     }
 
     bool InAttackMode = false;
@@ -107,7 +125,8 @@ public class GameManager : MonoBehaviour
     internal void UseAbility(IAvailableAction availableAction)
     {
         Battle.UseAbility(availableAction);
-        ActionsManager.SetActions(Battle.GetAvailableActions());
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
     }
 
     internal IEnumerator ConfirmAttack(ConfirmAttackAction confirmAttackAction)
@@ -129,43 +148,32 @@ public class GameManager : MonoBehaviour
     public void ExitAttackMode()
     {
         InAttackMode = false;
-        ActionsManager.SetActions(Battle.GetAvailableActions());
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
         UIManager.ResetAttacks();
     }
 
     internal void ExitSpellMode()
     {
         InSpellMode = false;
-        ActionsManager.SetActions(Battle.GetAvailableActions());
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
         UIManager.ResetAttacks();
     }
 
     public void ExitMovementMode()
     {
         InMovementMode = false;
-        ActionsManager.SetActions(Battle.GetAvailableActions());
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
         UIManager.ResetCellsUI();
         NextMovementAvailableCells.Clear();
     }
 
     List<MemoryEdge> NextMovementAvailableCells = new List<MemoryEdge>();
 
-    IEnumerator StartMovementMode()
+    void StartMovementMode()
     {
-
-        // Set up the job data
-        var jobData = new MovementSearchJob();
-
-        // Schedule the job
-        JobHandle handle = jobData.Schedule();
-
-        while (!handle.IsCompleted)
-        {
-            yield return null;
-        }
-
-        handle.Complete();
-
         NextMovementAvailableCells = Battle.GetReachableCells().Where(x => x.Speed > 0 && x.CanEndMovementHere).ToList();
         UIManager.HighlightMovement(NextMovementAvailableCells);
     }
@@ -185,7 +193,8 @@ public class GameManager : MonoBehaviour
         var creature = Battle.GetCreatureInTurn();
         TurnStarted?.Invoke(this, creature);
         DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
-        ActionsManager.SetActions(Battle.GetAvailableActions());
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
     }
 
     internal void NextTurn()
@@ -194,7 +203,8 @@ public class GameManager : MonoBehaviour
         var creature = Battle.GetCreatureInTurn();
         DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
         TurnStarted?.Invoke(this, creature);
-        ActionsManager.SetActions(Battle.GetAvailableActions());
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
     }
 
     List<Color> colors = new List<Color>() { Color.green, Color.yellow, Color.red, Color.magenta, Color.blue, Color.black };

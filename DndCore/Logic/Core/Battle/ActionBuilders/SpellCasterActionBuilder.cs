@@ -11,7 +11,7 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class SpellCasterActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var caster = creature as ISpellCaster;

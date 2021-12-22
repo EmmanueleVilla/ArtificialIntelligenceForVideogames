@@ -15,12 +15,14 @@ namespace Logic.Core.Battle
         List<ICreature> Init(IMap map);
         ICreature GetCreatureInTurn();
         void NextTurn();
-        List<IAvailableAction> GetAvailableActions();
+        void BuildAvailableActions(ICreature creature = null);
+        List<IAvailableAction> GetAvailableActions(ICreature creature = null);
         List<MemoryEdge> GetReachableCells();
-        void CalculateReachableCells();
+        void CalculateReachableCells(ICreature creature = null);
         IEnumerable<GameEvent> MoveTo(MemoryEdge end);
         List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction);
         List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction);
         List<GameEvent> UseAbility(IAvailableAction availableAction);
+        IDndBattle Copy();
     }
 }

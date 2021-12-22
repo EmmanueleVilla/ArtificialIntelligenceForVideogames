@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Map;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +10,6 @@ namespace Logic.Core.Battle.Actions.Abilities
         public BattleActions ActionEconomy { get; set; } = BattleActions.BonusAction;
         public ActionsTypes ActionType => ActionsTypes.PatientDefence;
         public string Description => "(" + ActionEconomy + ") Patient Defense";
+        public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>() { CellInfo.Empty() };
     }
 }

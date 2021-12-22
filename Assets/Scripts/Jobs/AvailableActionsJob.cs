@@ -8,12 +8,12 @@ using UnityEngine;
 namespace Assets.Scripts.Jobs
 {
     
-    struct MovementSearchJob : IJob
+    struct AvailableActionsJob : IJob
     {
         public void Execute()
         {
             var battle = DndModule.Get<IDndBattle>();
-            battle.CalculateReachableCells();
+            battle.BuildAvailableActions();
         }
     }
 }

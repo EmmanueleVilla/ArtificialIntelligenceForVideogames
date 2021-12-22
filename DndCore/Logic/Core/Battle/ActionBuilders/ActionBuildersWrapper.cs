@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Logic.Core.Battle.ActionBuilders
 {
-    class ActionBuildersWrapper : IActionBuildersWrapper
+    public class ActionBuildersWrapper : IActionBuildersWrapper
     {
         public List<IActionsBuilder> ActionBuilders => new List<IActionsBuilder>()
         {

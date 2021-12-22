@@ -48,7 +48,7 @@ namespace Tests.Core.DndBattles.Monk
             if(creature.Id != monk.Id) {
                 battle.NextTurn();
             }
-
+            battle.BuildAvailableActions();
             var actions = battle.GetAvailableActions();
             Assert.True(actions.All(action => action.Description != "Flurry of blows"));
 
@@ -60,6 +60,7 @@ namespace Tests.Core.DndBattles.Monk
                 AttackingCreature = monk
             });
 
+            battle.BuildAvailableActions();
             actions = battle.GetAvailableActions();
 
             // I can't use Flurry of blows
@@ -73,6 +74,7 @@ namespace Tests.Core.DndBattles.Monk
                 AttackingCreature = monk
             });
 
+            battle.BuildAvailableActions();
             actions = battle.GetAvailableActions();
 
             // I can use Flurry of blows
@@ -90,6 +92,7 @@ namespace Tests.Core.DndBattles.Monk
                 ActionEconomy = BattleActions.BonusAction
             });
 
+            battle.BuildAvailableActions();
             actions = battle.GetAvailableActions();
 
             // I don't have other bonus action attacks
@@ -97,6 +100,7 @@ namespace Tests.Core.DndBattles.Monk
 
             result = battle.UseAbility(new FlurryOfBlowsAction());
 
+            battle.BuildAvailableActions();
             actions = battle.GetAvailableActions();
 
             // Now I have an additional bonus attack
@@ -110,6 +114,7 @@ namespace Tests.Core.DndBattles.Monk
                 ActionEconomy = BattleActions.BonusAction
             });
 
+            battle.BuildAvailableActions();
             actions = battle.GetAvailableActions();
 
             // And no more

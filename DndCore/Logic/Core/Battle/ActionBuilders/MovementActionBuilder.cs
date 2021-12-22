@@ -10,13 +10,15 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class MovementActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var movementAction = new RequestMovementAction() { RemainingMovement = creature.RemainingMovement };
 
+            battle.CalculateReachableCells();
             if (movementAction.RemainingMovement.Any(x => x.Item2 > 0))
             {
+                movementAction.ReachableCells = battle.GetReachableCells().Select(x => x.Destination).ToList();
                 actions.Add(movementAction);
             }
             return actions;

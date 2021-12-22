@@ -12,7 +12,7 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class MartialArtsActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var position = map.GetCellOccupiedBy(creature);
