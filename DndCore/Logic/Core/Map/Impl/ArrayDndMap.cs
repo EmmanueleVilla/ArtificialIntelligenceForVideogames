@@ -46,22 +46,27 @@ namespace Logic.Core.Map.Impl
             return newMap;
         }
 
+        private List<ICreature> creatures;
+
         public List<ICreature> Creatures
         { 
             get {
-                var list = new List<ICreature>();
-                for (int i = 0; i < Width; i++)
+                if (creatures == null)
                 {
-                    for (int j = 0; j < Height; j++)
+                    creatures = new List<ICreature>();
+                    for (int i = 0; i < Width; i++)
                     {
-                        var cell = GetCellInfo(i, j);
-                        if(cell.Creature != null)
+                        for (int j = 0; j < Height; j++)
                         {
-                            list.Add(cell.Creature);
+                            var cell = GetCellInfo(i, j);
+                            if (cell.Creature != null)
+                            {
+                                creatures.Add(cell.Creature);
+                            }
                         }
                     }
                 }
-                return list;
+                return creatures;
             }
         }
 
@@ -182,6 +187,8 @@ namespace Logic.Core.Map.Impl
 
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
 
+            creatures = null;
+
             return true;
         }
 
@@ -250,6 +257,7 @@ namespace Logic.Core.Map.Impl
 
         public void MoveCreatureTo(ICreature creature, MemoryEdge edge)
         {
+            creatures = null;
             var startCoord = edge.Start.First();
             var startCell = GetCellInfo(startCoord.X, startCoord.Y);
             var newCell = CellInfo.Copy(startCell);

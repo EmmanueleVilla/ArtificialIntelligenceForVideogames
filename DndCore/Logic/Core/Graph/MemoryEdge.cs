@@ -52,11 +52,11 @@ namespace Logic.Core.Graph
             }
             var other = (MemoryEdge)obj;
             return CanEndMovementHere == other.CanEndMovementHere
-                && Enumerable.SequenceEqual(Events, other.Events)
                 && Speed == other.Speed
                 && Damage == other.Damage
                 && Destination.X == other.Destination.X
-                && Destination.Y == other.Destination.Y;
+                && Destination.Y == other.Destination.Y
+                && Enumerable.SequenceEqual(Events, other.Events);
         }
 
         public override int GetHashCode()
@@ -66,6 +66,7 @@ namespace Logic.Core.Graph
             hash = (hash * 7) + Speed.GetHashCode();
             hash = (hash * 7) + Damage.GetHashCode();
             hash = (hash * 7) + Destination.GetHashCode();
+            hash = (hash * 7) + Events.GetHashCode();
             return hash;
         }
     }

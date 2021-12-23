@@ -65,13 +65,13 @@ namespace Logic.Core.Creatures
         public List<Speed> RemainingMovement
         {
             get {
-                var minus = 0;
-                if(TemporaryEffectsList.FirstOrDefault(x => x.Item3 == TemporaryEffects.SpeedReducedByTwo) != null)
+                if (TemporaryEffectsList.FirstOrDefault(x => x.Item3 == TemporaryEffects.SpeedReducedByTwo) != null)
                 {
-                    minus = 2;
+                    return remainingMovement.Select(x => new Speed(x.Movement, x.Square - 2)).ToList();
+                } else
+                {
+                    return remainingMovement;
                 }
-                var result = remainingMovement.Select(x => new Speed(x.Movement, x.Square - minus)).ToList();
-                return result;
             }
             set {
                 remainingMovement = value;
