@@ -5,6 +5,7 @@ using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Creatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -35,22 +36,33 @@ namespace Logic.Core.GOAP.Actions
             });
 
             var loop = 0;
-            while(queue.Count > 0 && loop < 500)
+            while(queue.Count > 0)
             {
                 break;
                 loop++;
+                if(loop % 10 == 0)
+                {
+                    Console.WriteLine(loop);
+                }
                 var current = queue.Dequeue();
+                //Console.WriteLine("***** CURRENT " + loop + "*****");
+                //Console.WriteLine(String.Join("-", current.actions.Select(x => x.GetType().ToString().Split('.').Last())));
+                //Console.WriteLine("***********************");
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions(current.creature);
                 foreach (var nextAction in nextActions)
                 {
+                    
                     if(nextAction is RequestMovementAction && current.actions.LastOrDefault() is RequestMovementAction)
                     {
                         continue;
                     }
-                    var updatedActions = new List<IAvailableAction>(current.actions);
-                    
-                    updatedActions.Add(nextAction);
+                    var updatedActions = new List<IAvailableAction>(current.actions)
+                    {
+                        nextAction
+                    };
+                    //Console.Write("Can " + nextAction.GetType().ToString().Split('.').Last());
+                    //Console.WriteLine(" with " + nextAction.ReachableCells.Count() + " targets");
                     foreach (var target in nextAction.ReachableCells)
                     {
                         if(nextAction is RequestMovementAction)
@@ -59,8 +71,14 @@ namespace Logic.Core.GOAP.Actions
                             foreach(var memoryEdge in memoryEdges)
                             {
                                 var newBattle = current.battle.Copy();
-                                var events = newBattle.MoveTo(memoryEdge);
                                 var creature = newBattle.GetCreatureInTurn();
+                                if (creature.RemainingMovement[0].Square > creature.Movements[0].Square)
+                                {
+                                    newBattle = current.battle.Copy();
+                                    throw new Exception("WTF");
+                                }
+                                var events = newBattle.MoveTo(memoryEdge);
+                                
                                 queue.Enqueue(new ActionList() { 
                                     creature = creature, 
                                     actions = new List<IAvailableAction>(updatedActions),
@@ -110,7 +128,7 @@ namespace Logic.Core.GOAP.Actions
                     }
                 }
             }
-            Console.WriteLine(String.Join("\n", result.Select(x => string.Join("-",  x.actions.Select(a => string.Format("({0}) {1}", a.ActionEconomy, a.GetType().ToString().Split('.').Last()))))));
+            File.WriteAllText("sequence.txt", String.Join("\n", result.Select(x => string.Join("-",  x.actions.Select(a => string.Format("({0}) {1}", a.ActionEconomy, a.GetType().ToString().Split('.').Last()))))));
             return result;
         }
     }

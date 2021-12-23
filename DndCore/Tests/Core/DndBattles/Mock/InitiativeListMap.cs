@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Tests.Core.DndBattles.Mock
 {
-    class InitiativeListMap : IMap
+    public class InitiativeListMap : IMap
     {
         public int Width => throw new NotImplementedException();
 

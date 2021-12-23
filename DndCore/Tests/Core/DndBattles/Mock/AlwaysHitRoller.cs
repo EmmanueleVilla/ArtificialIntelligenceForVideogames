@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tests.Core.DndBattles.Mock
 {
-    class AlwaysHitRoller : IDiceRoller
+    public class AlwaysHitRoller : IDiceRoller
     {
         public int Roll(RollTypes type, int diceAmount, int dieFaces, int modifier)
         {

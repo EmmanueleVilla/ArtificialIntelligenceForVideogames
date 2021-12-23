@@ -1,4 +1,5 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
 using Logic.Core.Creatures;
 using Logic.Core.Map;
 using NUnit.Framework;
@@ -34,6 +35,7 @@ namespace Tests.Core.Graph
         [Test]
         public void DestinationMapIsOccupiedByNonRootEnemy()
         {
+            DndModule.RegisterRules();
             var creature = WalkerCreatureMock.Build(1);
             var mapCsv = "" +
                 " ,G,G,G\n" +

@@ -26,7 +26,6 @@ namespace Logic.Core.Creatures
         {
             Id = this.random.Next(0, int.MaxValue);
             remainingMovement = new List<Speed>(Movements);
-            RemainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             RemainingAttacksPerBonusAction = 0;
@@ -37,7 +36,6 @@ namespace Logic.Core.Creatures
         public virtual void ResetTurn()
         {
             remainingMovement = new List<Speed>(Movements);
-            RemainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             LastAttackUsed = null;

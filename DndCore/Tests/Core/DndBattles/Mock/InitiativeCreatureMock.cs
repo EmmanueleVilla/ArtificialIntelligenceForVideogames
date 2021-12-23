@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Tests.Core.DndBattles.Mock
 {
-    class InitiativeCreatureMock : ACreature
+    public class InitiativeCreatureMock : ACreature
     {
         int _initiative;
         public InitiativeCreatureMock(int initiative, IDiceRoller roller, Random random) : base(roller, random, initiative)

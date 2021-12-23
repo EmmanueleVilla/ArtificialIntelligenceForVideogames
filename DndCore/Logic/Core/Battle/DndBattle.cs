@@ -143,13 +143,25 @@ namespace Logic.Core
             return searched.Where(edge => edge.Destination.X == x && edge.Destination.Y == y).ToList();
         }
 
-        public IEnumerable<GameEvent> MoveTo(MemoryEdge end)
+        public List<GameEvent> MoveTo(MemoryEdge end)
         {
+            var list = new List<GameEvent>();
             var creature = GetCreatureInTurn();
+            var old = creature.RemainingMovement[0].Square;
+            if(old == 12)
+            {
+                creature.RemainingMovement[0].Square.ToString();
+                throw new Exception("WTF");
+            }
             creature.RemainingMovement = creature.RemainingMovement.Select(x =>
            {
                    return new Speed(x.Movement, x.Square - end.Speed);
            }).ToList();
+            var n = creature.RemainingMovement[0].Square;
+            if(n == 11)
+            {
+                throw new Exception("WTF");
+            }
             map.MoveCreatureTo(creature, end);
             foreach(var e in end.Events)
             {
@@ -159,8 +171,9 @@ namespace Logic.Core
                     creature.CurrentHitPoints -= e.Damage;
                 }
                 //TODO: attack of opportunity
-                yield return e;
+                list.Add(e);
             }
+            return list;
         }
 
         public List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction)

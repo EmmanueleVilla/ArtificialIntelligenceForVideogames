@@ -20,7 +20,7 @@ namespace Logic.Core.Battle
         List<IAvailableAction> GetAvailableActions(ICreature creature = null);
         List<MemoryEdge> GetReachableCells();
         void CalculateReachableCells(ICreature creature = null);
-        IEnumerable<GameEvent> MoveTo(MemoryEdge end);
+        List<GameEvent> MoveTo(MemoryEdge end);
         List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction);
         List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction);
         List<GameEvent> UseAbility(IAvailableAction availableAction);

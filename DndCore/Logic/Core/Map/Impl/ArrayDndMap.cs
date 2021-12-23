@@ -12,14 +12,30 @@ namespace Logic.Core.Map.Impl
         public readonly int Width;
         public readonly int Height;
         public CellInfo[,] cells;
-        public List<CellInfo> occupiedCells = new List<CellInfo>();
         public Dictionary<int,int> occupiedCellsDictionary = new Dictionary<int, int>();
         public List<Tuple<int, List<CellInfo>>> threateningAreas = new List<Tuple<int, List<CellInfo>>>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
 
-        public List<ICreature> Creatures => occupiedCells.Select(x => x.Creature).Distinct().ToList();
+        public List<ICreature> Creatures
+        { 
+            get {
+                var list = new List<ICreature>();
+                for (int i = 0; i < Width; i++)
+                {
+                    for (int j = 0; j < Height; j++)
+                    {
+                        var cell = GetCellInfo(i, j);
+                        if(cell.Creature != null)
+                        {
+                            list.Add(cell.Creature);
+                        }
+                    }
+                }
+                return list;
+            }
+        }
 
         public ArrayDndMap(int width, int height, CellInfo defaultInfo)
         {
@@ -37,6 +53,22 @@ namespace Logic.Core.Map.Impl
                     SetCell(i, j, CellInfo.Copy(defaultInfo));
                 }
             }
+        }
+
+        private CellInfo GetCellInfo(int key)
+        {
+            for (int i = -1; i < Width + 1; i++)
+            {
+                for (int j = -1; j < Height + 1; j++)
+                {
+                    var k = (i << 6) + j;
+                    if(key == k)
+                    {
+                        return GetCellInfo(i, j);
+                    }
+                }
+            }
+            return CellInfo.Empty();
         }
 
         public CellInfo GetCellInfo(int x, int y)
@@ -60,7 +92,7 @@ namespace Logic.Core.Map.Impl
                 return false;
             }
 
-            var tempOccupiedCells = new List<CellInfo>();
+            var tempOccupiedCells = new List<int>();
             var fit = true;
             for (int i = x; i < creature.Size + x; i++)
             {
@@ -72,7 +104,7 @@ namespace Logic.Core.Map.Impl
                         fit = false;
                     }
                     occupiedCell.Creature = creature;
-                    tempOccupiedCells.Add(occupiedCell);
+                    tempOccupiedCells.Add((i << 6) + j);
                 }
             }
 
@@ -81,10 +113,9 @@ namespace Logic.Core.Map.Impl
                 return false;
             }
 
-            occupiedCells.AddRange(tempOccupiedCells);
             tempOccupiedCells.ForEach(temp =>
             {
-                occupiedCellsDictionary.Add((temp.X << 6) + temp.Y, creature.Id);
+                occupiedCellsDictionary.Add(temp, creature.Id);
             });
 
             var reach = 0;
@@ -159,13 +190,13 @@ namespace Logic.Core.Map.Impl
             {
                 return new List<CellInfo>();
             }
-            var occupied = occupiedCells.Where(c => c.Creature == cell.Creature).ToList();
+            var occupied = occupiedCellsDictionary.Where(c => c.Value == cell.Creature.Id).ToList();
             if (occupied.Count == 0)
             {
                 return new List<CellInfo>() { cell };
             }
 
-            return occupied.Select(c => GetCellInfo(c.X, c.Y)).ToList();
+            return occupied.Select(c => GetCellInfo(c.Key)).ToList();
         }
 
         public CellInfo GetCellOccupiedBy(ICreature creature)
@@ -191,7 +222,6 @@ namespace Logic.Core.Map.Impl
             var newCell = CellInfo.Copy(startCell);
             startCell.Creature = null;
             SetCell(startCell.X, startCell.Y, startCell);
-            occupiedCells.RemoveAll(x => x.Creature == creature);
             threateningAreas.RemoveAll(x => x.Item1 == creature.Id);
             var keys = occupiedCellsDictionary.Where(x => x.Value == creature.Id).Select(x => x.Key).ToList();
             foreach(var key in keys)

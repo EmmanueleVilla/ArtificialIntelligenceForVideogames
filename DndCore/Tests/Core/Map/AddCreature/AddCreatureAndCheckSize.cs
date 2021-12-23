@@ -29,10 +29,10 @@ namespace Tests.Core.Map.AddCreature
             var creature = MockedCreature.Build(1, Loyalties.Ally);
             map.AddCreature(creature, 1, 1);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo('G', 0, creature, 1, 1),
+            var expected = new Dictionary<int, int>() {
+                { (1 << 6) + 1, creature.Id }
             };
-            Assert.AreEqual(expected, map.occupiedCells);
+            Assert.AreEqual(expected, map.occupiedCellsDictionary);
         }
 
         [Test]
@@ -49,13 +49,13 @@ namespace Tests.Core.Map.AddCreature
             var creature = MockedCreature.Build(2, Loyalties.Ally);
             map.AddCreature(creature, 1, 1);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo('G', 0, creature, 1, 1),
-                new CellInfo('G', 0, creature, 1, 2),
-                new CellInfo('G', 0, creature, 2, 1),
-                new CellInfo('G', 0, creature, 2, 2),
+            var expected = new Dictionary<int, int>() {
+                { (1 << 6) + 1, creature.Id },
+                { (1 << 6) + 2, creature.Id },
+                { (2 << 6) + 1, creature.Id },
+                { (2 << 6) + 2, creature.Id }
             };
-            Assert.AreEqual(expected, map.occupiedCells);
+            Assert.AreEqual(expected, map.occupiedCellsDictionary);
         }
 
         [Test]
@@ -72,18 +72,18 @@ namespace Tests.Core.Map.AddCreature
             var creature = MockedCreature.Build(3, Loyalties.Ally);
             map.AddCreature(creature, 1, 1);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo('G', 0, creature, 1, 1),
-                new CellInfo('G', 0, creature, 1, 2),
-                new CellInfo('G', 0, creature, 1, 3),
-                new CellInfo('G', 0, creature, 2, 1),
-                new CellInfo('G', 0, creature, 2, 2),
-                new CellInfo('G', 0, creature, 2, 3),
-                new CellInfo('G', 0, creature, 3, 1),
-                new CellInfo('G', 0, creature, 3, 2),
-                new CellInfo('G', 0, creature, 3, 3),
+            var expected = new Dictionary<int, int>() {
+                { (1 << 6) + 1, creature.Id },
+                { (1 << 6) + 2, creature.Id },
+                { (1 << 6) + 3, creature.Id },
+                { (2 << 6) + 1, creature.Id },
+                { (2 << 6) + 2, creature.Id },
+                { (2 << 6) + 3, creature.Id },
+                { (3 << 6) + 1, creature.Id },
+                { (3 << 6) + 2, creature.Id },
+                { (3 << 6) + 3, creature.Id },
             };
-            Assert.AreEqual(expected, map.occupiedCells);
+            Assert.AreEqual(expected, map.occupiedCellsDictionary);
         }
     }
 }
