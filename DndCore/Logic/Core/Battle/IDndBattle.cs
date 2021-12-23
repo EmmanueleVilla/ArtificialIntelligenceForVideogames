@@ -15,6 +15,7 @@ namespace Logic.Core.Battle
         List<int> Init(IMap map);
         IMap Map { get; }
         ICreature GetCreatureInTurn();
+        ICreature GetCreatureById(int id);
         void NextTurn();
         void BuildAvailableActions(ICreature creature = null);
         List<IAvailableAction> GetAvailableActions(ICreature creature = null);

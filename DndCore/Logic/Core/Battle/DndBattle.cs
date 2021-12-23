@@ -397,5 +397,10 @@ namespace Logic.Core
 
             return list;
         }
+
+        public ICreature GetCreatureById(int id)
+        {
+            return map.Creatures[id];
+        }
     }
 }

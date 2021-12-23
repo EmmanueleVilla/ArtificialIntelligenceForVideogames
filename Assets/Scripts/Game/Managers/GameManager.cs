@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
     public InitiativeUIManager InitiativeUIManager;
 
     public event EventHandler<EventArgs> GameStarted;
-    public event EventHandler<List<ICreature>> InitiativesRolled;
+    public event EventHandler<List<int>> InitiativesRolled;
     public event EventHandler<ICreature> TurnStarted;
 
     private IMap map;
     private IDndBattle Battle;
-    private List<ICreature> Initiatives;
+    private List<int> Initiatives;
 
     void Awake()
     {
@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Battle = DndModule.Get<IDndBattle>();
-        var newBattle = Battle.Copy();
     }
 
     IEnumerator SetAvailableActions()

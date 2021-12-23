@@ -10,7 +10,7 @@ namespace Logic.Core.Creatures
     public class EncounterProvider
     {
         private int ENCOUNTERS_SIZE = 2;
-        internal List<ICreature> BuildEncounter()
+        public List<ICreature> BuildEncounter()
         {
             var encounterIndex = DndModule.Get<Random>().Next(0, ENCOUNTERS_SIZE);
             switch (encounterIndex)

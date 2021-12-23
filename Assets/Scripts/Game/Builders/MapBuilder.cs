@@ -9,14 +9,13 @@ using UnityEngine;
 public class MapBuilder : MonoBehaviour
 {
     public MapProvider MapProvider;
-    public EncounterProvider EncounterProvider;
 
     private List<char> validTerrains = new List<char>() { 'G' };
 
     internal IMap BuildMap()
     {
         var map = MapProvider.BuildMap();
-        var creatures = EncounterProvider.BuildEncounter();
+        var creatures = new EncounterProvider().BuildEncounter();
 
         var random = DndModule.Get<System.Random>();
         foreach (var creature in creatures)

@@ -12,7 +12,7 @@ public class InitiativeUIManager : MonoBehaviour
     public GameManager GameManager;
     public Text InitiativeText;
 
-    List<ICreature> _initiatives;
+    List<int> _initiatives;
 
     void Start()
     {
@@ -28,13 +28,14 @@ public class InitiativeUIManager : MonoBehaviour
             var creatureInTurn = battle.GetCreatureInTurn();
 
             var builder = new StringBuilder();
-            foreach (var creature in _initiatives)
+            foreach (var creatureId in _initiatives)
             {
-                if (creatureInTurn == creature)
+                if (creatureInTurn.Id == creatureId)
                 {
                     builder.Append("> ");
                 }
-                builder.Append(creature.GetType().ToString().Split('.').Last());
+                var creature = battle.GetCreatureById(creatureId);
+                builder.Append(creatureId.GetType().ToString().Split('.').Last());
                 builder.AppendLine(string.Format(" {0}/{1} + {2}", creature.CurrentHitPoints, creature.HitPoints, creature.TemporaryHitPoints));
             }
 
@@ -42,7 +43,7 @@ public class InitiativeUIManager : MonoBehaviour
         }
     }
 
-    private void GameManager_InitiativesRolled(object sender, List<ICreature> initiatives)
+    private void GameManager_InitiativesRolled(object sender, List<int> initiatives)
     {
         _initiatives = initiatives;
     }
