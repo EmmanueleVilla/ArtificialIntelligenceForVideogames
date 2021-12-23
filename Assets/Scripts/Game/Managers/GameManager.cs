@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
         if(InSpellMode)
         {
             var actions = new List<IAvailableAction>();
-            actions.Add(new ConfirmSpellAction(Battle.GetCreatureInTurn(), spell)
+            actions.Add(new ConfirmSpellAction(Battle.GetCreatureInTurn().Id, spell)
             {
                 Target = map.GetCellInfo(y, x)
             }); ;
@@ -252,8 +252,8 @@ public class GameManager : MonoBehaviour
                 var actions = new List<IAvailableAction>();
                 actions.Add(new ConfirmAttackAction()
                 {
-                    TargetCreature = creature,
-                    AttackingCreature = Battle.GetCreatureInTurn(),
+                    TargetCreature = creature.Id,
+                    AttackingCreature = Battle.GetCreatureInTurn().Id,
                     Attack = requestedAttack.Attack,
                     ActionEconomy = requestedAttack.ActionEconomy
                 });

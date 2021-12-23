@@ -60,8 +60,8 @@ namespace Tests.Core.DndBattles.Monk
             var result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
-                TargetCreature = enemy,
-                AttackingCreature = monk
+                TargetCreature = enemy.Id,
+                AttackingCreature = monk.Id
             });
 
             battle.BuildAvailableActions();
@@ -74,8 +74,8 @@ namespace Tests.Core.DndBattles.Monk
             result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("quarterstaff")),
-                TargetCreature = enemy,
-                AttackingCreature = monk
+                TargetCreature = enemy.Id,
+                AttackingCreature = monk.Id
             });
 
             battle.BuildAvailableActions();
@@ -91,8 +91,8 @@ namespace Tests.Core.DndBattles.Monk
             result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
-                TargetCreature = enemy,
-                AttackingCreature = monk,
+                TargetCreature = enemy.Id,
+                AttackingCreature = monk.Id,
                 ActionEconomy = BattleActions.BonusAction
             });
 
@@ -113,8 +113,8 @@ namespace Tests.Core.DndBattles.Monk
             result = battle.Attack(new ConfirmAttackAction()
             {
                 Attack = monk.Attacks.First(attack => attack.Name.ToLower().Contains("unarmed")),
-                TargetCreature = enemy,
-                AttackingCreature = monk,
+                TargetCreature = enemy.Id,
+                AttackingCreature = monk.Id,
                 ActionEconomy = BattleActions.BonusAction
             });
 

@@ -28,7 +28,7 @@ namespace Logic.Core.Battle.ActionBuilders
                 {
                     if (!creature.ActionUsedNotToAttack && !creature.ActionUsedToAttack)
                     {
-                        var action = new RequestSpellAction(creature, spell);
+                        var action = new RequestSpellAction(creature.Id, spell);
                         var cells = new List<CellInfo>();
                         var startI = position.X - spell.Range;
                         var endI = position.X + creature.Size + spell.Range;

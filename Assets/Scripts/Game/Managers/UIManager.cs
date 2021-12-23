@@ -170,12 +170,13 @@ public class UIManager : MonoBehaviour
 
             if (eve.Type == GameEvent.Types.Attacks)
             {
-                DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", eve.Attacked.GetType().Name));
+                DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", eve.Attacked));
                 GameObject target = null;
+                Debug.Log("Searching for id " + eve.Attacked);
+                Debug.Log("Creature is " + DndModule.Get<IDndBattle>().GetCreatureById(eve.Attacked));
                 foreach (var indicator in initiativeIndicators)
                 {
-                    Debug.Log("indicator " + indicator);
-                    if (indicator.Item1 == eve.Attacked.Id)
+                    if (indicator.Item1 == eve.Attacked)
                     {
                         target = indicator.Item2.gameObject;
                     }

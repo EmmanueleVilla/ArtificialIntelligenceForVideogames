@@ -13,8 +13,8 @@ namespace Logic.Core.Battle.Actions.Attacks
         public BattleActions ActionEconomy { get; set; } = BattleActions.Action;
         public ActionsTypes ActionType => ActionsTypes.ConfirmAttack;
 
-        public ICreature AttackingCreature;
-        public ICreature TargetCreature;
+        public int AttackingCreature;
+        public int TargetCreature;
         public Attack Attack;
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => string.Format("Confirm attack to {0}", TargetCreature.GetType().ToString().Split('.').Last());

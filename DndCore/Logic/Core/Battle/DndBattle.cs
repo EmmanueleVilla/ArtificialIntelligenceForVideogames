@@ -209,14 +209,16 @@ namespace Logic.Core
 
         public List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction)
         {
+            var targetCreature = GetCreatureById(confirmAttackAction.TargetCreature);
+            var attackingCreature = GetCreatureById(confirmAttackAction.AttackingCreature);
             var list = new List<GameEvent>();
             var hasAdvantage = false;
             var hasDisadvantage = false;
-            if (confirmAttackAction.TargetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
+            if (targetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
             {
                 hasDisadvantage = true;
             }
-            if (confirmAttackAction.AttackingCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.AdvantageToAttacks))
+            if (targetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.AdvantageToAttacks))
             {
                 hasAdvantage = true;
             }
@@ -239,8 +241,8 @@ namespace Logic.Core
             var toHit = Roller.Roll(rollType, 1, 20, confirmAttackAction.Attack.ToHit);
             Logger.WriteLine(string.Format("Roll Type {0}, rolled {1} to hit", rollType, toHit));
 
-            var isCritical = (toHit - confirmAttackAction.Attack.ToHit) >= confirmAttackAction.AttackingCreature.CriticalThreshold;
-            if(toHit >= confirmAttackAction.TargetCreature.ArmorClass || isCritical)
+            var isCritical = (toHit - confirmAttackAction.Attack.ToHit) >= attackingCreature.CriticalThreshold;
+            if(toHit >= targetCreature.ArmorClass || isCritical)
             {
                 var totalDamage = 0;
                 foreach(var damage in confirmAttackAction.Attack.Damage)
@@ -250,19 +252,19 @@ namespace Logic.Core
                 //TODO apply other damage effects
                 Logger.WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.TargetCreature.GetType().ToString().Split('.').Last()));
 
-                confirmAttackAction.TargetCreature.TemporaryHitPoints -= totalDamage;
+                targetCreature.TemporaryHitPoints -= totalDamage;
 
-                if (confirmAttackAction.TargetCreature.TemporaryHitPoints < 0)
+                if (targetCreature.TemporaryHitPoints < 0)
                 {
-                    confirmAttackAction.TargetCreature.CurrentHitPoints += confirmAttackAction.TargetCreature.TemporaryHitPoints;
-                    confirmAttackAction.TargetCreature.TemporaryHitPoints = 0;
+                    targetCreature.CurrentHitPoints += targetCreature.TemporaryHitPoints;
+                    targetCreature.TemporaryHitPoints = 0;
                 }
 
                 list.Add(new GameEvent
                 {
                     Type = GameEvent.Types.Attacks,
-                    Attacker = confirmAttackAction.AttackingCreature,
-                    Attacked = confirmAttackAction.TargetCreature,
+                    Attacker = attackingCreature.Id,
+                    Attacked = targetCreature.Id,
                     Attack = confirmAttackAction.Attack
                 });
 
@@ -274,26 +276,26 @@ namespace Logic.Core
                 list.Add(new GameEvent
                 {
                     Type = GameEvent.Types.AttackMissed,
-                    Attacker = confirmAttackAction.AttackingCreature,
-                    Attacked = confirmAttackAction.TargetCreature,
+                    Attacker = attackingCreature.Id,
+                    Attacked = targetCreature.Id,
                     Attack = confirmAttackAction.Attack
                 });
             }
 
             if (confirmAttackAction.ActionEconomy == BattleActions.Action) {
-                confirmAttackAction.AttackingCreature.RemainingAttacksPerAction--;
-                confirmAttackAction.AttackingCreature.ActionUsedToAttack = true;
-                if(confirmAttackAction.AttackingCreature is IMartialArts && confirmAttackAction.Attack.Name.ToLower().Contains("quarterstaff"))
+                attackingCreature.RemainingAttacksPerAction--;
+                attackingCreature.ActionUsedToAttack = true;
+                if(attackingCreature is IMartialArts && confirmAttackAction.Attack.Name.ToLower().Contains("quarterstaff"))
                 {
-                    (confirmAttackAction.AttackingCreature as IMartialArts).BonusAttackTriggered = true;
+                    (attackingCreature as IMartialArts).BonusAttackTriggered = true;
                 }
             }
             if (confirmAttackAction.ActionEconomy == BattleActions.BonusAction) {
-                confirmAttackAction.AttackingCreature.RemainingAttacksPerBonusAction--;
-                confirmAttackAction.AttackingCreature.BonusActionUsedToAttack = true;
+                attackingCreature.RemainingAttacksPerBonusAction--;
+                attackingCreature.BonusActionUsedToAttack = true;
             }
 
-            confirmAttackAction.AttackingCreature.LastAttackUsed += confirmAttackAction.Attack.Name;
+            attackingCreature.LastAttackUsed += confirmAttackAction.Attack.Name;
 
             return list;
         }
@@ -430,7 +432,7 @@ namespace Logic.Core
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.CurrentHitPoints -= damage;
                 creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
-                    confirmSpellAction.Caster.Id,
+                    confirmSpellAction.Caster,
                     1,
                     TemporaryEffects.SpeedReducedByTwo
                     ));

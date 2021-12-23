@@ -9,11 +9,11 @@ namespace Logic.Core.Battle.Actions.Spells
 {
     public class RequestSpellAction : IAvailableAction
     {
-        public ICreature Caster;
+        public int Caster;
         public ISpell Spell;
 
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
-        public RequestSpellAction(ICreature caster, ISpell spell)
+        public RequestSpellAction(int caster, ISpell spell)
         {
             Caster = caster;
             Spell = spell;

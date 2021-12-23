@@ -16,7 +16,7 @@ namespace Logic.Core.GOAP.Actions
 {
     public struct ActionList
     {
-        public ICreature creature;
+        public int creatureId;
         public List<IAvailableAction> actions;
         public IDndBattle battle;
 
@@ -38,7 +38,7 @@ namespace Logic.Core.GOAP.Actions
             var result = new List<ActionList>();
             var queue = new Queue<ActionList>();
             queue.Enqueue(new ActionList() {
-                creature = battleArg.GetCreatureInTurn(),
+                creatureId = battleArg.GetCreatureInTurn().Id,
                 actions = new List<IAvailableAction>(),
                 battle = battleArg
             });
@@ -92,7 +92,7 @@ namespace Logic.Core.GOAP.Actions
                                 }) ;
 
                                 queue.Enqueue(new ActionList() { 
-                                    creature = creature, 
+                                    creatureId = creature.Id, 
                                     actions = newActions,
                                     battle = newBattle
                                 } );
@@ -104,15 +104,11 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 var newBattle = current.battle.Copy();
                                 var attacked = newBattle.Map.GetOccupantCreature(targets.X, targets.Y);
-                                if(attacked == null)
-                                {
-                                    throw new Exception("WTF");
-                                }
                                 var confirmAttack = new ConfirmAttackAction()
                                 {
                                     ActionEconomy = nextAction.ActionEconomy,
-                                    AttackingCreature = newBattle.GetCreatureInTurn(),
-                                    TargetCreature = attacked,
+                                    AttackingCreature = newBattle.GetCreatureInTurn().Id,
+                                    TargetCreature = attacked.Id,
                                     Attack = attackAction.Attack
                                 };
                                 var events = newBattle.Attack(confirmAttack);
@@ -123,7 +119,7 @@ namespace Logic.Core.GOAP.Actions
                                 };
 
                                 queue.Enqueue(new ActionList() {
-                                    creature = confirmAttack.AttackingCreature,
+                                    creatureId = confirmAttack.AttackingCreature,
                                     actions = new List<IAvailableAction>(updatedActions),
                                     battle = newBattle
                                 });
@@ -137,7 +133,7 @@ namespace Logic.Core.GOAP.Actions
                             };
                             result.Add(new ActionList()
                             {
-                                creature = current.battle.GetCreatureInTurn(),
+                                creatureId = current.battle.GetCreatureInTurn().Id,
                                 actions = new List<IAvailableAction>(updatedActions),
                                 battle = current.battle
                             });
@@ -149,7 +145,7 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 var newBattle = current.battle.Copy();
                                 var attacked = newBattle.Map.GetOccupantCreature(targets.X, targets.Y);
-                                var confirmSpell = new ConfirmSpellAction(newBattle.GetCreatureInTurn(), spellAction.Spell)
+                                var confirmSpell = new ConfirmSpellAction(newBattle.GetCreatureInTurn().Id, spellAction.Spell)
                                 {
                                     ActionEconomy = nextAction.ActionEconomy,
                                     Target = targets
@@ -163,7 +159,7 @@ namespace Logic.Core.GOAP.Actions
 
                                 queue.Enqueue(new ActionList()
                                 {
-                                    creature = confirmSpell.Caster,
+                                    creatureId = confirmSpell.Caster,
                                     actions = new List<IAvailableAction>(updatedActions),
                                     battle = newBattle
                                 });
@@ -178,7 +174,7 @@ namespace Logic.Core.GOAP.Actions
                             };
                             queue.Enqueue(new ActionList()
                             {
-                                creature = newBattle.GetCreatureInTurn(),
+                                creatureId = newBattle.GetCreatureInTurn().Id,
                                 actions = new List<IAvailableAction>(updatedActions),
                                 battle = newBattle
                             });

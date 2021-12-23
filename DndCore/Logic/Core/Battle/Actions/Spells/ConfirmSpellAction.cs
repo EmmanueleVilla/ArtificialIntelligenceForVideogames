@@ -9,10 +9,10 @@ namespace Logic.Core.Battle.Actions.Spells
 {
     public class ConfirmSpellAction : IAvailableAction
     {
-        public ICreature Caster;
+        public int Caster;
         public CellInfo Target;
         public ISpell Spell;
-        public ConfirmSpellAction(ICreature caster, ISpell spell)
+        public ConfirmSpellAction(int caster, ISpell spell)
         {
             Caster = caster;
             Spell = spell;

@@ -20,8 +20,8 @@ namespace Logic.Core.Battle
         public int FallingHeight;
         public Attack Attack;
         public CellInfo Destination;
-        public ICreature Attacker;
-        public ICreature Attacked;
+        public int Attacker;
+        public int Attacked;
         public int Damage;
         public override string ToString()
         {
