@@ -36,6 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Jobs\AIPlayJob.cs" />
      <Compile Include="Assets\Scripts\Game\Providers\Prefabs\CreaturePrefabProvider.cs" />
      <Compile Include="Assets\Scripts\Game\Managers\ActionsManager.cs" />
      <Compile Include="Assets\Scripts\Game\Managers\InitiativeUIManager.cs" />

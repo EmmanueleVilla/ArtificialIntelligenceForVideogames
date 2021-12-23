@@ -1246,7 +1246,6 @@ GameObject:
   - component: {fileID: 402581999}
   - component: {fileID: 402582000}
   - component: {fileID: 402582003}
-  - component: {fileID: 402582004}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -1281,7 +1280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapProvider: {fileID: 402582003}
-  EncounterProvider: {fileID: 402582004}
 --- !u!114 &402582003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1296,18 +1294,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Maps:
   - {fileID: 4900000, guid: 604332095a08dcf428319abc2f7965c8, type: 3}
---- !u!114 &402582004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402581998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06d76469e59ef6648b7a32d104ff358f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &466646931
 GameObject:
   m_ObjectHideFlags: 0
@@ -3234,7 +3220,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 789403854}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.99999976
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

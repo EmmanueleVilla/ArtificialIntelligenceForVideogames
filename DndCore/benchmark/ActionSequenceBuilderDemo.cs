@@ -3,10 +3,12 @@ using Core.Map;
 using Core.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle.ActionBuilders;
+using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Dice;
 using Logic.Core.GOAP.Actions;
 using Logic.Core.Graph;
+using Logic.Core.Map;
 using Logic.Core.Map.Impl;
 using Logic.Core.Utils.Log;
 using System;
@@ -24,33 +26,56 @@ namespace Benchmark
         {
             DndModule.RegisterRules(false);
             var battle = new DndBattle(new AlwaysHitRoller(), new UniformCostSearch(
-                new SpeedCalculator(), new NoLogger()), new ActionBuildersWrapper(), new NoLogger());
-            var map = new ArrayDndMap(20, 20, CellInfo.Empty());
-            for (int i = 0; i < 20; i++)
+                new SpeedCalculator(), new NoLogger()), new ActionBuildersWrapper(), new ActionSequenceBuilder(), new NoLogger());
+
+            var mapCsv = "" +
+                "G9,G9,G6,G6,G6,G7,G6,G6,G7,G9,R0,R0,G7,G7,G7,G9,G9,G9,G9,G9\n" +
+                "G9,G9,G6,G6,G6,G6,G6,G6,G7,G9,R0,R0,G4,G7,G7,G6,G6,G6,G9,G9\n" +
+                "G9,G9,G6,G6,G6,G4,G4,G6,G7,G9,R0,R0,G4,G4,G4,G6,G6,G6,G9,G9\n" +
+                "G9,G9,G6,G6,G6,G4,G4,G5,G5,G3,R0,R0,G4,G4,G4,G4,G4,G6,G9,G9\n" +
+                "G9,G9,G4,G4,G4,G4,G4,G5,G3,G3,R0,R0,G4,G4,G4,G3,G3,G5,G9,G9\n" +
+                "G9,G9,G4,G4,G4,G3,G3,G3,G3,S4,S4,S4,S4,G4,G4,G3,G3,G3,G3,G3\n" +
+                "G9,G5,G4,G4,G4,G3,G3,G3,G3,R0,R0,R0,G4,G4,G4,G3,G3,G3,G2,G2\n" +
+                "G3,G3,G3,G3,G3,G3,G3,G3,R0,R0,G1,R0,G2,G2,G2,G3,G3,G2,G2,G2\n" +
+                "G3,G3,G3,G3,G3,G3,G3,G3,R0,G1,G1,R0,G2,G2,G2,S2,G3,G2,G2,G2\n" +
+                "G3,G3,G3,G3,G3,G3,G3,G3,R0,G1,G1,R0,R0,G2,G2,S2,R0,R0,G2,G2\n" +
+                "G1,G3,G3,G3,G3,G3,G3,R0,R0,G1,G1,R0,R0,R0,R0,S2,R0,R0,R0,R0\n" +
+                "G1,G3,G3,G3,G3,G3,G3,R0,G1,G1,G1,G1,R0,R0,R0,S2,G1,G1,G1,G1\n" +
+                "G1,G2,G2,R0,R0,R0,R0,R0,G1,G1,G1,G1,G1,G1,G1,S2,G1,G1,G1,G1\n" +
+                "G1,G2,G2,R0,R0,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1\n" +
+                "G1,G1,G1,R0,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1";
+
+            var creatures = new EncounterProvider().BuildEncounter();
+            var map = new CsvFullMapBuilder().FromCsv(mapCsv);
+
+            var random = DndModule.Get<System.Random>();
+            List<char> validTerrains = new List<char>() { 'G' };
+            foreach (var creature in creatures)
             {
-                for (int j = 0; j < 20; j++)
+                bool fit = false;
+                while (!fit)
                 {
-                    map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
+                    var startingX = creature.Loyalty == Loyalties.Ally ? 0 : map.Width / 3 * 2;
+                    var endingX = creature.Loyalty == Loyalties.Ally ? map.Width / 3 : map.Width;
+                    var x = random.Next(startingX, endingX);
+                    var y = random.Next(3, map.Height - 3);
+                    if (!validTerrains.Contains(map.GetCellInfo(x, y).Terrain))
+                    {
+                        continue;
+                    }
+
+                    fit = map.AddCreature(creature, x, y);
                 }
             }
-            var monk = new HumanFemaleMonk(new DiceRoller(new Random()), new Random());
-            monk.Init();
-            map.AddCreature(monk, 1, 1);
-
-            var enemy = new RatmanWithBow(new DiceRoller(new Random()), new Random());
-            enemy.Init();
-            map.AddCreature(enemy, 5, 5);
 
             battle.Init(map);
 
-            var creature = battle.GetCreatureInTurn();
-            if (creature.Id != monk.Id)
+            while (true)
             {
+                Console.WriteLine("Start turn " + battle.GetCreatureInTurn().GetType().Name);
+                battle.PlayTurn();
                 battle.NextTurn();
             }
-
-            var builder = new ActionSequenceBuilder();
-            builder.GetAvailableActions(battle);
         }
     }
 }

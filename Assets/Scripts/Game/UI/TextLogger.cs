@@ -22,6 +22,7 @@ public class TextLogger : MonoBehaviour, ILogger
     {
         if (isMainThread())
         {
+            Debug.Log(message);
             var text = Output.text;
             var split = text.Split('\n');
             var diff = Mathf.Max(0, split.Count() - 20);

@@ -9,12 +9,14 @@ using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
+using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Abilities;
 using Logic.Core.Creatures.Abilities.Spells;
 using Logic.Core.Creatures.Classes;
 using Logic.Core.Dice;
+using Logic.Core.GOAP.Actions;
 using Logic.Core.Graph;
 using Logic.Core.Movements;
 using Newtonsoft.Json;
@@ -32,6 +34,7 @@ namespace Logic.Core
         public IDiceRoller Roller;
         public ILogger Logger;
         public IActionBuildersWrapper ActionBuildersWrapper;
+        public IActionSequenceBuilder ActionSequenceBuilder;
 
         public List<IAvailableAction> _cachedActions = new List<IAvailableAction>();
         public List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
@@ -40,17 +43,23 @@ namespace Logic.Core
 
         public IDndBattle Copy()
         {
-            var battle = new DndBattle(Roller, Search, ActionBuildersWrapper, Logger);
+            var battle = new DndBattle(Roller, Search, ActionBuildersWrapper, ActionSequenceBuilder, Logger);
             battle.initiativeOrder = new List<int>(initiativeOrder);
             battle.turnIndex = turnIndex;
             battle.map = map.Copy();
             return battle;
         }
 
-        public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, IActionBuildersWrapper actionBuildersWrapper = null, ILogger logger = null) {
+        public DndBattle(
+            IDiceRoller roller = null,
+            UniformCostSearch search = null,
+            IActionBuildersWrapper actionBuildersWrapper = null,
+            IActionSequenceBuilder actionSequenceBuilder = null,
+            ILogger logger = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
             Roller = roller ?? DndModule.Get<IDiceRoller>();
             Logger = logger ?? DndModule.Get<ILogger>();
+            ActionSequenceBuilder = actionSequenceBuilder ?? DndModule.Get<IActionSequenceBuilder>();
             ActionBuildersWrapper = actionBuildersWrapper ?? DndModule.Get<IActionBuildersWrapper>();
         }
 
@@ -84,9 +93,42 @@ namespace Logic.Core
             _cachedActions.Add(new EndTurnAction());
         }
 
-        public List<IAvailableAction> GetAvailableActions(ICreature creature = null)
+        public List<IAvailableAction> GetAvailableActions()
         {
             return _cachedActions;
+        }
+
+        public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
+        public void PlayTurn()
+        {
+            Console.WriteLine("GetAvailableActions");
+            var actions = ActionSequenceBuilder.GetAvailableActions(this);
+            var chosenActions = actions.LastOrDefault(x => x.actions.Any(a => a is ConfirmAttackAction || a is ConfirmSpellAction));
+            if(chosenActions.actions == null)
+            {
+                chosenActions = actions.Last();
+            }
+            Console.WriteLine("Action chosen: " + string.Join(",", chosenActions.actions.Select(x => x.Description)));
+            Events = new List<GameEvent>();
+            foreach(var v in chosenActions.actions)
+            {
+                if(v is ConfirmMovementAction)
+                {
+                    var moveAction = v as ConfirmMovementAction;
+                    Events.AddRange(MoveTo(moveAction.MemoryEdge));
+                } else if(v is ConfirmAttackAction)
+                {
+                    var attackAction = v as ConfirmAttackAction;
+                    Events.AddRange(Attack(attackAction));
+                } else if(v is ConfirmSpellAction)
+                {
+                    var spellAction = v as ConfirmSpellAction;
+                    Events.AddRange(Spell(spellAction));
+                } else
+                {
+                    Events.AddRange(UseAbility(v));
+                }
+            }
         }
 
         public void NextTurn()
@@ -354,7 +396,8 @@ namespace Logic.Core
             return new List<GameEvent> { 
                 new GameEvent
                 {
-                    Type = GameEvent.Types.SelfAbility
+                    Type = GameEvent.Types.SelfAbility,
+                    Ability = availableAction.ActionType.ToString()
                 }
             };
         }
@@ -366,7 +409,7 @@ namespace Logic.Core
             if(confirmSpellAction.Spell is FalseLife)
             {
                 var temporary = Roller.Roll(RollTypes.Normal, 1, 4, 4);
-                var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
+                var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.TemporaryHitPoints += temporary;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
                 DndModule.Get<ILogger>().WriteLine(string.Format("Obtained {0} temp hit points", temporary));
@@ -375,7 +418,7 @@ namespace Logic.Core
             if (confirmSpellAction.Spell is MagicMissile)
             {
                 var damage = Roller.Roll(RollTypes.Normal, 1, 4, 1) * 3;
-                var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
+                var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.CurrentHitPoints -= damage;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
                 DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1}", damage, creature.GetType().ToString().Split('.').Last()));
@@ -384,7 +427,7 @@ namespace Logic.Core
             if (confirmSpellAction.Spell is RayOfFrost)
             {
                 var damage = Roller.Roll(RollTypes.Normal, 1, 8, 0);
-                var creature = map.GetOccupantCreature(confirmSpellAction.Target.Y, confirmSpellAction.Target.X);
+                var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.CurrentHitPoints -= damage;
                 creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
                     confirmSpellAction.Caster.Id,

@@ -18,7 +18,7 @@ namespace Logic.Core.Battle
         ICreature GetCreatureById(int id);
         void NextTurn();
         void BuildAvailableActions(ICreature creature = null);
-        List<IAvailableAction> GetAvailableActions(ICreature creature = null);
+        List<IAvailableAction> GetAvailableActions();
         List<MemoryEdge> GetReachableCells();
         void CalculateReachableCells(ICreature creature = null);
         List<GameEvent> MoveTo(MemoryEdge end);
@@ -26,5 +26,7 @@ namespace Logic.Core.Battle
         List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction);
         List<GameEvent> UseAbility(IAvailableAction availableAction);
         IDndBattle Copy();
+        void PlayTurn();
+        List<GameEvent> Events { get; }
     }
 }

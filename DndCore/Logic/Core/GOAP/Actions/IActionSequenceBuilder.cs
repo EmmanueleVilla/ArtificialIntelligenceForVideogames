@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Logic.Core.GOAP.Actions
 {
-    interface IActionSequenceBuilder
+    public interface IActionSequenceBuilder
     {
         List<ActionList> GetAvailableActions(IDndBattle battle);
     }

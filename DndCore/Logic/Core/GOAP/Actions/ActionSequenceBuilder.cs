@@ -1,7 +1,10 @@
-﻿using Logic.Core.Battle;
+﻿using Core.DI;
+using Core.Utils.Log;
+using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
+using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
 using System;
 using System.Collections.Generic;
@@ -25,6 +28,11 @@ namespace Logic.Core.GOAP.Actions
 
     public class ActionSequenceBuilder : IActionSequenceBuilder
     {
+        public ILogger Logger;
+        public ActionSequenceBuilder(ILogger logger = null)
+        {
+            Logger = logger ?? DndModule.Get<ILogger>();
+        }
         public List<ActionList> GetAvailableActions(IDndBattle battleArg)
         {
             var result = new List<ActionList>();
@@ -34,35 +42,33 @@ namespace Logic.Core.GOAP.Actions
                 actions = new List<IAvailableAction>(),
                 battle = battleArg
             });
-
-            var loop = 0;
+            int loop = 0;
             while(queue.Count > 0)
             {
                 loop++;
+                
+                //safe threshold in case of bugs
+                if(loop > 10000)
+                {
+                    break;
+                }
+
                 var current = queue.Dequeue();
                 if (loop % 100 == 0)
                 {
-                    //Console.WriteLine("***********************");
-                    //Console.WriteLine(string.Join("\n", current.actions.Select(x => x.Description)));
+                    //Logger.WriteLine(loop.ToString());
+                    //Logger.WriteLine(string.Join("-", current.actions.Select(x => x.GetType().Name)));
                 }
-                
-                //Console.WriteLine("***** CURRENT " + loop + "*****");
-                //Console.WriteLine(String.Join("-", current.actions.Select(x => x.GetType().ToString().Split('.').Last())));
-                //Console.WriteLine("***********************");
                 current.battle.BuildAvailableActions();
-                var nextActions = current.battle.GetAvailableActions(current.creature).Where(x => x.ReachableCells.Count > 0);
+                var nextActions = current.battle.GetAvailableActions().Where(x => x.ReachableCells.Count > 0);
                 var maxPriority = nextActions.Max(x => x.Priority);
                 nextActions = nextActions.Where(x => x.Priority == maxPriority).ToList();
                 foreach (var nextAction in nextActions)
                 {
-                    if (nextAction is RequestMovementAction && current.actions.LastOrDefault() is RequestMovementAction)
+                    if (nextAction is RequestMovementAction && current.actions.LastOrDefault() is ConfirmMovementAction)
                     {
                         continue;
                     }
-                    var updatedActions = new List<IAvailableAction>(current.actions)
-                    {
-                        nextAction
-                    };
 
                     foreach (var target in nextAction.ReachableCells)
                     {
@@ -74,10 +80,20 @@ namespace Logic.Core.GOAP.Actions
                                 var newBattle = current.battle.Copy();
                                 var creature = newBattle.GetCreatureInTurn();
                                 var events = newBattle.MoveTo(memoryEdge);
-                                
+
+                                var newActions = new List<IAvailableAction>(current.actions);
+                                newActions.Add(new ConfirmMovementAction()
+                                {
+                                    MemoryEdge = memoryEdge,
+                                    DestinationX = memoryEdge.Destination.X,
+                                    DestinationY = memoryEdge.Destination.Y,
+                                    Speed = memoryEdge.Speed,
+                                    Damage = memoryEdge.Damage
+                                }) ;
+
                                 queue.Enqueue(new ActionList() { 
                                     creature = creature, 
-                                    actions = new List<IAvailableAction>(updatedActions),
+                                    actions = newActions,
                                     battle = newBattle
                                 } );
                             }
@@ -88,6 +104,10 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 var newBattle = current.battle.Copy();
                                 var attacked = newBattle.Map.GetOccupantCreature(targets.X, targets.Y);
+                                if(attacked == null)
+                                {
+                                    throw new Exception("WTF");
+                                }
                                 var confirmAttack = new ConfirmAttackAction()
                                 {
                                     ActionEconomy = nextAction.ActionEconomy,
@@ -97,23 +117,65 @@ namespace Logic.Core.GOAP.Actions
                                 };
                                 var events = newBattle.Attack(confirmAttack);
 
+                                var updatedActions = new List<IAvailableAction>(current.actions)
+                                {
+                                    confirmAttack
+                                };
+
                                 queue.Enqueue(new ActionList() {
                                     creature = confirmAttack.AttackingCreature,
                                     actions = new List<IAvailableAction>(updatedActions),
                                     battle = newBattle
                                 });
                             }
-                        } else if (nextAction is EndTurnAction)
+                        }
+                        else if (nextAction is EndTurnAction)
                         {
-                            result.Add(new ActionList() { 
+                            var updatedActions = new List<IAvailableAction>(current.actions)
+                            {
+                                nextAction
+                            };
+                            result.Add(new ActionList()
+                            {
                                 creature = current.battle.GetCreatureInTurn(),
                                 actions = new List<IAvailableAction>(updatedActions),
                                 battle = current.battle
                             });
+                        }
+                        else if (nextAction is RequestSpellAction)
+                        {
+                            var spellAction = nextAction as RequestSpellAction;
+                            foreach (var targets in nextAction.ReachableCells)
+                            {
+                                var newBattle = current.battle.Copy();
+                                var attacked = newBattle.Map.GetOccupantCreature(targets.X, targets.Y);
+                                var confirmSpell = new ConfirmSpellAction(newBattle.GetCreatureInTurn(), spellAction.Spell)
+                                {
+                                    ActionEconomy = nextAction.ActionEconomy,
+                                    Target = targets
+                                };
+                                var events = newBattle.Spell(confirmSpell);
+
+                                var updatedActions = new List<IAvailableAction>(current.actions)
+                                {
+                                    confirmSpell
+                                };
+
+                                queue.Enqueue(new ActionList()
+                                {
+                                    creature = confirmSpell.Caster,
+                                    actions = new List<IAvailableAction>(updatedActions),
+                                    battle = newBattle
+                                });
+                            }
                         } else
                         {
                             var newBattle = current.battle.Copy();
                             var events = newBattle.UseAbility(nextAction);
+                            var updatedActions = new List<IAvailableAction>(current.actions)
+                            {
+                                nextAction
+                            };
                             queue.Enqueue(new ActionList()
                             {
                                 creature = newBattle.GetCreatureInTurn(),
@@ -124,8 +186,9 @@ namespace Logic.Core.GOAP.Actions
                     }
                 }
             }
-            Console.WriteLine(loop);
-            Console.WriteLine(result.Count());
+
+            Logger.WriteLine("Completed building actions");
+
             return result;
         }
     }

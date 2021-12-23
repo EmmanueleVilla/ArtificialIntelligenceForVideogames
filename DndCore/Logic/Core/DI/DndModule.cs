@@ -4,6 +4,7 @@ using Logic.Core;
 using Logic.Core.Battle;
 using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Dice;
+using Logic.Core.GOAP.Actions;
 using Logic.Core.Graph;
 using Logic.Core.Map;
 using System;
@@ -40,6 +41,7 @@ namespace Core.DI
             factories.Add(typeof(UniformCostSearch), () => new UniformCostSearch());
             factories.Add(typeof(ISpeedCalculator), () => new SpeedCalculator());
             factories.Add(typeof(IActionBuildersWrapper), () => new ActionBuildersWrapper());
+            factories.Add(typeof(IActionSequenceBuilder), () => new ActionSequenceBuilder());
 
             if(enableLogs)
             {

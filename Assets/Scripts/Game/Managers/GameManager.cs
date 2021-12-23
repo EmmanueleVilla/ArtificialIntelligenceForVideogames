@@ -50,12 +50,28 @@ public class GameManager : MonoBehaviour
         Battle = DndModule.Get<IDndBattle>();
     }
 
+    IEnumerator AIPlay()
+    {
+        var jobData = new AIPlayJob();
+
+        JobHandle handle = jobData.Schedule();
+
+        while (!handle.IsCompleted)
+        {
+            yield return null;
+        }
+
+        handle.Complete();
+
+        yield return StartCoroutine(UIManager.ShowGameEvents(Battle.Events));
+
+        NextTurn();
+    }
+
     IEnumerator SetAvailableActions()
     {
-        // Set up the job data
         var jobData = new AvailableActionsJob();
 
-        // Schedule the job
         JobHandle handle = jobData.Schedule();
 
         while (!handle.IsCompleted)
@@ -118,7 +134,7 @@ public class GameManager : MonoBehaviour
             && edge.Speed == speed
             );
         var GameEvents = Battle.MoveTo(end);
-        yield return StartCoroutine(UIManager.MoveAlong(GameEvents));
+        yield return StartCoroutine(UIManager.ShowGameEvents(GameEvents));
         ExitMovementMode();
     }
 
@@ -190,22 +206,28 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(UIManager.DrawMap(map));
         Initiatives = Battle.Init(map);
         InitiativesRolled?.Invoke(this, Initiatives);
+        StartTurn();
+    }
+
+    private void StartTurn()
+    {
         var creature = Battle.GetCreatureInTurn();
-        TurnStarted?.Invoke(this, creature);
         DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
+        TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(new List<IAvailableAction>());
-        this.StartCoroutine(SetAvailableActions());
+        if (creature.Loyalty == Loyalties.Ally)
+        {
+            this.StartCoroutine(SetAvailableActions());
+        } else
+        {
+            this.StartCoroutine(AIPlay());
+        }
     }
 
     internal void NextTurn()
     {
         Battle.NextTurn();
-        var creature = Battle.GetCreatureInTurn();
-        DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
-        TurnStarted?.Invoke(this, creature);
-        ActionsManager.SetActions(new List<IAvailableAction>());
-        this.StartCoroutine(SetAvailableActions());
-    }
+        StartTurn();}
 
     List<Color> colors = new List<Color>() { Color.green, Color.yellow, Color.red, Color.magenta, Color.blue, Color.black };
 
@@ -216,7 +238,7 @@ public class GameManager : MonoBehaviour
             var actions = new List<IAvailableAction>();
             actions.Add(new ConfirmSpellAction(Battle.GetCreatureInTurn(), spell)
             {
-                Target = map.GetCellInfo(x, y)
+                Target = map.GetCellInfo(y, x)
             }); ;
             actions.Add(new CancelSpellAction());
             ActionsManager.SetActions(actions);

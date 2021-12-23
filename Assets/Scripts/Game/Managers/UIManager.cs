@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     List<SpriteManager> tiles = new List<SpriteManager>();
 
     public static GameObject creatureInTurn;
-    List<Tuple<ICreature, InitiativeIndicator>> initiativeIndicators = new List<Tuple<ICreature, InitiativeIndicator>>();
+    List<Tuple<int, InitiativeIndicator>> initiativeIndicators = new List<Tuple<int, InitiativeIndicator>>();
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (var indicator in initiativeIndicators)
         {
-            if (indicator.Item1.Id == e.Id)
+            if (indicator.Item1 == e.Id)
             {
                 indicator.Item2.Show();
                 creatureInTurn = indicator.Item2.gameObject;
@@ -118,7 +118,7 @@ public class UIManager : MonoBehaviour
                 {
                     var indicator = creature.GetComponent<InitiativeIndicator>();
                     indicator.Hide();
-                    initiativeIndicators.Add(new Tuple<ICreature, InitiativeIndicator>(cell.Creature, indicator));
+                    initiativeIndicators.Add(new Tuple<int, InitiativeIndicator>(cell.Creature.Id, indicator));
                     creature.transform.parent = MapRoot.transform;
                     creature.transform.localPosition = go.transform.localPosition;
                     var cells = map.GetCellsOccupiedBy(yPos, xPos);
@@ -142,29 +142,10 @@ public class UIManager : MonoBehaviour
     {
         foreach (var eve in events)
         {
-            if (eve.Type == GameEvent.Types.Attacks)
-            {
-                GameObject target = null;
-                foreach (var indicator in initiativeIndicators)
-                {
-                    if (indicator.Item1.Id == eve.Attacked.Id)
-                    {
-                        target = indicator.Item2.gameObject;
-                    }
-                }
-                var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
-                yield return StartCoroutine(RedEffect(renderers, 0.25f));
-            }
-        }
-    }
-
-    internal IEnumerator MoveAlong(IEnumerable<GameEvent> events)
-    {
-        foreach (var eve in events)
-        {
+            Debug.Log(eve.Type);
             if (eve.Type == GameEvent.Types.Movement)
             {
-                var tile = tiles.First(tile => tile.Y == eve.Destination.X && tile.X == eve.Destination.Y);
+                var tile = tiles.First(tile => tile.X == eve.Destination.Y && tile.Y == eve.Destination.X);
                 var target = tile.transform.localPosition;
                 DndModule.Get<ILogger>().WriteLine(string.Format("Moving to {0}-{1}", eve.Destination.X, eve.Destination.Y));
                 yield return StartCoroutine(MoveToIterator(creatureInTurn,
@@ -173,22 +154,45 @@ public class UIManager : MonoBehaviour
                     0.25f
                     ));
             }
-            if(eve.Type == GameEvent.Types.Falling)
+            if (eve.Type == GameEvent.Types.Falling)
             {
                 var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
                 DndModule.Get<ILogger>().WriteLine(string.Format("Taking {0} fall damage", eve.Damage));
-                yield return StartCoroutine(RedEffect(renderers, 0.25f));
+                yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
+            }
+
+            if (eve.Type == GameEvent.Types.SelfAbility)
+            {
+                var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
+                DndModule.Get<ILogger>().WriteLine("Used " + eve.Ability);
+                yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.green));
+            }
+
+            if (eve.Type == GameEvent.Types.Attacks)
+            {
+                DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", eve.Attacked.GetType().Name));
+                GameObject target = null;
+                foreach (var indicator in initiativeIndicators)
+                {
+                    Debug.Log("indicator " + indicator);
+                    if (indicator.Item1 == eve.Attacked.Id)
+                    {
+                        target = indicator.Item2.gameObject;
+                    }
+                }
+                var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
+                yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
             }
             yield return null;
         }
     }
 
-    private IEnumerator RedEffect(List<SpriteRenderer> renderers, float time)
+    private IEnumerator ColorEffect(List<SpriteRenderer> renderers, float time, Color end)
     {
         var now = Time.realtimeSinceStartup;
         while (Time.realtimeSinceStartup - now < time)
         {
-            var newColor = Color.Lerp(Color.white, Color.red, (Time.realtimeSinceStartup - now) / time);
+            var newColor = Color.Lerp(Color.white, end, (Time.realtimeSinceStartup - now) / time);
             foreach(var renderer in renderers)
             {
                 renderer.color = newColor;
@@ -199,7 +203,7 @@ public class UIManager : MonoBehaviour
         now = Time.realtimeSinceStartup;
         while (Time.realtimeSinceStartup - now < time)
         {
-            var newColor = Color.Lerp(Color.red, Color.white, (Time.realtimeSinceStartup - now) / time);
+            var newColor = Color.Lerp(end, Color.white, (Time.realtimeSinceStartup - now) / time);
             foreach (var renderer in renderers)
             {
                 renderer.color = newColor;

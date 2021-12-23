@@ -12,6 +12,7 @@ namespace Logic.Core.Battle.Actions.Movement
         public BattleActions ActionEconomy { get; set; } = BattleActions.Free;
         public int DestinationX { get; set; }
         public int DestinationY { get; set; }
+        public MemoryEdge MemoryEdge { get; set; }
         public int Speed { get; set; }
         public int Damage { get; set; }
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();

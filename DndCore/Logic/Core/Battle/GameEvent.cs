@@ -15,6 +15,7 @@ namespace Logic.Core.Battle
             SelfAbility
         }
 
+        public string Ability;
         public Types Type;
         public int FallingHeight;
         public Attack Attack;
