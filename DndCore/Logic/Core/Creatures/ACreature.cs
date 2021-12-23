@@ -70,7 +70,8 @@ namespace Logic.Core.Creatures
                 {
                     minus = 2;
                 }
-                return remainingMovement.Select(x => new Speed(x.Movement, x.Square - minus)).ToList();
+                var result = remainingMovement.Select(x => new Speed(x.Movement, x.Square - minus)).ToList();
+                return result;
             }
             set {
                 remainingMovement = value;
@@ -88,6 +89,8 @@ namespace Logic.Core.Creatures
         public string LastAttackUsed { get; set; }
         public int RemainingAttacksPerBonusAction { get; set; }
         public List<Tuple<int, int, TemporaryEffects>> TemporaryEffectsList { get; set; } = new List<Tuple<int, int, TemporaryEffects>>();
+        public bool DashUsed { get; set; }
+        public bool DodgeUsed { get; set; }
 
         private int RollInitiative()
         {

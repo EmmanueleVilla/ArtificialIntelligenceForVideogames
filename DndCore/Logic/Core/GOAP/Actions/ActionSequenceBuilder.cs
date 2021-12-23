@@ -38,13 +38,12 @@ namespace Logic.Core.GOAP.Actions
             var loop = 0;
             while(queue.Count > 0)
             {
-                break;
                 loop++;
-                if(loop % 10 == 0)
-                {
-                    Console.WriteLine(loop);
-                }
                 var current = queue.Dequeue();
+                if (loop % 50 == 0)
+                {
+                    Console.WriteLine(loop + ") " + string.Join(" - ", current.actions.Select(x => x.GetType().ToString().Split('.').Last())));
+                }
                 //Console.WriteLine("***** CURRENT " + loop + "*****");
                 //Console.WriteLine(String.Join("-", current.actions.Select(x => x.GetType().ToString().Split('.').Last())));
                 //Console.WriteLine("***********************");
@@ -72,11 +71,6 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 var newBattle = current.battle.Copy();
                                 var creature = newBattle.GetCreatureInTurn();
-                                if (creature.RemainingMovement[0].Square > creature.Movements[0].Square)
-                                {
-                                    newBattle = current.battle.Copy();
-                                    throw new Exception("WTF");
-                                }
                                 var events = newBattle.MoveTo(memoryEdge);
                                 
                                 queue.Enqueue(new ActionList() { 

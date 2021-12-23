@@ -147,21 +147,10 @@ namespace Logic.Core
         {
             var list = new List<GameEvent>();
             var creature = GetCreatureInTurn();
-            var old = creature.RemainingMovement[0].Square;
-            if(old == 12)
-            {
-                creature.RemainingMovement[0].Square.ToString();
-                throw new Exception("WTF");
-            }
             creature.RemainingMovement = creature.RemainingMovement.Select(x =>
            {
                    return new Speed(x.Movement, x.Square - end.Speed);
            }).ToList();
-            var n = creature.RemainingMovement[0].Square;
-            if(n == 11)
-            {
-                throw new Exception("WTF");
-            }
             map.MoveCreatureTo(creature, end);
             foreach(var e in end.Events)
             {
@@ -301,6 +290,7 @@ namespace Logic.Core
                             monk.RemainingKiPoints--;
                         }
                     }
+                    creature.DashUsed = true;
                     break;
                 case ActionsTypes.Disengage:
                     creature.Disangaged = true;
@@ -331,10 +321,12 @@ namespace Logic.Core
                     {
                         monkDef.RemainingKiPoints--;
                     }
+                    creature.DodgeUsed = true;
                     break;
                 case ActionsTypes.Dodge:
                     creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(creature.Id, 1, TemporaryEffects.DisadvantageToSufferedAttacks));
                     creature.ActionUsedNotToAttack = true;
+                    creature.DodgeUsed = true;
                     break;
                 case ActionsTypes.FightingSpirit:
                     creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(creature.Id, 1, TemporaryEffects.AdvantageToAttacks));

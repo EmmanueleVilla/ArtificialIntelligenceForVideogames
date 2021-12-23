@@ -69,6 +69,10 @@ namespace Logic.Core.Creatures
 
         bool Disangaged { get; set; }
 
+        bool DashUsed { get; set; }
+
+        bool DodgeUsed { get; set; }
+
         // Initiative --------------------------------------------------------------------------
 
         int RolledInitiative { get; }
