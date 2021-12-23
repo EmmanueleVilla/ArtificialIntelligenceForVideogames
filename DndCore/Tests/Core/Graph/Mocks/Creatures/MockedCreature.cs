@@ -2,6 +2,7 @@
 using Logic.Core.Creatures;
 using Logic.Core.Movements;
 using Moq;
+using System;
 using System.Collections.Generic;
 
 namespace Tests.Core.Graph.Mocks.Creatures
@@ -16,7 +17,9 @@ namespace Tests.Core.Graph.Mocks.Creatures
             bool disengaged = false,
             bool hasReactions = true)
         {
+            int id = new Random().Next(0, int.MaxValue);
             var creature = new Mock<ICreature>();
+            creature.Setup(x => x.Id).Returns(id);
             creature.Setup(x => x.Size).Returns(size);
             creature.Setup(x => x.Loyalty).Returns(loyalty);
             creature.Setup(x => x.RemainingMovement).Returns(movements);

@@ -48,7 +48,7 @@ namespace Logic.Core.Graph
                 creature.ToString();
             }
             var movements = creature.RemainingMovement;
-            if (movements.TrueForAll(x => x.Item2 <= 0))
+            if (movements.TrueForAll(x => x.Square <= 0))
             {
                 return result;
             }
@@ -61,7 +61,7 @@ namespace Logic.Core.Graph
                 var best = queue.First().Value;
                 visited.Add((best.Cell.X << 6) + best.Cell.Y);
                 queue.RemoveAt(0);
-                var remainingMovement = movements.Select(x => new Speed(x.Item1, x.Item2 - best.UsedMovement)).ToList();
+                var remainingMovement = movements.Select(x => new Speed(x.Movement, x.Square - best.UsedMovement)).ToList();
                 foreach(var delta in deltas) { 
                     var newX = best.Cell.X + delta.DeltaX;
                     var newY = best.Cell.Y + delta.DeltaY;
@@ -83,7 +83,7 @@ namespace Logic.Core.Graph
                         map);
                     if (!edge.Equals(Edge.Empty()))
                     {
-                        if (!remainingMovement.Any(x => x.Item2 - edge.Speed >= 0))
+                        if (!remainingMovement.Any(x => x.Square - edge.Speed >= 0))
                         {
                             continue;
                         }

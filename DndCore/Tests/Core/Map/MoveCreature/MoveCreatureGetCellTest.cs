@@ -1,4 +1,5 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
 using Logic.Core.Battle;
 using Logic.Core.Map.Impl;
 using NUnit.Framework;
@@ -57,6 +58,7 @@ namespace Tests.Core.Map.MoveCreature
         [Test]
         public void AddCreaturesAndRetrieveList()
         {
+            DndModule.RegisterRules();
             var map = new ArrayDndMap(10, 10, CellInfo.Empty());
             for (int i = 0; i < 10; i++)
             {

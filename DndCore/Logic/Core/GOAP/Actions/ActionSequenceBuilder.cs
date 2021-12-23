@@ -35,13 +35,13 @@ namespace Logic.Core.GOAP.Actions
             });
 
             var loop = 0;
-            while(queue.Count > 0)
+            while(queue.Count > 0 && loop < 500)
             {
+                break;
                 loop++;
                 var current = queue.Dequeue();
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions(current.creature);
-                Console.WriteLine(nextActions.Count);
                 foreach (var nextAction in nextActions)
                 {
                     if(nextAction is RequestMovementAction && current.actions.LastOrDefault() is RequestMovementAction)
@@ -59,9 +59,10 @@ namespace Logic.Core.GOAP.Actions
                             foreach(var memoryEdge in memoryEdges)
                             {
                                 var newBattle = current.battle.Copy();
-                                newBattle.MoveTo(memoryEdge);
+                                var events = newBattle.MoveTo(memoryEdge);
+                                var creature = newBattle.GetCreatureInTurn();
                                 queue.Enqueue(new ActionList() { 
-                                    creature = newBattle.GetCreatureInTurn(), 
+                                    creature = creature, 
                                     actions = new List<IAvailableAction>(updatedActions),
                                     battle = newBattle
                                 } );
@@ -80,7 +81,7 @@ namespace Logic.Core.GOAP.Actions
                                     TargetCreature = attacked,
                                     Attack = attackAction.Attack
                                 };
-                                newBattle.Attack(confirmAttack);
+                                var events = newBattle.Attack(confirmAttack);
 
                                 queue.Enqueue(new ActionList() {
                                     creature = confirmAttack.AttackingCreature,
@@ -98,7 +99,7 @@ namespace Logic.Core.GOAP.Actions
                         } else
                         {
                             var newBattle = current.battle.Copy();
-                            newBattle.UseAbility(nextAction);
+                            var events = newBattle.UseAbility(nextAction);
                             queue.Enqueue(new ActionList()
                             {
                                 creature = newBattle.GetCreatureInTurn(),

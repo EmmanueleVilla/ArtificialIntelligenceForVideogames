@@ -43,7 +43,8 @@ namespace Logic.Core
             var settings = new JsonSerializerSettings();
             settings.TypeNameHandling = TypeNameHandling.Auto;
             var serialized = JsonConvert.SerializeObject(this, settings);
-            return JsonConvert.DeserializeObject<DndBattle>(serialized, settings);
+            var deserialized = JsonConvert.DeserializeObject<DndBattle>(serialized, settings);
+            return deserialized;
         }
 
         public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, IActionBuildersWrapper actionBuildersWrapper = null, ILogger logger = null) {
@@ -147,7 +148,7 @@ namespace Logic.Core
             var creature = GetCreatureInTurn();
             creature.RemainingMovement = creature.RemainingMovement.Select(x =>
            {
-                   return new Speed(x.Item1, x.Item2 - end.Speed);
+                   return new Speed(x.Movement, x.Square - end.Speed);
            }).ToList();
             map.MoveCreatureTo(creature, end);
             foreach(var e in end.Events)
@@ -157,6 +158,7 @@ namespace Logic.Core
                     e.Damage = Roller.Roll(RollTypes.Normal, e.FallingHeight, 6, 0);
                     creature.CurrentHitPoints -= e.Damage;
                 }
+                //TODO: attack of opportunity
                 yield return e;
             }
         }
@@ -267,8 +269,8 @@ namespace Logic.Core
                     var action = availableAction as DashAction;
                     creature.RemainingMovement = creature.RemainingMovement.Select(mov =>
                     {
-                        var baseSpeed = creature.Movements.First(x => x.Item1 == mov.Item1);
-                        return new Speed(mov.Item1, mov.Item2 + baseSpeed.Item2);
+                        var baseSpeed = creature.Movements.First(x => x.Movement == mov.Movement);
+                        return new Speed(mov.Movement, mov.Square + baseSpeed.Square);
                     }
                     ).ToList();
                     if(action.ActionEconomy == BattleActions.Action)

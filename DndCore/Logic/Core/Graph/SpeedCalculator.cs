@@ -189,8 +189,8 @@ namespace Logic.Core.Graph
             // I need to climb
             if (heightDiff > 1)
             {
-                var climbingMovement = movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Climbing);
-                if (climbingMovement != null && climbingMovement.Item2 > 0)
+                var climbingMovement = movements.FirstOrDefault(x => x.Movement == SpeedTypes.Climbing);
+                if (climbingMovement != null && climbingMovement.Square > 0)
                 {
                     amount += (heightDiff + 1) / 2 - 1;
                 }
@@ -217,8 +217,8 @@ namespace Logic.Core.Graph
             {
                 // I need to swim
                 case 'R':
-                    var swimmingMovement = movements.FirstOrDefault(x => x.Item1 == SpeedTypes.Swimming);
-                    amount += swimmingMovement != null && swimmingMovement.Item2 > 0 ? 0 : 1;
+                    var swimmingMovement = movements.FirstOrDefault(x => x.Movement == SpeedTypes.Swimming);
+                    amount += swimmingMovement != null && swimmingMovement.Square > 0 ? 0 : 1;
                     break;
             }
 

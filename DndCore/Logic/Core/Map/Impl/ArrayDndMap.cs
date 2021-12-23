@@ -13,8 +13,8 @@ namespace Logic.Core.Map.Impl
         public readonly int Height;
         public CellInfo[,] cells;
         public List<CellInfo> occupiedCells = new List<CellInfo>();
-        public Dictionary<int,ICreature> occupiedCellsDictionary = new Dictionary<int, ICreature>();
-        public List<Tuple<ICreature, List<CellInfo>>> threateningAreas = new List<Tuple<ICreature, List<CellInfo>>>();
+        public Dictionary<int,int> occupiedCellsDictionary = new Dictionary<int, int>();
+        public List<Tuple<int, List<CellInfo>>> threateningAreas = new List<Tuple<int, List<CellInfo>>>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -84,7 +84,7 @@ namespace Logic.Core.Map.Impl
             occupiedCells.AddRange(tempOccupiedCells);
             tempOccupiedCells.ForEach(temp =>
             {
-                occupiedCellsDictionary.Add((temp.X << 6) + temp.Y, creature);
+                occupiedCellsDictionary.Add((temp.X << 6) + temp.Y, creature.Id);
             });
 
             var reach = 0;
@@ -113,7 +113,7 @@ namespace Logic.Core.Map.Impl
                         cells.Add(GetCellInfo(i, j));
                     }
                 }
-                threateningAreas.Add(new Tuple<ICreature, List<CellInfo>>(creature, cells));
+                threateningAreas.Add(new Tuple<int, List<CellInfo>>(creature.Id, cells));
             }
 
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
@@ -123,9 +123,9 @@ namespace Logic.Core.Map.Impl
 
         public ICreature GetOccupantCreature(int x, int y)
         {
-            ICreature creature;
-            occupiedCellsDictionary.TryGetValue((x << 6) + y, out creature);
-            return creature;
+            int creatureId;
+            occupiedCellsDictionary.TryGetValue((x << 6) + y, out creatureId);
+            return Creatures.FirstOrDefault(c => c.Id == creatureId);
         }
 
         public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
@@ -133,7 +133,8 @@ namespace Logic.Core.Map.Impl
             var creatures = new List<ICreature>();
             foreach (var area in threateningAreas)
             {
-                if (area.Item1.Loyalty == mover.Loyalty)
+                var creature = Creatures.First(c => c.Id == area.Item1);
+                if (creature.Loyalty == mover.Loyalty)
                 {
                     continue;
                 }
@@ -145,7 +146,7 @@ namespace Logic.Core.Map.Impl
                 var areaContainsEnd = !area.Item2.Any(x => x.X == end.X && x.Y == end.Y);
                 if (areaContainsEnd)
                 {
-                    creatures.Add(area.Item1);
+                    creatures.Add(creature);
                 }
             }
             return creatures;
@@ -188,12 +189,11 @@ namespace Logic.Core.Map.Impl
             var startCoord = edge.Start.First();
             var startCell = GetCellInfo(startCoord.X, startCoord.Y);
             var newCell = CellInfo.Copy(startCell);
-            //newCell.Creature = creature;
             startCell.Creature = null;
             SetCell(startCell.X, startCell.Y, startCell);
             occupiedCells.RemoveAll(x => x.Creature == creature);
-            threateningAreas.RemoveAll(x => x.Item1 == creature);
-            var keys = occupiedCellsDictionary.Where(x => x.Value == creature).Select(x => x.Key).ToList();
+            threateningAreas.RemoveAll(x => x.Item1 == creature.Id);
+            var keys = occupiedCellsDictionary.Where(x => x.Value == creature.Id).Select(x => x.Key).ToList();
             foreach(var key in keys)
             {
                 occupiedCellsDictionary.Remove(key);

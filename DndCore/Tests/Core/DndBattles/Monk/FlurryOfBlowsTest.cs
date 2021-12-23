@@ -1,4 +1,5 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
 using Core.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle;
@@ -27,6 +28,7 @@ namespace Tests.Core.DndBattles.Monk
         [Test]
         public void FlurryOfBlowsAvailableAndNumberOfBonusAttacks()
         {
+            DndModule.RegisterRules();
             var battle = new DndBattle(new ZeroRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new ConsoleLogger()));
             var map = new ArrayDndMap(10, 10, CellInfo.Empty());

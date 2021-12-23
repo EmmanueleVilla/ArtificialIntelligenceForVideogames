@@ -1,4 +1,5 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
 using Logic.Core.Actions;
 using Logic.Core.Creatures;
 using Logic.Core.Map.Impl;
@@ -64,6 +65,7 @@ namespace Tests.Core.Map.AOP
         [Test]
         public void LeavingTwoEnemies()
         {
+            DndModule.RegisterRules();
             var map = new ArrayDndMap(10, 10, CellInfo.Empty());
             for (int i = 0; i < 10; i++)
             {

@@ -47,7 +47,7 @@ namespace Tests.Core.Map.MoveCreature
                 new CellInfo('G', 0, null, 2, 1),
                 new CellInfo('G', 0, null, 2, 2),
             };
-            Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature).Item2);
+            Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Tests.Core.Map.MoveCreature
                 new CellInfo('G', 0, null, 3, 2),
                 new CellInfo('G', 0, null, 3, 3),
             };
-            Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature).Item2);
+            Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace Tests.Core.Map.MoveCreature
                 new CellInfo('G', 0, null, 4, 3),
                 new CellInfo('G', 0, null, 4, 4),
             };
-            var result = map.threateningAreas.FirstOrDefault(x => x.Item1 == creature).Item2;
+            var result = map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2;
             Assert.AreEqual(expected, result);
         }
 
@@ -236,7 +236,7 @@ namespace Tests.Core.Map.MoveCreature
                 new CellInfo('G', 0, null, 4, 3),
                 new CellInfo('G', 0, null, 4, 4),
             };
-            Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature).Item2);
+            Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }
     }
 }

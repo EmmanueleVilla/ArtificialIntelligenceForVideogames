@@ -3,11 +3,14 @@ using System;
 
 namespace Logic.Core.Movements
 {
-    public class Speed : Tuple<SpeedTypes, int>
+    public class Speed
     {
-        public Speed(SpeedTypes movement, int square): base(movement, square)
+        public SpeedTypes Movement;
+        public int Square;
+        public Speed(SpeedTypes movement, int square)
         {
-
+            Movement = movement;
+            Square = square;
         }
     }
 }

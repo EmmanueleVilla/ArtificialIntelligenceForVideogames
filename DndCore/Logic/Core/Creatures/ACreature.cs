@@ -14,7 +14,7 @@ namespace Logic.Core.Creatures
         private readonly IDiceRoller roller;
         private readonly Random random;
         public int Id { get; set; }
-        public List<Speed> _remainingMovement;
+        public List<Speed> remainingMovement { get; set; }
 
         protected ACreature(IDiceRoller roller = null, Random random = null, int id = -1)
         {
@@ -25,7 +25,8 @@ namespace Logic.Core.Creatures
         public ICreature Init()
         {
             Id = this.random.Next(0, int.MaxValue);
-            _remainingMovement = new List<Speed>(Movements);
+            remainingMovement = new List<Speed>(Movements);
+            RemainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             RemainingAttacksPerBonusAction = 0;
@@ -35,7 +36,8 @@ namespace Logic.Core.Creatures
         
         public virtual void ResetTurn()
         {
-            _remainingMovement = new List<Speed>(Movements);
+            remainingMovement = new List<Speed>(Movements);
+            RemainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
             CurrentHitPoints = HitPoints;
             LastAttackUsed = null;
@@ -62,17 +64,18 @@ namespace Logic.Core.Creatures
 
         //Implemented fields
         public virtual int RolledInitiative { get; private set; }
-        public List<Speed> RemainingMovement {
+        public List<Speed> RemainingMovement
+        {
             get {
                 var minus = 0;
                 if(TemporaryEffectsList.FirstOrDefault(x => x.Item3 == TemporaryEffects.SpeedReducedByTwo) != null)
                 {
                     minus = 2;
                 }
-                return _remainingMovement.Select(x => new Speed(x.Item1, x.Item2 - minus)).ToList();
+                return remainingMovement.Select(x => new Speed(x.Movement, x.Square - minus)).ToList();
             }
             set {
-                _remainingMovement = value;
+                remainingMovement = value;
             }
         }
         public bool Disangaged { get; set; }

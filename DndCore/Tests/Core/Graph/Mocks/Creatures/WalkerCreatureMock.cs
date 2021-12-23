@@ -12,7 +12,9 @@ namespace Tests.Core.Graph.Mocks
     {
         public static ICreature Build(int size = 1)
         {
+            int id = new Random().Next(0, int.MaxValue);
             var creature = new Mock<ICreature>();
+            creature.Setup(x => x.Id).Returns(id);
             creature.Setup(x => x.Size).Returns(size);
             creature.Setup(x => x.Loyalty).Returns(Loyalties.Ally);
             creature.Setup(x => x.RemainingMovement).Returns(new List<Speed>() {
