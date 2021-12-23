@@ -46,14 +46,14 @@ namespace Logic.Core.Map.Impl
             return newMap;
         }
 
-        private List<ICreature> creatures;
+        private Dictionary<int, ICreature> creatures;
 
-        public List<ICreature> Creatures
+        public Dictionary<int, ICreature> Creatures
         { 
             get {
                 if (creatures == null)
                 {
-                    creatures = new List<ICreature>();
+                    creatures = new Dictionary<int, ICreature>();
                     for (int i = 0; i < Width; i++)
                     {
                         for (int j = 0; j < Height; j++)
@@ -61,7 +61,7 @@ namespace Logic.Core.Map.Impl
                             var cell = GetCellInfo(i, j);
                             if (cell.Creature != null)
                             {
-                                creatures.Add(cell.Creature);
+                                creatures.Add(cell.Creature.Id, cell.Creature);
                             }
                         }
                     }
@@ -196,7 +196,9 @@ namespace Logic.Core.Map.Impl
         {
             int creatureId;
             occupiedCellsDictionary.TryGetValue((x << 6) + y, out creatureId);
-            return Creatures.FirstOrDefault(c => c.Id == creatureId);
+            ICreature creature;
+            Creatures.TryGetValue(creatureId, out creature);
+            return creature;
         }
 
         public List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end)
@@ -204,7 +206,7 @@ namespace Logic.Core.Map.Impl
             var creatures = new List<ICreature>();
             foreach (var area in threateningAreas)
             {
-                var creature = Creatures.First(c => c.Id == area.Item1);
+                var creature = Creatures[area.Item1];
                 if (creature.Loyalty == mover.Loyalty)
                 {
                     continue;

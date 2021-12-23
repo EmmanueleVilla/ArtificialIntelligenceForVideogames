@@ -15,7 +15,7 @@ namespace Core.Map
         bool AddCreature(ICreature creature, int x, int y);
         ICreature GetOccupantCreature(int x, int y);
         List<ICreature> IsLeavingThreateningArea(ICreature mover, CellInfo start, CellInfo end);
-        List<ICreature> Creatures { get; }
+        Dictionary<int, ICreature> Creatures { get; }
         List<CellInfo> GetCellsOccupiedBy(int x, int y);
         void MoveCreatureTo(ICreature creature, MemoryEdge end);
         IMap Copy();

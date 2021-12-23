@@ -55,8 +55,7 @@ namespace Logic.Core.Graph
                 && Speed == other.Speed
                 && Damage == other.Damage
                 && Destination.X == other.Destination.X
-                && Destination.Y == other.Destination.Y
-                && Enumerable.SequenceEqual(Events, other.Events);
+                && Destination.Y == other.Destination.Y;
         }
 
         public override int GetHashCode()

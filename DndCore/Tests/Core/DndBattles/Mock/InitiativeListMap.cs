@@ -15,18 +15,19 @@ namespace Tests.Core.DndBattles.Mock
 
         public int Height => throw new NotImplementedException();
 
-        public List<ICreature> Creatures => new List<ICreature>()
+
+        public Dictionary<int, ICreature> Creatures => new Dictionary<int, ICreature>
         {
-            new InitiativeCreatureMock(0, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(1, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(2, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(3, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(4, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(5, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(6, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(7, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(8, new ZeroRoller(), new Random()),
-            new InitiativeCreatureMock(9, new ZeroRoller(), new Random()),
+            {0, new InitiativeCreatureMock(0, new ZeroRoller(), new Random()) },
+            {1, new InitiativeCreatureMock(1, new ZeroRoller(), new Random()) },
+            {2, new InitiativeCreatureMock(2, new ZeroRoller(), new Random()) },
+            {3, new InitiativeCreatureMock(3, new ZeroRoller(), new Random()) },
+            {4, new InitiativeCreatureMock(4, new ZeroRoller(), new Random()) },
+            {5, new InitiativeCreatureMock(5, new ZeroRoller(), new Random()) },
+            {6, new InitiativeCreatureMock(6, new ZeroRoller(), new Random()) },
+            {7, new InitiativeCreatureMock(7, new ZeroRoller(), new Random()) },
+            {8, new InitiativeCreatureMock(8, new ZeroRoller(), new Random()) },
+            {9, new InitiativeCreatureMock(9, new ZeroRoller(), new Random()) },
         };
 
         public bool AddCreature(ICreature creature, int x, int y)

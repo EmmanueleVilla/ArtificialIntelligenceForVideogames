@@ -42,7 +42,7 @@ namespace Tests.Core.Map
             var creature = WalkerCreatureMock.Build(1);
             map.AddCreature(creature, 1, 1);
             Assert.AreEqual(1, map.Creatures.Count);
-            Assert.AreEqual(creature, map.Creatures[0]);
+            Assert.AreEqual(creature, map.Creatures.First().Value);
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace Tests.Core.Map
             var two = WalkerCreatureMock.Build(1);
             map.AddCreature(two, 2, 2);
             Assert.AreEqual(2, map.Creatures.Count);
-            Assert.AreEqual(one, map.Creatures[0]);
-            Assert.AreEqual(two, map.Creatures[1]);
+            Assert.AreEqual(one, map.Creatures.First().Value);
+            Assert.AreEqual(two, map.Creatures.Last().Value);
         }
     }
 }

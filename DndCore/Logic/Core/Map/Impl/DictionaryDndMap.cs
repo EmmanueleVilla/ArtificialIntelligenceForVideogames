@@ -12,7 +12,7 @@ namespace Logic.Core.Map
         private Dictionary<int, CellInfo> cells = new Dictionary<int, CellInfo>();
         int IMap.Width => Width;
         int IMap.Height => Height;
-        public List<ICreature> Creatures => throw new System.NotImplementedException();
+        public Dictionary<int, ICreature> Creatures => throw new System.NotImplementedException();
 
         public DictionaryDndMap(int width, int height, CellInfo defaultInfo)
         {

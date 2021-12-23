@@ -58,7 +58,7 @@ namespace Logic.Core
         {
             this.map = map;
             var temp = new List<ICreature>();
-            foreach (var creature in map.Creatures)
+            foreach (var creature in map.Creatures.Values)
             {
                 temp.Add(creature);
             }
@@ -70,7 +70,7 @@ namespace Logic.Core
 
         public ICreature GetCreatureInTurn()
         {
-            return map.Creatures.First(x => x.Id == initiativeOrder[turnIndex]);
+            return map.Creatures[initiativeOrder[turnIndex]];
         }
 
         public void BuildAvailableActions(ICreature creature = null)
@@ -99,7 +99,7 @@ namespace Logic.Core
             {
                 foreach (var creature in map.Creatures)
                 {
-                    creature.ResetTurn();
+                    creature.Value.ResetTurn();
                 }
                 turnIndex = 0;
             }
@@ -107,7 +107,7 @@ namespace Logic.Core
             var creatureInTurn = GetCreatureInTurn();
             foreach (var creature in map.Creatures)
             {
-                creature.TemporaryEffectsList = creature.TemporaryEffectsList.Select( x =>
+                creature.Value.TemporaryEffectsList = creature.Value.TemporaryEffectsList.Select( x =>
                 {
                     var remainingTurns = x.Item2;
                     if (x.Item1 == creatureInTurn.Id)
