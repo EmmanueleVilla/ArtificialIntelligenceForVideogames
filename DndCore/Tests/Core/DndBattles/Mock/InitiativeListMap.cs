@@ -34,6 +34,11 @@ namespace Tests.Core.DndBattles.Mock
             throw new NotImplementedException();
         }
 
+        public IMap Copy()
+        {
+            throw new NotImplementedException();
+        }
+
         public CellInfo GetCellInfo(int x, int y)
         {
             throw new NotImplementedException();

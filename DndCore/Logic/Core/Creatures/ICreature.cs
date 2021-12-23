@@ -36,6 +36,8 @@ namespace Logic.Core.Creatures
 
         AbilityScores AbilityScores { get; }
 
+        ICreature Copy();
+
         // Movement --------------------------------------------------------------------------
 
         List<Speed> Movements { get; }

@@ -5,6 +5,7 @@ using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
 using Logic.Core.Movements;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Logic.Core.Creatures.Bestiary
 {
@@ -19,6 +20,32 @@ namespace Logic.Core.Creatures.Bestiary
         public override void ResetTurn()
         {
             base.ResetTurn();
+        }
+
+        public override ICreature Copy()
+        {
+            return new DwarfMaleWarrior()
+            {
+                Id = this.Id,
+                remainingMovement = this.remainingMovement,
+                RolledInitiative = this.RolledInitiative,
+                Disangaged = this.Disangaged,
+                RemainingAttacksPerAction = this.RemainingAttacksPerAction,
+                ActionUsedNotToAttack = this.ActionUsedNotToAttack,
+                ActionUsedToAttack = this.ActionUsedToAttack,
+                BonusActionUsedNotToAttack = this.BonusActionUsedNotToAttack,
+                BonusActionUsedToAttack = this.BonusActionUsedToAttack,
+                ReactionUsed = this.ReactionUsed,
+                CurrentHitPoints = this.CurrentHitPoints,
+                TemporaryHitPoints = this.TemporaryHitPoints,
+                LastAttackUsed = this.LastAttackUsed,
+                DashUsed = this.DashUsed,
+                DodgeUsed = this.DodgeUsed,
+                RemainingAttacksPerBonusAction = this.RemainingAttacksPerBonusAction,
+                TemporaryEffectsList = this.TemporaryEffectsList.ToList(),
+                FightingSpiritRemaining = this.FightingSpiritRemaining,
+                SecondWindRemaining = this.SecondWindRemaining
+            };
         }
 
         public override List<Attack> Attacks => new List<Attack>()
@@ -44,7 +71,7 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override int ArmorClass => 18;
 
-        public override AbilityScores AbilityScores { get; } = new AbilityScores(16, 14, 16, 12, 9, 10);
+        public override AbilityScores AbilityScores => new AbilityScores(16, 14, 16, 12, 9, 10);
 
         public int FightingSpiritTemporaryHitPoints => 5;
 

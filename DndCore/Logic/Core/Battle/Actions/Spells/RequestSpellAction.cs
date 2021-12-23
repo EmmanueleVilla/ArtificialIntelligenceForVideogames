@@ -25,5 +25,6 @@ namespace Logic.Core.Battle.Actions.Spells
         public ActionsTypes ActionType => ActionsTypes.RequestSpell;
 
         public string Description => "(" + ActionEconomy + ") " + Spell.Name + " - lvl " + Spell.Level;
+        public int Priority => 1000;
     }
 }

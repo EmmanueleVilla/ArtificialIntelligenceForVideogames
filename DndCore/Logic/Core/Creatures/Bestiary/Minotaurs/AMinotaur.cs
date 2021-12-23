@@ -9,11 +9,12 @@ namespace Logic.Core.Creatures.Bestiary
 {
     public abstract class AMinotaur : ACreature
     {
+
         public override Loyalties Loyalty => Loyalties.Enemy;
 
         public override int Size => 2;
 
-        public override int CriticalThreshold => 20;
+        public override int CriticalThreshold => 19;
 
         public override List<Attack> Attacks => new List<Attack>()
         {

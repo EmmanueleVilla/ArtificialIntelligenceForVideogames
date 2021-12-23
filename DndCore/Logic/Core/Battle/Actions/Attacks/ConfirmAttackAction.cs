@@ -18,5 +18,6 @@ namespace Logic.Core.Battle.Actions.Attacks
         public Attack Attack;
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => string.Format("Confirm attack to {0}", TargetCreature.GetType().ToString().Split('.').Last());
+        public int Priority => 0;
     }
 }

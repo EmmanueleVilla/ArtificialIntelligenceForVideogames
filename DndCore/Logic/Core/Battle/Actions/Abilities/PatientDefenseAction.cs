@@ -11,5 +11,6 @@ namespace Logic.Core.Battle.Actions.Abilities
         public ActionsTypes ActionType => ActionsTypes.PatientDefence;
         public string Description => "(" + ActionEconomy + ") Patient Defense";
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>() { CellInfo.Empty() };
+        public int Priority => 1;
     }
 }

@@ -11,5 +11,6 @@ namespace Logic.Core.Battle.Actions.Movement
         public ActionsTypes ActionType => ActionsTypes.CancelMovement;
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => "Cancel Movement";
+        public int Priority => 0;
     }
 }

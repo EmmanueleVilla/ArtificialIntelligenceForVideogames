@@ -13,5 +13,7 @@ namespace Logic.Core.Battle.Actions.Attacks
         public string Description => "Cancel Attack";
 
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
+
+        public int Priority => 0;
     }
 }

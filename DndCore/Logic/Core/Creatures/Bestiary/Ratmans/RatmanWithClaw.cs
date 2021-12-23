@@ -8,6 +8,28 @@ namespace Logic.Core.Creatures.Bestiary
 {
     public class RatmanWithClaw : ARatman
     {
+        public override ICreature Copy()
+        {
+            return new RatmanWithClaw()
+            {
+                Id = this.Id,
+                remainingMovement = this.remainingMovement,
+                RolledInitiative = this.RolledInitiative,
+                Disangaged = this.Disangaged,
+                RemainingAttacksPerAction = this.RemainingAttacksPerAction,
+                ActionUsedNotToAttack = this.ActionUsedNotToAttack,
+                ActionUsedToAttack = this.ActionUsedToAttack,
+                BonusActionUsedNotToAttack = this.BonusActionUsedNotToAttack,
+                BonusActionUsedToAttack = this.BonusActionUsedToAttack,
+                ReactionUsed = this.ReactionUsed,
+                CurrentHitPoints = this.CurrentHitPoints,
+                TemporaryHitPoints = this.TemporaryHitPoints,
+                LastAttackUsed = this.LastAttackUsed,
+                DashUsed = this.DashUsed,
+                DodgeUsed = this.DodgeUsed,
+                RemainingAttacksPerBonusAction = this.RemainingAttacksPerBonusAction
+            };
+        }
         public override List<Attack> Attacks => new List<Attack>()
         {
             new Attack("Claw", 1, new List<Damage>()

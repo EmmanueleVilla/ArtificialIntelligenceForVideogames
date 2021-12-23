@@ -18,5 +18,6 @@ namespace Core.Map
         List<ICreature> Creatures { get; }
         List<CellInfo> GetCellsOccupiedBy(int x, int y);
         void MoveCreatureTo(ICreature creature, MemoryEdge end);
+        IMap Copy();
     }
 }

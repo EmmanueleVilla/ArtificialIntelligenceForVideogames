@@ -10,5 +10,7 @@ namespace Logic.Core.Battle.Actions
         ActionsTypes ActionType { get; }
         List<CellInfo> ReachableCells { get; set; }
         string Description { get; }
+
+        int Priority { get; }
     }
 }

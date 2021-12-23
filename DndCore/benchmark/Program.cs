@@ -14,7 +14,7 @@ namespace benchmark
             var time = DateTime.Now;
             new ActionSequenceBuilderDemo();
             //var summary = BenchmarkRunner.Run<UCSBenchmark>();
-            Console.WriteLine((DateTime.Now - time).TotalMinutes);
+            Console.WriteLine((DateTime.Now - time).TotalSeconds);
             Console.ReadLine();
 
             /*

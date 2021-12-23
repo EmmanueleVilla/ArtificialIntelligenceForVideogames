@@ -13,6 +13,29 @@ namespace Logic.Core.Creatures.Bestiary
         {
 
         }
+        public override ICreature Copy()
+        {
+            return new RatmanWithBow()
+            {
+                Id = this.Id,
+                remainingMovement = this.remainingMovement,
+                RolledInitiative = this.RolledInitiative,
+                Disangaged = this.Disangaged,
+                RemainingAttacksPerAction = this.RemainingAttacksPerAction,
+                ActionUsedNotToAttack = this.ActionUsedNotToAttack,
+                ActionUsedToAttack = this.ActionUsedToAttack,
+                BonusActionUsedNotToAttack = this.BonusActionUsedNotToAttack,
+                BonusActionUsedToAttack = this.BonusActionUsedToAttack,
+                ReactionUsed = this.ReactionUsed,
+                CurrentHitPoints = this.CurrentHitPoints,
+                TemporaryHitPoints = this.TemporaryHitPoints,
+                LastAttackUsed = this.LastAttackUsed,
+                DashUsed = this.DashUsed,
+                DodgeUsed = this.DodgeUsed,
+                RemainingAttacksPerBonusAction = this.RemainingAttacksPerBonusAction
+            };
+        }
+
         public override List<Attack> Attacks => new List<Attack>()
         {
             new Attack("Bow", 30, new List<Damage>()
@@ -27,6 +50,6 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override int ArmorClass => 13;
 
-        public override AbilityScores AbilityScores { get; } = new AbilityScores(12, 16, 12, 9, 11, 17);
+        public override AbilityScores AbilityScores => new AbilityScores(12, 16, 12, 9, 11, 17);
     }
 }

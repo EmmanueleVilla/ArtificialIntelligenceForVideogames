@@ -39,5 +39,10 @@ namespace Tests.Core.DndBattles.Mock
         public override int ArmorClass => throw new NotImplementedException();
 
         public override AbilityScores AbilityScores => throw new NotImplementedException();
+
+        public override ICreature Copy()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

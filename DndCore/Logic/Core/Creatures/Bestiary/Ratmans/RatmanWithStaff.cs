@@ -10,6 +10,29 @@ namespace Logic.Core.Creatures.Bestiary
 {
     public class RatmanWithStaff : ARatman, ISpellCaster
     {
+        public override ICreature Copy()
+        {
+            return new RatmanWithStaff()
+            {
+                Id = this.Id,
+                remainingMovement = this.remainingMovement,
+                RolledInitiative = this.RolledInitiative,
+                Disangaged = this.Disangaged,
+                RemainingAttacksPerAction = this.RemainingAttacksPerAction,
+                ActionUsedNotToAttack = this.ActionUsedNotToAttack,
+                ActionUsedToAttack = this.ActionUsedToAttack,
+                BonusActionUsedNotToAttack = this.BonusActionUsedNotToAttack,
+                BonusActionUsedToAttack = this.BonusActionUsedToAttack,
+                ReactionUsed = this.ReactionUsed,
+                CurrentHitPoints = this.CurrentHitPoints,
+                TemporaryHitPoints = this.TemporaryHitPoints,
+                LastAttackUsed = this.LastAttackUsed,
+                DashUsed = this.DashUsed,
+                DodgeUsed = this.DodgeUsed,
+                RemainingAttacksPerBonusAction = this.RemainingAttacksPerBonusAction,
+                RemainingSpellSlots = new Dictionary<int, int>(this.RemainingSpellSlots)
+            };
+        }
         public override List<Attack> Attacks => new List<Attack>()
         {
             new Attack("Quarterstaff", 1, new List<Damage>()
@@ -26,7 +49,7 @@ namespace Logic.Core.Creatures.Bestiary
 
         public override AbilityScores AbilityScores { get; } = new AbilityScores(8, 16, 12, 9, 11, 17);
 
-        public Dictionary<int, int> SpellSlots { get; set; } = new Dictionary<int, int>() { { 0, int.MaxValue }, { 1, 4 }, { 2, 3 }, { 3, 2 } };
+        public Dictionary<int, int> SpellSlots => new Dictionary<int, int>() { { 0, int.MaxValue }, { 1, 4 }, { 2, 3 }, { 3, 2 } };
 
         public Dictionary<int, int> RemainingSpellSlots { get; set; } = new Dictionary<int, int>() { { 0, int.MaxValue }, { 1, 4 }, { 2, 3 }, { 3, 2 } };
 

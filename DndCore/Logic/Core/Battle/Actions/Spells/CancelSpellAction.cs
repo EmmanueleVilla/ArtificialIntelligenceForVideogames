@@ -11,5 +11,6 @@ namespace Logic.Core.Battle.Actions.Spells
         public ActionsTypes ActionType => ActionsTypes.CancelSpell;
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => "Cancel Spell";
+        public int Priority => 0;
     }
 }

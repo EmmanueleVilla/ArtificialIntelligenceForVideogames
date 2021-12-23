@@ -11,5 +11,6 @@ namespace Logic.Core.Battle.Actions.Abilities
         public BattleActions ActionEconomy { get; set; } = BattleActions.Action;
         public ActionsTypes ActionType => ActionsTypes.Dash;
         public string Description => "(" + ActionEconomy + ") Dash";
+        public int Priority => 1;
     }
 }

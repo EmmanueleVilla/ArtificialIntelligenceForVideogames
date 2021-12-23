@@ -123,6 +123,13 @@ namespace Tests.Core.DndBattles.Monk
 
             // And no more
             Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) == null);
+
+            var battleCopy = battle.Copy();
+            battleCopy.BuildAvailableActions();
+            actions = battleCopy.GetAvailableActions();
+
+            // Also the copy can't attack
+            Assert.True(actions.FirstOrDefault(action => action.Description.ToLower().Contains("(b) unarmed")) == null);
         }
     }
 }

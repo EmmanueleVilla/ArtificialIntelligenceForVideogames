@@ -16,5 +16,6 @@ namespace Logic.Core.Battle.Actions.Movement
         public int Damage { get; set; }
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => string.Format("Move to ({0}-{1}), distance {2}m, risking {3} damage", DestinationX, DestinationY, Speed * 1.5, Damage);
+        public int Priority => 0;
     }
 }

@@ -25,10 +25,10 @@ namespace Benchmark
             DndModule.RegisterRules(false);
             var battle = new DndBattle(new AlwaysHitRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new NoLogger()), new ActionBuildersWrapper(), new NoLogger());
-            var map = new ArrayDndMap(10, 10, CellInfo.Empty());
-            for (int i = 0; i < 5; i++)
+            var map = new ArrayDndMap(20, 20, CellInfo.Empty());
+            for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < 20; j++)
                 {
                     map.SetCell(i, j, new CellInfo('G', 0, null, i, j));
                 }
@@ -39,7 +39,7 @@ namespace Benchmark
 
             var enemy = new RatmanWithBow(new DiceRoller(new Random()), new Random());
             enemy.Init();
-            map.AddCreature(enemy, 2, 2);
+            map.AddCreature(enemy, 5, 5);
 
             battle.Init(map);
 

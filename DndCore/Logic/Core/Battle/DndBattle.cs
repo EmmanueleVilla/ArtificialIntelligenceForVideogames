@@ -40,11 +40,11 @@ namespace Logic.Core
 
         public IDndBattle Copy()
         {
-            var settings = new JsonSerializerSettings();
-            settings.TypeNameHandling = TypeNameHandling.Auto;
-            var serialized = JsonConvert.SerializeObject(this, settings);
-            var deserialized = JsonConvert.DeserializeObject<DndBattle>(serialized, settings);
-            return deserialized;
+            var battle = new DndBattle(Roller, Search, ActionBuildersWrapper, Logger);
+            battle.initiativeOrder = new List<int>(initiativeOrder);
+            battle.turnIndex = turnIndex;
+            battle.map = map.Copy();
+            return battle;
         }
 
         public DndBattle(IDiceRoller roller = null, UniformCostSearch search = null, IActionBuildersWrapper actionBuildersWrapper = null, ILogger logger = null) {

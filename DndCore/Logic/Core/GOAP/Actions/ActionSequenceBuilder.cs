@@ -40,19 +40,22 @@ namespace Logic.Core.GOAP.Actions
             {
                 loop++;
                 var current = queue.Dequeue();
-                if (loop % 50 == 0)
+                if (loop % 100 == 0)
                 {
-                    Console.WriteLine(loop + ") " + string.Join(" - ", current.actions.Select(x => x.GetType().ToString().Split('.').Last())));
+                    //Console.WriteLine("***********************");
+                    //Console.WriteLine(string.Join("\n", current.actions.Select(x => x.Description)));
                 }
+                
                 //Console.WriteLine("***** CURRENT " + loop + "*****");
                 //Console.WriteLine(String.Join("-", current.actions.Select(x => x.GetType().ToString().Split('.').Last())));
                 //Console.WriteLine("***********************");
                 current.battle.BuildAvailableActions();
-                var nextActions = current.battle.GetAvailableActions(current.creature);
+                var nextActions = current.battle.GetAvailableActions(current.creature).Where(x => x.ReachableCells.Count > 0);
+                var maxPriority = nextActions.Max(x => x.Priority);
+                nextActions = nextActions.Where(x => x.Priority == maxPriority).ToList();
                 foreach (var nextAction in nextActions)
                 {
-                    
-                    if(nextAction is RequestMovementAction && current.actions.LastOrDefault() is RequestMovementAction)
+                    if (nextAction is RequestMovementAction && current.actions.LastOrDefault() is RequestMovementAction)
                     {
                         continue;
                     }
@@ -60,8 +63,7 @@ namespace Logic.Core.GOAP.Actions
                     {
                         nextAction
                     };
-                    //Console.Write("Can " + nextAction.GetType().ToString().Split('.').Last());
-                    //Console.WriteLine(" with " + nextAction.ReachableCells.Count() + " targets");
+
                     foreach (var target in nextAction.ReachableCells)
                     {
                         if(nextAction is RequestMovementAction)
@@ -122,7 +124,8 @@ namespace Logic.Core.GOAP.Actions
                     }
                 }
             }
-            File.WriteAllText("sequence.txt", String.Join("\n", result.Select(x => string.Join("-",  x.actions.Select(a => string.Format("({0}) {1}", a.ActionEconomy, a.GetType().ToString().Split('.').Last()))))));
+            Console.WriteLine(loop);
+            Console.WriteLine(result.Count());
             return result;
         }
     }

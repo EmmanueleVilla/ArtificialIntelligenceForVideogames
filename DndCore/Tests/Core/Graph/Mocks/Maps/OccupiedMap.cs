@@ -32,6 +32,11 @@ namespace Tests.Core.Graph.Mocks
             throw new NotImplementedException();
         }
 
+        public IMap Copy()
+        {
+            throw new NotImplementedException();
+        }
+
         public CellInfo GetCellInfo(int x, int y)
         {
             return new CellInfo('G', 0, MockedCreature.Build(Size, Loyalty));

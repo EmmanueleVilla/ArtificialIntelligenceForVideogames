@@ -24,5 +24,6 @@ namespace Logic.Core.Battle.Actions.Spells
         public ActionsTypes ActionType => ActionsTypes.ConfirmSpell;
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>();
         public string Description => "Confirm " + Spell.Name + " at " + "(" + Target.X + "," + Target.Y + ")";
+        public int Priority => 0;
     }
 }

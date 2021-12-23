@@ -12,5 +12,6 @@ namespace Logic.Core.Battle.Actions
 
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>() { CellInfo.Empty() };
         public string Description => "End turn";
+        public int Priority => 0;
     }
 }

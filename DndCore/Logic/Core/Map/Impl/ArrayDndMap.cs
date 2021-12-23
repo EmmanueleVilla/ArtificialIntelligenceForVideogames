@@ -9,14 +9,42 @@ namespace Logic.Core.Map.Impl
 {
     public class ArrayDndMap : IMap
     {
-        public readonly int Width;
-        public readonly int Height;
+        public int Width;
+        public int Height;
         public CellInfo[,] cells;
         public Dictionary<int,int> occupiedCellsDictionary = new Dictionary<int, int>();
         public List<Tuple<int, List<CellInfo>>> threateningAreas = new List<Tuple<int, List<CellInfo>>>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
+
+        public IMap Copy()
+        {
+            var newMap = new ArrayDndMap();
+            newMap.Width = Width;
+            newMap.Height = Height;
+            newMap.cells = new CellInfo[Width, Height];
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    var old = GetCellInfo(i, j);
+                    newMap.SetCell(i, j, new CellInfo(old.Terrain, old.Height, old.Creature?.Copy(), i, j));
+                }
+            }
+            newMap.occupiedCellsDictionary = new Dictionary<int, int>(occupiedCellsDictionary);
+            newMap.threateningAreas = new List<Tuple<int, List<CellInfo>>>();
+            foreach(var area in threateningAreas)
+            {
+                var cells = new List<CellInfo>();
+                foreach(var cell in area.Item2)
+                {
+                    cells.Add(newMap.GetCellInfo(cell.X, cell.Y));
+                }
+                newMap.threateningAreas.Add(new Tuple<int, List<CellInfo>>(area.Item1, cells));
+            }
+            return newMap;
+        }
 
         public List<ICreature> Creatures
         { 
@@ -35,6 +63,11 @@ namespace Logic.Core.Map.Impl
                 }
                 return list;
             }
+        }
+
+        public ArrayDndMap()
+        {
+
         }
 
         public ArrayDndMap(int width, int height, CellInfo defaultInfo)

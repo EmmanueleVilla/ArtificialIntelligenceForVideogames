@@ -61,7 +61,7 @@ namespace Logic.Core.Creatures
         public abstract AbilityScores AbilityScores { get; }
 
         //Implemented fields
-        public virtual int RolledInitiative { get; private set; }
+        public virtual int RolledInitiative { get; protected set; }
         public List<Speed> RemainingMovement
         {
             get {
@@ -111,5 +111,7 @@ namespace Logic.Core.Creatures
         {
             return Id;
         }
+
+        public abstract ICreature Copy();
     }
 }
