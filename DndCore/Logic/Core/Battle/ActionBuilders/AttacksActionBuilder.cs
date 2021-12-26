@@ -10,10 +10,10 @@ namespace Logic.Core.Battle
 {
     class AttacksActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
-            var position = map.GetCellOccupiedBy(creature);
+            var position = battle.Map.GetCellOccupiedBy(creature);
 
             if (!creature.ActionUsedNotToAttack && creature.RemainingAttacksPerAction > 0)
             {
@@ -28,10 +28,12 @@ namespace Logic.Core.Battle
                     {
                         for (int j = startJ; j < endJ; j++)
                         {
-                            var occupant = map.GetOccupantCreature(i, j);
+                            var occupant = battle.Map.GetOccupantCreature(i, j);
                             if (occupant != null && occupant.Loyalty != creature.Loyalty)
                             {
-                                cells.Add(map.GetCellInfo(i, j));
+                                Console.WriteLine("1) Map battle instance: " + battle.Map.GetHashCode());
+                                Console.WriteLine(string.Format("Adding target {0} at {1},{2} to attack action", occupant.GetType().Name, i, j));
+                                cells.Add(battle.Map.GetCellInfo(i, j));
                             }
                         }
                     }

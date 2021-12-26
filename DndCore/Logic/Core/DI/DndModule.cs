@@ -27,13 +27,18 @@ namespace Core.DI
             factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
         }
 
-        public static void RegisterRules(bool enableLogs = true, ILogger logger = null)
+        public static void RegisterRules(bool enableLogs = true, ILogger logger = null, int? seed = null)
         {
             singletons.Clear();
             factories.Clear();
             singletonsFactories.Clear();
-
-            singletonsFactories.Add(typeof(Random), () => new Random());
+            if (seed == null || !seed.HasValue)
+            {
+                singletonsFactories.Add(typeof(Random), () => new Random());
+            } else
+            {
+                singletonsFactories.Add(typeof(Random), () => new Random(seed.Value));
+            }
             singletonsFactories.Add(typeof(IDndBattle), () => new DndBattle());
 
             factories.Add(typeof(IMapBuilder), () => new CsvFullMapBuilder());

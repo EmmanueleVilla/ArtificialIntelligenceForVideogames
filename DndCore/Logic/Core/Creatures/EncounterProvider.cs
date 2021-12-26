@@ -9,7 +9,6 @@ namespace Logic.Core.Creatures
 {
     public class EncounterProvider
     {
-        private int ENCOUNTERS_SIZE = 2;
         public List<ICreature> BuildEncounter()
         {
             return new List<ICreature>() {
@@ -17,6 +16,7 @@ namespace Logic.Core.Creatures
                     new RatmanWithClaw(),
                     new RatmanWithDagger(),
                     new RatmanWithStaff(),
+                    new LargeMinotaur(),
                     new LargeMinotaur(),
                     new HumanMaleRanger(),
                     new HumanFemaleMonk(),

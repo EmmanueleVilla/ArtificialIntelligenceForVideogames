@@ -11,7 +11,7 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class SecondWindActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var secondWind = creature as ISecondWind;

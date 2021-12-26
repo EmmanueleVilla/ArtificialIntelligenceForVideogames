@@ -11,6 +11,6 @@ namespace Logic.Core.Battle.Actions.Abilities
         public ActionsTypes ActionType => ActionsTypes.FightingSpirit;
         public string Description => "(" + ActionEconomy + ") Fighting Spirit";
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>() { CellInfo.Empty() };
-        public int Priority => 50;
+        public int Priority => 3;
     }
 }

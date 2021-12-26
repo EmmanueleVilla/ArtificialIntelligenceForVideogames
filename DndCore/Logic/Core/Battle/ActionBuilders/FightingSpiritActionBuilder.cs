@@ -10,7 +10,7 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class FightingSpiritActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var fightningSpirit = creature as IFightingSpirit;

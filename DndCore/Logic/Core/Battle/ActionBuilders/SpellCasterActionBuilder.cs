@@ -11,7 +11,7 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class SpellCasterActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var caster = creature as ISpellCaster;
@@ -20,7 +20,7 @@ namespace Logic.Core.Battle.ActionBuilders
                 return actions;
             }
 
-            var position = map.GetCellOccupiedBy(creature);
+            var position = battle.Map.GetCellOccupiedBy(creature);
 
             foreach (var spell in caster.Spells)
             {
@@ -38,14 +38,14 @@ namespace Logic.Core.Battle.ActionBuilders
                         {
                             for (int j = startJ; j < endJ; j++)
                             {
-                                var occupant = map.GetOccupantCreature(i, j);
+                                var occupant = battle.Map.GetOccupantCreature(i, j);
                                 if (occupant != null && occupant.Loyalty != creature.Loyalty)
                                 {
-                                    cells.Add(map.GetCellInfo(i, j));
+                                    cells.Add(battle.Map.GetCellInfo(i, j));
                                 }
                                 if(occupant == creature && spell.CanTargetSelf)
                                 {
-                                    cells.Add(map.GetCellInfo(i, j));
+                                    cells.Add(battle.Map.GetCellInfo(i, j));
                                 }
                             }
                         }

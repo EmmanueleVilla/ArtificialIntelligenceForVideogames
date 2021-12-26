@@ -88,7 +88,7 @@ namespace Logic.Core
 
             _cachedActions = new List<IAvailableAction>();
 
-            ActionBuildersWrapper.ActionBuilders.ForEach(x => _cachedActions.AddRange(x.Build(this, map, creature)));
+            ActionBuildersWrapper.ActionBuilders.ForEach(x => _cachedActions.AddRange(x.Build(this, creature)));
 
             _cachedActions.Add(new EndTurnAction());
         }
@@ -446,6 +446,11 @@ namespace Logic.Core
         public ICreature GetCreatureById(int id)
         {
             return map.Creatures[id];
+        }
+
+        public CellInfo GetCellInfo(int x, int y)
+        {
+            return Map.GetCellInfo(x, y);
         }
     }
 }

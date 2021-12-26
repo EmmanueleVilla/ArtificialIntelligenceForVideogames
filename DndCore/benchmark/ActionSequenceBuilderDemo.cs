@@ -24,7 +24,7 @@ namespace Benchmark
     {
         public ActionSequenceBuilderDemo()
         {
-            DndModule.RegisterRules(false);
+            DndModule.RegisterRules(false, null, 0);
             var battle = new DndBattle(new AlwaysHitRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new NoLogger()), new ActionBuildersWrapper(), new ActionSequenceBuilder(), new NoLogger());
 

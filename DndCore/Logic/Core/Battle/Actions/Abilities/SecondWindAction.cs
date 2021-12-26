@@ -11,6 +11,6 @@ namespace Logic.Core.Battle.Actions.Abilities
         public string Description => "(" + ActionEconomy + ") Second Wind";
         public BattleActions ActionEconomy { get; set; } = BattleActions.BonusAction;
         public List<CellInfo> ReachableCells { get; set; } = new List<CellInfo>() { CellInfo.Empty() };
-        public int Priority => 50;
+        public int Priority => 3;
     }
 }

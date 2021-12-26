@@ -10,7 +10,7 @@ namespace Logic.Core.Battle.ActionBuilders
 {
     class MovementActionBuilder : IActionsBuilder
     {
-        public List<IAvailableAction> Build(IDndBattle battle, IMap map, ICreature creature)
+        public List<IAvailableAction> Build(IDndBattle battle, ICreature creature)
         {
             var actions = new List<IAvailableAction>();
             var movementAction = new RequestMovementAction() { RemainingMovement = creature.RemainingMovement };

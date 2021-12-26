@@ -28,5 +28,6 @@ namespace Logic.Core.Battle
         IDndBattle Copy();
         void PlayTurn();
         List<GameEvent> Events { get; }
+        CellInfo GetCellInfo(int x, int y);
     }
 }

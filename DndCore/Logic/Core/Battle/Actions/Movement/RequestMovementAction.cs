@@ -15,6 +15,6 @@ namespace Logic.Core.Battle.Actions
         public string Description => "(M) " + string.Join(",", RemainingMovement.Select(x => string.Format(x.Movement +"="+(x.Square*1.5)+"m")));
 
         public List<Speed> RemainingMovement = new List<Speed>();
-        public int Priority => 10;
+        public int Priority => 2;
     }
 }
