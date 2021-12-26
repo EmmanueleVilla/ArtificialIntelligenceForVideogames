@@ -1,4 +1,6 @@
-﻿using Core.Map;
+﻿using Core.DI;
+using Core.Map;
+using Core.Utils.Log;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Creatures;
@@ -31,8 +33,8 @@ namespace Logic.Core.Battle
                             var occupant = battle.Map.GetOccupantCreature(i, j);
                             if (occupant != null && occupant.Loyalty != creature.Loyalty)
                             {
-                                Console.WriteLine("1) Map battle instance: " + battle.Map.GetHashCode());
-                                Console.WriteLine(string.Format("Adding target {0} at {1},{2} to attack action", occupant.GetType().Name, i, j));
+                                DndModule.Get<ILogger>().WriteLine("1) Map battle instance: " + battle.Map.GetHashCode());
+                                DndModule.Get<ILogger>().WriteLine(string.Format("Adding target {0} at {1},{2} to attack action", occupant.GetType().Name, i, j));
                                 cells.Add(battle.Map.GetCellInfo(i, j));
                             }
                         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.DI;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace Core.Utils.Log
     {
         public void WriteLine(string message)
         {
-            Console.WriteLine(message);
+            DndModule.Get<ILogger>().WriteLine(message);
         }
     }
 }

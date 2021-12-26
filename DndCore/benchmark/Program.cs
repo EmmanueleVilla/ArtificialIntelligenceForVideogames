@@ -2,6 +2,8 @@
 using Benchmark.Core.Map.Impl;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
+using Core.DI;
+using Core.Utils.Log;
 using System;
 using System.Collections.Generic;
 
@@ -14,19 +16,19 @@ namespace benchmark
             var time = DateTime.Now;
             new ActionSequenceBuilderDemo();
             //var summary = BenchmarkRunner.Run<UCSBenchmark>();
-            Console.WriteLine((DateTime.Now - time).TotalSeconds);
+            DndModule.Get<ILogger>().WriteLine(((DateTime.Now - time).TotalSeconds).ToString());
             Console.ReadLine();
 
             /*
-            Console.WriteLine("Starting..");
+            DndModule.Get<ILogger>().WriteLine("Starting..");
             var benchmark = new UCSBenchmark();
             benchmark.GlobalSetup();
-            Console.WriteLine("Map Initialized..");
+            DndModule.Get<ILogger>().WriteLine("Map Initialized..");
             for (int i = 0; i < 5000; i++)
             {
                 benchmark.FindPathGargantuanCreature();
             }
-            Console.WriteLine("Done.");
+            DndModule.Get<ILogger>().WriteLine("Done.");
             Console.ReadLine();
             */
             /*

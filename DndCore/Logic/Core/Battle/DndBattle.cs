@@ -101,14 +101,14 @@ namespace Logic.Core
         public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
         public void PlayTurn()
         {
-            Console.WriteLine("GetAvailableActions");
+            DndModule.Get<ILogger>().WriteLine("GetAvailableActions");
             var actions = ActionSequenceBuilder.GetAvailableActions(this);
             var chosenActions = actions.LastOrDefault(x => x.actions.Any(a => a is ConfirmAttackAction || a is ConfirmSpellAction));
             if(chosenActions.actions == null)
             {
                 chosenActions = actions.Last();
             }
-            Console.WriteLine("Action chosen: " + string.Join(",", chosenActions.actions.Select(x => x.Description)));
+            DndModule.Get<ILogger>().WriteLine("Action chosen: " + string.Join(",", chosenActions.actions.Select(x => x.Description)));
             Events = new List<GameEvent>();
             foreach(var v in chosenActions.actions)
             {

@@ -215,7 +215,7 @@ public class GameManager : MonoBehaviour
         DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
         TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(new List<IAvailableAction>());
-        if (creature.Loyalty == Loyalties.Ally)
+        if (creature.Loyalty == Loyalties.Ally && false)
         {
             this.StartCoroutine(SetAvailableActions());
         } else
@@ -227,7 +227,8 @@ public class GameManager : MonoBehaviour
     internal void NextTurn()
     {
         Battle.NextTurn();
-        StartTurn();}
+        StartTurn();
+    }
 
     List<Color> colors = new List<Color>() { Color.green, Color.yellow, Color.red, Color.magenta, Color.blue, Color.black };
 

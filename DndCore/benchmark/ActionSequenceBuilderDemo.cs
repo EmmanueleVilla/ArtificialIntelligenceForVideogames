@@ -69,9 +69,20 @@ namespace Benchmark
             }
 
             battle.Init(map);
+            var round = 1;
+            ICreature first = null;
             while (true)
             {
-                Console.WriteLine("Start turn " + battle.GetCreatureInTurn().GetType().Name);
+                if(first == battle.GetCreatureInTurn())
+                {
+                    round++;
+                    Console.WriteLine("Start round " + round);
+                }
+                if(first == null)
+                {
+                    first = battle.GetCreatureInTurn();
+                }
+                Console.WriteLine("Start turn of " + battle.GetCreatureInTurn().GetType().Name);
                 battle.PlayTurn();
                 battle.NextTurn();
             }
