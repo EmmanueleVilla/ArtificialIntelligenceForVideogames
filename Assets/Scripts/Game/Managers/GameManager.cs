@@ -216,7 +216,7 @@ public class GameManager : MonoBehaviour
         DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
         TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(new List<IAvailableAction>());
-        if (creature.Loyalty == Loyalties.Ally && false)
+        if (creature.Loyalty == Loyalties.Ally)
         {
             this.StartCoroutine(SetAvailableActions());
         } else
