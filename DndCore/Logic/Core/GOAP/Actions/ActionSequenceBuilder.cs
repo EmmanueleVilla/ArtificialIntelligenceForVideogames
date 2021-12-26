@@ -45,7 +45,7 @@ namespace Logic.Core.GOAP.Actions
             int loop = 0;
             while(queue.Count > 0)
             {
-                if (result.Count() > 200)
+                if (result.Count() > 500)
                 {
                     break;
                 }
@@ -66,7 +66,7 @@ namespace Logic.Core.GOAP.Actions
                 }
                 DndModule.Get<ILogger>().WriteLine("Next actions count: " + nextActions.Count());
                 var maxPriority = nextActions.Max(x => x.Priority);
-                nextActions = nextActions.Where(x => x.Priority == maxPriority).ToList();
+                nextActions = nextActions.Where(x => x.Priority == maxPriority || x is EndTurnAction).ToList();
                 DndModule.Get<ILogger>().WriteLine("After filter count: " + nextActions.Count());
 
                 foreach (var nextAction in nextActions)
