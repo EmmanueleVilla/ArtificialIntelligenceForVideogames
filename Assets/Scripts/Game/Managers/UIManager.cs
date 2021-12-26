@@ -142,7 +142,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (var eve in events)
         {
-            Debug.Log(eve.Type);
+            DndModule.Get<ILogger>().WriteLine(eve.Type + ", " + eve.GetType().Name);
             if (eve.Type == GameEvent.Types.Movement)
             {
                 var tile = tiles.First(tile => tile.X == eve.Destination.Y && tile.Y == eve.Destination.X);

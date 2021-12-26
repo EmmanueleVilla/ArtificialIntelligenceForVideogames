@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Jobs;
 using Core.DI;
 using Core.Map;
+using Core.Utils.Log;
 using Logic.Core.Actions;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Physics.queriesHitTriggers = true;
-        DndModule.RegisterRules(enableLogs: true, logger: TextLogger);
+        DndModule.RegisterRules(enableLogs: true, logger: new FileLogger());
     }
 
     void Start()

@@ -101,7 +101,8 @@ namespace Logic.Core
         public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
         public void PlayTurn()
         {
-            DndModule.Get<ILogger>().WriteLine("GetAvailableActions");
+            DndModule.Get<ILogger>().WriteLine("***** HANDLE TURN *****");
+
             var actions = ActionSequenceBuilder.GetAvailableActions(this);
             var chosenActions = actions.LastOrDefault(x => x.actions.Any(a => a is ConfirmAttackAction || a is ConfirmSpellAction));
             if(chosenActions.actions == null)
@@ -110,24 +111,31 @@ namespace Logic.Core
             }
             DndModule.Get<ILogger>().WriteLine("Action chosen: " + string.Join(",", chosenActions.actions.Select(x => x.Description)));
             Events = new List<GameEvent>();
-            foreach(var v in chosenActions.actions)
+
+            DndModule.Get<ILogger>().WriteLine("***** PLAY TURN *****");
+
+            foreach (var v in chosenActions.actions)
             {
-                if(v is ConfirmMovementAction)
+                DndModule.Get<ILogger>().WriteLine("Executing action " + v.GetType().Name);
+                var temp = new List<GameEvent>();
+                if (v is ConfirmMovementAction)
                 {
                     var moveAction = v as ConfirmMovementAction;
-                    Events.AddRange(MoveTo(moveAction.MemoryEdge));
+                    temp.AddRange(MoveTo(moveAction.MemoryEdge));
                 } else if(v is ConfirmAttackAction)
                 {
                     var attackAction = v as ConfirmAttackAction;
-                    Events.AddRange(Attack(attackAction));
+                    temp.AddRange(Attack(attackAction));
                 } else if(v is ConfirmSpellAction)
                 {
                     var spellAction = v as ConfirmSpellAction;
-                    Events.AddRange(Spell(spellAction));
+                    temp.AddRange(Spell(spellAction));
                 } else
                 {
-                    Events.AddRange(UseAbility(v));
+                    temp.AddRange(UseAbility(v));
                 }
+                DndModule.Get<ILogger>().WriteLine("-- Added events:\n" + string.Join("\n", temp));
+                Events.AddRange(temp);
             }
         }
 
@@ -201,7 +209,13 @@ namespace Logic.Core
                     e.Damage = Roller.Roll(RollTypes.Normal, e.FallingHeight, 6, 0);
                     creature.CurrentHitPoints -= e.Damage;
                 }
-                //TODO: attack of opportunity
+                if (e.Type == GameEvent.Types.Attacks)
+                {
+                    e.Attacked = GetCreatureInTurn().Id;
+                    //check advantage
+                    var damage = e.Attack.Damage.Sum(x => Roller.Roll(RollTypes.Normal, x.NumberOfDice, x.DiceFaces, x.Modifier));
+                    GetCreatureInTurn().CurrentHitPoints -= damage;
+                }
                 list.Add(e);
             }
             return list;

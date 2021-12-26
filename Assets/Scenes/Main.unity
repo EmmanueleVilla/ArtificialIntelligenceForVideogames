@@ -3219,8 +3219,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 789403855}
   m_HandleRect: {fileID: 789403854}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.9999999
+  m_Value: 1
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3414,12 +3414,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Changelog:
 
-    - Completed movement logic
+    - Completed game rules
 
-    - Implemented basic attacks
-
-    -
-    Implemented Monk and Warrior'
+    - Random playing AI'
 --- !u!222 &1106906477
 CanvasRenderer:
   m_ObjectHideFlags: 0

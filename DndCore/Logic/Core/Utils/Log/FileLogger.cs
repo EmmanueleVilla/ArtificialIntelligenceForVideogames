@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Core.Utils.Log
 {
-    class FileLogger : ILogger
+    public class FileLogger : ILogger
     {
         readonly string fileName;
         public FileLogger()
