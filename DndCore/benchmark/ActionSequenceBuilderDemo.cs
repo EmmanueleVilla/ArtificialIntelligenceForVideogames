@@ -69,7 +69,6 @@ namespace Benchmark
             }
 
             battle.Init(map);
-
             while (true)
             {
                 Console.WriteLine("Start turn " + battle.GetCreatureInTurn().GetType().Name);

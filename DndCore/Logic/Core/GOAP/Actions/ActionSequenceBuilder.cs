@@ -46,29 +46,26 @@ namespace Logic.Core.GOAP.Actions
             while(queue.Count > 0)
             {
                 loop++;
-                
-                //safe threshold in case of bugs
-                if(loop > 10000)
-                {
-                    break;
-                }
 
                 var current = queue.Dequeue();
                 if (loop % 100 == 0)
                 {
-                    //Logger.WriteLine(loop.ToString());
-                    //Logger.WriteLine(string.Join("-", current.actions.Select(x => x.GetType().Name)));
+                    //Console.WriteLine(loop.ToString());
+                    //Console.WriteLine(string.Join("-", current.actions.Select(x => x.GetType().Name)));
                 }
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions().Where(x => x.ReachableCells.Count > 0);
+                if(current.actions.LastOrDefault() is ConfirmMovementAction)
+                {
+                    nextActions = nextActions.Where(x => !(x is RequestMovementAction));
+                }
+                //Console.WriteLine("Next actions count: " + nextActions.Count());
                 var maxPriority = nextActions.Max(x => x.Priority);
                 nextActions = nextActions.Where(x => x.Priority == maxPriority).ToList();
+                //Console.WriteLine("After filter count: " + nextActions.Count());
                 foreach (var nextAction in nextActions)
                 {
-                    if (nextAction is RequestMovementAction && current.actions.LastOrDefault() is ConfirmMovementAction)
-                    {
-                        continue;
-                    }
+                    //Console.WriteLine(nextAction.GetType().Name + ": " + nextAction.Description + ", " + nextAction.ReachableCells.Count() + " targets");
 
                     foreach (var target in nextAction.ReachableCells)
                     {
@@ -99,31 +96,32 @@ namespace Logic.Core.GOAP.Actions
                             }
                         } else  if(nextAction is RequestAttackAction)
                         {
-                            var attackAction = nextAction as RequestAttackAction;
-                            foreach (var targets in nextAction.ReachableCells)
+                            if(target.Creature == null)
                             {
-                                var newBattle = current.battle.Copy();
-                                var attacked = newBattle.Map.GetOccupantCreature(targets.X, targets.Y);
-                                var confirmAttack = new ConfirmAttackAction()
-                                {
-                                    ActionEconomy = nextAction.ActionEconomy,
-                                    AttackingCreature = newBattle.GetCreatureInTurn().Id,
-                                    TargetCreature = attacked.Id,
-                                    Attack = attackAction.Attack
-                                };
-                                var events = newBattle.Attack(confirmAttack);
-
-                                var updatedActions = new List<IAvailableAction>(current.actions)
-                                {
-                                    confirmAttack
-                                };
-
-                                queue.Enqueue(new ActionList() {
-                                    creatureId = confirmAttack.AttackingCreature,
-                                    actions = new List<IAvailableAction>(updatedActions),
-                                    battle = newBattle
-                                });
+                                continue;
                             }
+                            var attackAction = nextAction as RequestAttackAction;
+                            var newBattle = current.battle.Copy();
+                            var attacked = newBattle.Map.GetOccupantCreature(target.X, target.Y);
+                            var confirmAttack = new ConfirmAttackAction()
+                            {
+                                ActionEconomy = nextAction.ActionEconomy,
+                                AttackingCreature = newBattle.GetCreatureInTurn().Id,
+                                TargetCreature = attacked.Id,
+                                Attack = attackAction.Attack
+                            };
+                            var events = newBattle.Attack(confirmAttack);
+
+                            var updatedActions = new List<IAvailableAction>(current.actions)
+                            {
+                                confirmAttack
+                            };
+
+                            queue.Enqueue(new ActionList() {
+                                creatureId = confirmAttack.AttackingCreature,
+                                actions = new List<IAvailableAction>(updatedActions),
+                                battle = newBattle
+                            });
                         }
                         else if (nextAction is EndTurnAction)
                         {
@@ -140,30 +138,31 @@ namespace Logic.Core.GOAP.Actions
                         }
                         else if (nextAction is RequestSpellAction)
                         {
-                            var spellAction = nextAction as RequestSpellAction;
-                            foreach (var targets in nextAction.ReachableCells)
+                            if (target.Creature == null)
                             {
-                                var newBattle = current.battle.Copy();
-                                var attacked = newBattle.Map.GetOccupantCreature(targets.X, targets.Y);
-                                var confirmSpell = new ConfirmSpellAction(newBattle.GetCreatureInTurn().Id, spellAction.Spell)
-                                {
-                                    ActionEconomy = nextAction.ActionEconomy,
-                                    Target = targets
-                                };
-                                var events = newBattle.Spell(confirmSpell);
-
-                                var updatedActions = new List<IAvailableAction>(current.actions)
-                                {
-                                    confirmSpell
-                                };
-
-                                queue.Enqueue(new ActionList()
-                                {
-                                    creatureId = confirmSpell.Caster,
-                                    actions = new List<IAvailableAction>(updatedActions),
-                                    battle = newBattle
-                                });
+                                continue;
                             }
+                            var spellAction = nextAction as RequestSpellAction;
+                            var newBattle = current.battle.Copy();
+                            var attacked = newBattle.Map.GetOccupantCreature(target.X, target.Y);
+                            var confirmSpell = new ConfirmSpellAction(newBattle.GetCreatureInTurn().Id, spellAction.Spell)
+                            {
+                                ActionEconomy = nextAction.ActionEconomy,
+                                Target = target
+                            };
+                            var events = newBattle.Spell(confirmSpell);
+
+                            var updatedActions = new List<IAvailableAction>(current.actions)
+                            {
+                                confirmSpell
+                            };
+
+                            queue.Enqueue(new ActionList()
+                            {
+                                creatureId = confirmSpell.Caster,
+                                actions = new List<IAvailableAction>(updatedActions),
+                                battle = newBattle
+                            });
                         } else
                         {
                             var newBattle = current.battle.Copy();
@@ -183,7 +182,7 @@ namespace Logic.Core.GOAP.Actions
                 }
             }
 
-            Logger.WriteLine("Completed building actions");
+            //Console.WriteLine("Completed building actions " + result.Count());
 
             return result;
         }
