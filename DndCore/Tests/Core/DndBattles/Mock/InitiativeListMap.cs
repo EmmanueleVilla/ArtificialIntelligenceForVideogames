@@ -74,5 +74,10 @@ namespace Tests.Core.DndBattles.Mock
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveCreature(ICreature creature)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

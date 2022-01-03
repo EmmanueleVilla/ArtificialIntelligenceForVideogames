@@ -259,22 +259,27 @@ namespace Logic.Core.Map.Impl
 
         public void MoveCreatureTo(ICreature creature, MemoryEdge edge)
         {
+            RemoveCreature(creature);
+
+            if(!AddCreature(creature, edge.Destination.X, edge.Destination.Y))
+            {
+                throw new Exception("Should never happen");
+            }
+        }
+
+        public void RemoveCreature(ICreature creature)
+        {
             creatures = null;
-            var startCoord = edge.Start.First();
+            var startCoord = GetCellOccupiedBy(creature);
             var startCell = GetCellInfo(startCoord.X, startCoord.Y);
             var newCell = CellInfo.Copy(startCell);
             startCell.Creature = null;
             SetCell(startCell.X, startCell.Y, startCell);
             threateningAreas.RemoveAll(x => x.Item1 == creature.Id);
             var keys = occupiedCellsDictionary.Where(x => x.Value == creature.Id).Select(x => x.Key).ToList();
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 occupiedCellsDictionary.Remove(key);
-            }
-
-            if(!AddCreature(creature, edge.Destination.X, edge.Destination.Y))
-            {
-                throw new Exception("Should never happen");
             }
         }
     }

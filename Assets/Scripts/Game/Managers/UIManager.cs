@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 {
     public GameManager GameManager;
     public GameObject MapRoot;
+    public GameObject Miss;
 
     public TerrainPrefabProvider TerrainPrefabProvider;
     public CreaturePrefabProvider CreaturePrefabProvider;
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        Miss.SetActive(false);
         GameManager.TurnStarted += GameManager_TurnStarted;
     }
 
@@ -168,12 +170,28 @@ public class UIManager : MonoBehaviour
                 yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.green));
             }
 
+            if(eve.Type == GameEvent.Types.AttackMissed)
+            {
+                DndModule.Get<ILogger>().WriteLine(string.Format("Missed {0}", eve.Attacked));
+                GameObject target = null;
+                foreach (var indicator in initiativeIndicators)
+                {
+                    if (indicator.Item1 == eve.Attacked)
+                    {
+                        target = indicator.Item2.gameObject;
+                    }
+                }
+                Miss.transform.position = target.transform.position;
+                Miss.transform.position += Vector3.up * 8;
+                Miss.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                Miss.SetActive(false);
+            }
+
             if (eve.Type == GameEvent.Types.Attacks)
             {
                 DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", eve.Attacked));
                 GameObject target = null;
-                Debug.Log("Searching for id " + eve.Attacked);
-                Debug.Log("Creature is " + DndModule.Get<IDndBattle>().GetCreatureById(eve.Attacked));
                 foreach (var indicator in initiativeIndicators)
                 {
                     if (indicator.Item1 == eve.Attacked)
@@ -190,6 +208,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator ColorEffect(List<SpriteRenderer> renderers, float time, Color end)
     {
+        time *= 2;
         var now = Time.realtimeSinceStartup;
         while (Time.realtimeSinceStartup - now < time)
         {

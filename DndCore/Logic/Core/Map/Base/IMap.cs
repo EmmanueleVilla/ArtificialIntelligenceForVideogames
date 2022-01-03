@@ -18,6 +18,7 @@ namespace Core.Map
         Dictionary<int, ICreature> Creatures { get; }
         List<CellInfo> GetCellsOccupiedBy(int x, int y);
         void MoveCreatureTo(ICreature creature, MemoryEdge end);
+        void RemoveCreature(ICreature creature);
         IMap Copy();
     }
 }

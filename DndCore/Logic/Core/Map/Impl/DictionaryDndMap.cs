@@ -80,5 +80,10 @@ namespace Logic.Core.Map
         {
             throw new System.NotImplementedException();
         }
+
+        public void RemoveCreature(ICreature creature)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

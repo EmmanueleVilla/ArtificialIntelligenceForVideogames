@@ -55,8 +55,8 @@ namespace Logic.Core.GOAP.Actions
                 var current = queue.Pop();
                 //if (loop % 100 == 0)
                 {
-                    DndModule.Get<ILogger>().WriteLine(loop.ToString());
-                    DndModule.Get<ILogger>().WriteLine(string.Join("-", current.actions.Select(x => x.GetType().Name)));
+                    //DndModule.Get<ILogger>().WriteLine(loop.ToString());
+                    //DndModule.Get<ILogger>().WriteLine(string.Join("-", current.actions.Select(x => x.GetType().Name)));
                 }
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions().Where(x => x.ReachableCells.Count > 0);
@@ -64,14 +64,14 @@ namespace Logic.Core.GOAP.Actions
                 {
                     nextActions = nextActions.Where(x => !(x is RequestMovementAction));
                 }
-                DndModule.Get<ILogger>().WriteLine("Next actions count: " + nextActions.Count());
+                //DndModule.Get<ILogger>().WriteLine("Next actions count: " + nextActions.Count());
                 var maxPriority = nextActions.Max(x => x.Priority);
                 nextActions = nextActions.Where(x => x.Priority == maxPriority || x is EndTurnAction).ToList();
-                DndModule.Get<ILogger>().WriteLine("After filter count: " + nextActions.Count());
+                //DndModule.Get<ILogger>().WriteLine("After filter count: " + nextActions.Count());
 
                 foreach (var nextAction in nextActions)
                 {
-                    DndModule.Get<ILogger>().WriteLine(nextAction.GetType().Name + ": " + nextAction.Description + ", " + nextAction.ReachableCells.Count() + " targets");
+                    //DndModule.Get<ILogger>().WriteLine(nextAction.GetType().Name + ": " + nextAction.Description + ", " + nextAction.ReachableCells.Count() + " targets");
 
                     foreach (var target in nextAction.ReachableCells)
                     {
@@ -102,7 +102,7 @@ namespace Logic.Core.GOAP.Actions
                             }
                         } else  if(nextAction is RequestAttackAction)
                         {
-                            DndModule.Get<ILogger>().WriteLine("2) Map battle instance: " + current.battle.Map.GetHashCode());
+                            //DndModule.Get<ILogger>().WriteLine("2) Map battle instance: " + current.battle.Map.GetHashCode());
                             var attackAction = nextAction as RequestAttackAction;
                             var newBattle = current.battle.Copy();
                             var attacked = newBattle.Map.GetOccupantCreature(target.X, target.Y);

@@ -143,6 +143,11 @@ namespace Logic.Core
         {
             _reachableCellCache.Clear();
             _cachedActions.Clear();
+            var deads = map.Creatures.Where(x => x.Value.CurrentHitPoints <= 0).Select(x => x.Key).ToList();
+            foreach(var dead in deads)
+            {
+                map.RemoveCreature(GetCreatureById(dead));
+            }
 
             turnIndex++;
             if(turnIndex >= map.Creatures.Count)
@@ -264,7 +269,7 @@ namespace Logic.Core
                     totalDamage += Roller.Roll(RollTypes.Normal, isCritical ? 2 : 1 * damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
                 }
                 //TODO apply other damage effects
-                Logger.WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.TargetCreature.GetType().ToString().Split('.').Last()));
+                DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.TargetCreature.GetType().ToString().Split('.').Last()));
 
                 targetCreature.TemporaryHitPoints -= totalDamage;
 
@@ -281,8 +286,6 @@ namespace Logic.Core
                     Attacked = targetCreature.Id,
                     Attack = confirmAttackAction.Attack
                 });
-
-                //TODO kill creature if hp < 0
 
             } else
             {

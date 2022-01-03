@@ -63,5 +63,10 @@ namespace Tests.Core.Graph.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveCreature(ICreature creature)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

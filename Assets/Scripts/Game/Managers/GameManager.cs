@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Physics.queriesHitTriggers = true;
-        DndModule.RegisterRules(enableLogs: true, logger: new FileLogger());
+        DndModule.RegisterRules(enableLogs: true, logger: TextLogger);
     }
 
     void Start()
@@ -195,8 +195,17 @@ public class GameManager : MonoBehaviour
         UIManager.HighlightMovement(NextMovementAvailableCells);
     }
 
-    public void InitMap()
+    bool allAi = false;
+
+    public void StartPlayerVsAI()
     {
+        allAi = false;
+        this.StartCoroutine(StartGame());
+    }
+
+    public void StartAIvsAI()
+    {
+        allAi = true;
         this.StartCoroutine(StartGame());
     }
 
@@ -216,7 +225,7 @@ public class GameManager : MonoBehaviour
         DndModule.Get<ILogger>().WriteLine("\nStart turn of " + creature.GetType().ToString().Split('.').Last());
         TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(new List<IAvailableAction>());
-        if (creature.Loyalty == Loyalties.Ally)
+        if (creature.Loyalty == Loyalties.Ally && !allAi)
         {
             this.StartCoroutine(SetAvailableActions());
         } else
