@@ -25,3 +25,5 @@ DndCore/Tests/bin/
 DndCore/Logic/bin/
 DndCore/benchmark/bin
 webgl/
+Launcher/Launcher/bin/
+win64/

@@ -1,6 +1,7 @@
 using Core.DI;
 using Logic.Core.Battle;
 using Logic.Core.Creatures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,23 +22,25 @@ public class InitiativeUIManager : MonoBehaviour
 
     void Update()
     {
-        //TODO: don't do this at every frame
         if (_initiatives != null)
         {
             var battle = DndModule.Get<IDndBattle>();
             var creatureInTurn = battle.GetCreatureInTurn();
 
             var builder = new StringBuilder();
-            foreach (var creatureId in _initiatives)
+            try
             {
-                if (creatureInTurn.Id == creatureId)
+                foreach (var creatureId in _initiatives)
                 {
-                    builder.Append("> ");
+                    if (creatureInTurn.Id == creatureId)
+                    {
+                        builder.Append("> ");
+                    }
+                    var creature = battle.GetCreatureById(creatureId);
+                    builder.Append(creature.GetType().ToString().Split('.').Last());
+                    builder.AppendLine(string.Format(" {0}/{1} + {2}", creature.CurrentHitPoints, creature.HitPoints, creature.TemporaryHitPoints));
                 }
-                var creature = battle.GetCreatureById(creatureId);
-                builder.Append(creature.GetType().ToString().Split('.').Last());
-                builder.AppendLine(string.Format(" {0}/{1} + {2}", creature.CurrentHitPoints, creature.HitPoints, creature.TemporaryHitPoints));
-            }
+            } catch(Exception e) { }
 
             InitiativeText.text = builder.ToString();
         }

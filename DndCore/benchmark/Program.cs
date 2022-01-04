@@ -13,10 +13,10 @@ namespace benchmark
     {
         static void Main(string[] args)
         {
-            var time = DateTime.Now;
-            new ActionSequenceBuilderDemo();
-            //var summary = BenchmarkRunner.Run<UCSBenchmark>();
-            DndModule.Get<ILogger>().WriteLine(((DateTime.Now - time).TotalSeconds).ToString());
+            //var time = DateTime.Now;
+            //new ActionSequenceBuilderDemo();
+            var summary = BenchmarkRunner.Run<TryCatchBenchmark>();
+            //DndModule.Get<ILogger>().WriteLine(((DateTime.Now - time).TotalSeconds).ToString());
             Console.ReadLine();
 
             /*
