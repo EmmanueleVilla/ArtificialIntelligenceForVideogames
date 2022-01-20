@@ -12,7 +12,7 @@ using Tests.Core.Graph.Mocks;
 namespace Tests.Core.Graph.UCS
 {
     [TestFixture]
-    class UCSTwoLargeCreaturesTest
+    class UCSTwoLargeCreaturesTest: BaseDndTest
     {
         [SetUp]
         public void Setup()

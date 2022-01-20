@@ -15,13 +15,8 @@ using Tests.Core.Graph.Mocks;
 namespace Tests.Core.Graph.UCS
 {
     [TestFixture]
-    class UCSSimpleMoveLargeTest
+    class UCSSimpleMoveLargeTest: BaseDndTest
     {
-        [SetUp]
-        public void Setup()
-        {
-            DndModule.RegisterRulesForTest();
-        }
         [Test]
         public void CanMoveOnlyOneSquareRight()
         {

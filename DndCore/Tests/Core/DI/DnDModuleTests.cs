@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Tests.Core.DI
 {
     [TestFixture]
-    class DnDModuleTests
+    class DnDModuleTests: BaseDndTest
     {
         [Test]
         public void GetBattle()

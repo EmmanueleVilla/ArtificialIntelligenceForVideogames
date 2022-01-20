@@ -15,7 +15,7 @@ using Tests.Core.Graph.Mocks;
 namespace Tests.Core.Graph.UCS
 {
     [TestFixture]
-    class UCSSimpleMoveTest
+    class UCSSimpleMoveTest: BaseDndTest
     {
         [SetUp]
         public void Setup()

@@ -16,7 +16,7 @@ using Tests.Core.Graph.Mocks.Creatures;
 namespace Tests.Core.Graph.UCS
 {
     [TestFixture]
-    class UCSAttackOfOpportunityTests
+    class UCSAttackOfOpportunityTests: BaseDndTest
     {
         [Test]
         public void PreferLongerPathToAttackOfOpportunity()

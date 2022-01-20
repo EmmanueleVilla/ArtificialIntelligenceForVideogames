@@ -15,7 +15,7 @@ using Tests.Core.DndBattles.Mock;
 namespace Tests.Core.GOAP.Actions
 {
     [TestFixture]
-    public class ActionSequenceBuilderTest
+    class ActionSequenceBuilderTest: BaseDndTest
     {
         [Test]
         public void ActionSequenceBuilderBaseTest()

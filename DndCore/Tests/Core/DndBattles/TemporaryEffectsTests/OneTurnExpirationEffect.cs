@@ -18,7 +18,7 @@ using Tests.Core.DndBattles.Mock;
 namespace Tests.Core.DndBattles.TemporaryEffectsTests
 {
     [TestFixture]
-    class OneTurnExpirationEffect
+    class OneTurnExpirationEffect: BaseDndTest
     {
         [Test]
         public void ExpiresAtTheBeginningOfMyNextTurn()

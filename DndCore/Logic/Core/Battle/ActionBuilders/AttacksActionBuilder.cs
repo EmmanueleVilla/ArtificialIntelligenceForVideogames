@@ -33,8 +33,6 @@ namespace Logic.Core.Battle
                             var occupant = battle.Map.GetOccupantCreature(i, j);
                             if (occupant != null && occupant.Loyalty != creature.Loyalty)
                             {
-                                DndModule.Get<ILogger>().WriteLine("1) Map battle instance: " + battle.Map.GetHashCode());
-                                DndModule.Get<ILogger>().WriteLine(string.Format("Adding target {0} at {1},{2} to attack action", occupant.GetType().Name, i, j));
                                 cells.Add(battle.Map.GetCellInfo(i, j));
                             }
                         }

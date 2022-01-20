@@ -12,7 +12,7 @@ using Tests.Core.Graph.Mocks.Creatures;
 namespace Tests.Core.Graph.UCS
 {
     [TestFixture]
-    class UCSNoMovementTests
+    class UCSNoMovementTests: BaseDndTest
     {
         [Test]
         public void EmptyGraphIfCreatureCantMove()

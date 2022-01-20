@@ -14,7 +14,7 @@ using Tests.Core.Graph.Mocks.Creatures;
 namespace Tests.Core.Map.MoveCreature
 {
     [TestFixture]
-    class MoveCreatureAndCheckThreatenedArea
+    class MoveCreatureAndCheckThreatenedArea: BaseDndTest
     {
         [Test]
         public void AddMediumCreatureWithBaseAttack()

@@ -6,11 +6,12 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Tests.Core;
 
 namespace test.Source.Map
 {
     [TestFixture]
-    class MapBuilderTests
+    class MapBuilderTests: BaseDndTest
     {
         CsvFullMapBuilder builder = new CsvFullMapBuilder();
 

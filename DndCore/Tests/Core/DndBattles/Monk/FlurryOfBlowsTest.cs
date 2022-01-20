@@ -23,12 +23,11 @@ using Tests.Core.Graph.Mocks.Creatures;
 namespace Tests.Core.DndBattles.Monk
 {
     [TestFixture]
-    class FlurryOfBlowsTest
+    class FlurryOfBlowsTest: BaseDndTest
     {
         [Test]
         public void FlurryOfBlowsAvailableAndNumberOfBonusAttacks()
         {
-            DndModule.RegisterRules();
             var battle = new DndBattle(new ZeroRoller(), new UniformCostSearch(
                 new SpeedCalculator(), new ConsoleLogger()));
             var map = new ArrayDndMap(10, 10, CellInfo.Empty());

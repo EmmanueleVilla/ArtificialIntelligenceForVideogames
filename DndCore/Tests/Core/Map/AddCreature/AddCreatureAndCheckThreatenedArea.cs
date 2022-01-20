@@ -13,7 +13,7 @@ using Tests.Core.Graph.Mocks.Creatures;
 namespace Tests.Core.Map.AddCreature
 {
     [TestFixture]
-    class AddCreatureAndCheckThreatenedArea
+    class AddCreatureAndCheckThreatenedArea: BaseDndTest
     {
         [Test]
         public void AddMediumCreatureWithBaseAttack()

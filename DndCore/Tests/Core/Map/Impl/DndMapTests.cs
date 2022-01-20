@@ -2,11 +2,12 @@
 using Logic.Core.Map;
 using Logic.Core.Map.Impl;
 using NUnit.Framework;
+using Tests.Core;
 
 namespace Core.Map
 {
     [TestFixture]
-    class DndMapTests
+    class DndMapTests: BaseDndTest
     {
         [Test]
         [TestCase(-1, 0, ' ')]
@@ -17,7 +18,6 @@ namespace Core.Map
         [TestCase(1, 9, 'G')]
         [TestCase(9, 1, 'G')]
         [TestCase(9, 9, 'G')]
-        [Parallelizable(ParallelScope.All)]
         public void CheckGetCorrectTerrainType(int i, int j, char expected)
         {
             var map = new ArrayDndMap(10, 10, new CellInfo('G', 0));

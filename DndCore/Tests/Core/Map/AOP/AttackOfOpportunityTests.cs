@@ -14,7 +14,7 @@ using Tests.Core.Graph.Mocks.Creatures;
 namespace Tests.Core.Map.AOP
 {
     [TestFixture]
-    class AttackOfOpportunityTests
+    class AttackOfOpportunityTests: BaseDndTest
     {
         [Test]
         public void LeavingOneEnemy()

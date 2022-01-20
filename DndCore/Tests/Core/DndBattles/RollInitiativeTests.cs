@@ -13,7 +13,7 @@ using Tests.Core.DndBattles.Mock;
 namespace Tests.Core.DndBattles
 {
     [TestFixture]
-    class RollInitiativeTests
+    class RollInitiativeTests: BaseDndTest
     {
         [Test]
         public void GetCurrentCreatureInTurn()

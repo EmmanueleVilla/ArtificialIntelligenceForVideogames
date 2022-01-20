@@ -19,7 +19,7 @@ namespace Logic.Core.GOAP.Actions
         public int creatureId;
         public List<IAvailableAction> actions;
         public IDndBattle battle;
-
+        public int MaxPriorityNextTurn;
         public override string ToString()
         {
             return String.Join(",", actions);
@@ -77,6 +77,7 @@ namespace Logic.Core.GOAP.Actions
                     {
                         if(nextAction is RequestMovementAction)
                         {
+                            var temp = new List<ActionList>();
                             var memoryEdges = current.battle.GetReachableCells().Where(x => x.Destination.X == target.X && x.Destination.Y == target.Y).ToList();
                             foreach(var memoryEdge in memoryEdges)
                             {
@@ -93,12 +94,22 @@ namespace Logic.Core.GOAP.Actions
                                     Speed = memoryEdge.Speed,
                                     Damage = memoryEdge.Damage
                                 }) ;
-
-                                queue.Push(new ActionList() { 
-                                    creatureId = creature.Id, 
+                                temp.Add(new ActionList()
+                                {
+                                    creatureId = creature.Id,
                                     actions = newActions,
                                     battle = newBattle
-                                } );
+                                });
+                            }
+                            for (int i = 0; i < temp.Count; i++)
+                            {
+                                ActionList next = temp[i];
+                                var nextTurn = next.battle.GetAvailableActions().Where(y => y.ReachableCells.Count > 0);
+                                next.MaxPriorityNextTurn = nextTurn.Select(x => x.Priority).Max();
+                            }
+                            foreach(var action in temp.OrderByDescending(x => x.MaxPriorityNextTurn))
+                            {
+                                queue.Push(action);
                             }
                         } else  if(nextAction is RequestAttackAction)
                         {

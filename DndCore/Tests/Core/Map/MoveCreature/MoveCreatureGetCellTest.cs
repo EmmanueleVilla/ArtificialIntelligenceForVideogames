@@ -13,7 +13,7 @@ using Tests.Core.Graph.Mocks;
 namespace Tests.Core.Map.MoveCreature
 {
     [TestFixture]
-    class MoveCreatureGetTest
+    class MoveCreatureGetTest: BaseDndTest
     {
         [Test]
         public void AddCreatureAndRetrieveCell()

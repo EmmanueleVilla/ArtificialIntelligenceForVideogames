@@ -11,7 +11,7 @@ using Tests.Core.Graph.Mocks;
 namespace Tests.Core.Map
 {
     [TestFixture]
-    class AddCreatureGetTest
+    class AddCreatureGetTest: BaseDndTest
     {
         [Test]
         public void AddCreatureAndRetrieveCell()
