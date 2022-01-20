@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6376621660984683967}
   m_Layer: 0
   m_Name: hero_human_female_monk_prefab
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

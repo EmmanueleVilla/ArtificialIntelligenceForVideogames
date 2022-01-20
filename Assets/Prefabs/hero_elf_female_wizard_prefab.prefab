@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 1586024151942222790}
   m_Layer: 0
   m_Name: hero_elf_female_wizard_prefab
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

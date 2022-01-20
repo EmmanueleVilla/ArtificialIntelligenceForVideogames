@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     public event EventHandler<ICreature> TurnStarted;
 
     private IMap map;
-    private IDndBattle Battle;
+    public IDndBattle Battle;
     private List<int> Initiatives;
 
     void Awake()

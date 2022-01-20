@@ -79,7 +79,13 @@ namespace Logic.Core
 
         public ICreature GetCreatureInTurn()
         {
-            return map.Creatures[initiativeOrder[turnIndex]];
+            try
+            {
+                return map.Creatures[initiativeOrder[turnIndex]];
+            } catch(Exception e)
+            {
+                return null;
+            }
         }
 
         public void BuildAvailableActions(ICreature creature = null)
@@ -143,11 +149,6 @@ namespace Logic.Core
         {
             _reachableCellCache.Clear();
             _cachedActions.Clear();
-            var deads = map.Creatures.Where(x => x.Value.CurrentHitPoints <= 0).Select(x => x.Key).ToList();
-            foreach(var dead in deads)
-            {
-                map.RemoveCreature(GetCreatureById(dead));
-            }
 
             turnIndex++;
             if(turnIndex >= map.Creatures.Count)
@@ -160,6 +161,13 @@ namespace Logic.Core
             }
 
             var creatureInTurn = GetCreatureInTurn();
+            
+            if(creatureInTurn == null)
+            {
+                NextTurn();
+                return;
+            }
+
             foreach (var creature in map.Creatures)
             {
                 creature.Value.TemporaryEffectsList = creature.Value.TemporaryEffectsList.Select( x =>
@@ -174,8 +182,18 @@ namespace Logic.Core
                     return newTuple;
                 }).Where(x => x.Item2 > 0).ToList();
             }
+
+            var deads = map.Creatures.Where(x => x.Value.CurrentHitPoints <= 0).Select(x => x.Key).ToList();
+            foreach (var dead in deads)
+            {
+                map.RemoveCreature(GetCreatureById(dead));
+            }
+
+            if (!map.Creatures.ContainsKey(creatureInTurn.Id))
+            {
+                NextTurn();
+            }
         }
-        
 
         public void CalculateReachableCells(ICreature creature = null)
         {

@@ -35,6 +35,10 @@ public class UIManager : MonoBehaviour
     {
         foreach (var indicator in initiativeIndicators)
         {
+            if(!GameManager.Battle.Map.Creatures.ContainsKey(indicator.Item1))
+            {
+                indicator.Item2.gameObject.SetActive(false);
+            }
             if (indicator.Item1 == e.Id)
             {
                 indicator.Item2.Show();

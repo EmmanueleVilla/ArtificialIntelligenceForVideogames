@@ -104,6 +104,7 @@ namespace Logic.Core.GOAP.Actions
                             for (int i = 0; i < temp.Count; i++)
                             {
                                 ActionList next = temp[i];
+                                next.battle.BuildAvailableActions();
                                 var nextTurn = next.battle.GetAvailableActions().Where(y => y.ReachableCells.Count > 0);
                                 next.MaxPriorityNextTurn = nextTurn.Select(x => x.Priority).Max();
                             }
