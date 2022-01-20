@@ -9,7 +9,7 @@ namespace Core.Utils.Log
     {
         public void WriteLine(string message)
         {
-            DndModule.Get<ILogger>().WriteLine(message);
+            Console.WriteLine(message);
         }
     }
 }
