@@ -45,11 +45,6 @@ namespace Logic.Core.GOAP.Actions
             int loop = 0;
             while(queue.Count > 0)
             {
-                if (result.Count() > 500)
-                {
-                    break;
-                }
-
                 loop++;
 
                 var current = queue.Pop();
@@ -60,7 +55,7 @@ namespace Logic.Core.GOAP.Actions
                 }
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions().Where(x => x.ReachableCells.Count > 0);
-                if(current.actions.LastOrDefault() is ConfirmMovementAction)
+                if(current.actions.Any(x => x is ConfirmMovementAction))
                 {
                     nextActions = nextActions.Where(x => !(x is RequestMovementAction));
                 }
@@ -144,7 +139,7 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 nextAction
                             };
-                            result.Clear();
+                            //result.Clear();
                             result.Add(new ActionList()
                             {
                                 creatureId = current.battle.GetCreatureInTurn().Id,
