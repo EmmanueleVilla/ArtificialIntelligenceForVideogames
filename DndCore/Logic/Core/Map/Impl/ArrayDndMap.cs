@@ -13,7 +13,7 @@ namespace Logic.Core.Map.Impl
         public int Height;
         public CellInfo[,] cells;
         public Dictionary<int,int> occupiedCellsDictionary = new Dictionary<int, int>();
-        public List<Tuple<int, List<int>>> threateningAreas = new List<Tuple<int, List<int>>>();
+        public List<Tuple<int, HashSet<int>>> threateningAreas = new List<Tuple<int, HashSet<int>>>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -33,15 +33,15 @@ namespace Logic.Core.Map.Impl
                 }
             }
             newMap.occupiedCellsDictionary = new Dictionary<int, int>(occupiedCellsDictionary);
-            newMap.threateningAreas = new List<Tuple<int, List<int>>>();
+            newMap.threateningAreas = new List<Tuple<int, HashSet<int>>>();
             foreach(var area in threateningAreas)
             {
-                var cells = new List<int>();
+                var cells = new HashSet<int>();
                 foreach(var cell in area.Item2)
                 {
                     cells.Add(cell);
                 }
-                newMap.threateningAreas.Add(new Tuple<int, List<int>>(area.Item1, cells));
+                newMap.threateningAreas.Add(new Tuple<int, HashSet<int>>(area.Item1, cells));
             }
             return newMap;
         }
@@ -170,7 +170,7 @@ namespace Logic.Core.Map.Impl
 
             if (reach > 0)
             {
-                var cells = new List<int>();
+                var cells = new HashSet<int>();
                 var startI = x - reach;
                 var endI = x + creature.Size + reach;
                 var startJ = y - reach;
@@ -182,7 +182,7 @@ namespace Logic.Core.Map.Impl
                         cells.Add((i << 6) + j);
                     }
                 }
-                threateningAreas.Add(new Tuple<int, List<int>>(creature.Id, cells));
+                threateningAreas.Add(new Tuple<int, HashSet<int>>(creature.Id, cells));
             }
 
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
@@ -213,13 +213,13 @@ namespace Logic.Core.Map.Impl
                 }
 
                 var startValue = (start.X << 6) + start.Y;
-                var areaContainsStart = area.Item2.Any(x => x == startValue);
+                var areaContainsStart = area.Item2.Contains(startValue);
                 if(!areaContainsStart)
                 {
                     continue;
                 }
                 var endValue = (end.X << 6) + end.Y;
-                var areaContainsEnd = !area.Item2.Any(x => x == endValue);
+                var areaContainsEnd = !area.Item2.Contains(endValue);
                 if (areaContainsEnd)
                 {
                     creatures.Add(creature);
