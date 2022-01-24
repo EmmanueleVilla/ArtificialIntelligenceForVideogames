@@ -6,6 +6,7 @@ using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
+using Logic.Core.GOAP.Goals;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +36,10 @@ namespace Logic.Core.GOAP.Actions
         }
         public List<ActionList> GetAvailableActions(IDndBattle battleArg)
         {
+            var goals = new List<IGoal>() {
+                new IncreaseAllyHPGoal(),
+                new ReduceEnemyHPGoal()
+            };
             var result = new List<ActionList>();
             var queue = new Stack<ActionList>();
             queue.Push(new ActionList() {
@@ -43,6 +48,7 @@ namespace Logic.Core.GOAP.Actions
                 battle = battleArg
             });
             int loop = 0;
+            float maxFullfillment = float.MinValue;
             while(queue.Count > 0)
             {
                 loop++;
@@ -139,13 +145,16 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 nextAction
                             };
-                            //result.Clear();
-                            result.Add(new ActionList()
+                            if(goals.Sum(x => x.EvaluateGoal(battleArg.GetCreatureInTurn(), battleArg, current.battle)) > maxFullfillment)
                             {
-                                creatureId = current.battle.GetCreatureInTurn().Id,
-                                actions = new List<IAvailableAction>(updatedActions),
-                                battle = current.battle
-                            });
+                                result.Clear();
+                                result.Add(new ActionList()
+                                {
+                                    creatureId = current.battle.GetCreatureInTurn().Id,
+                                    actions = new List<IAvailableAction>(updatedActions),
+                                    battle = current.battle
+                                });
+                            }
                         }
                         else if (nextAction is RequestSpellAction)
                         {
