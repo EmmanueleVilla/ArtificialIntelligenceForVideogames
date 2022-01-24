@@ -32,16 +32,18 @@ namespace Tests.Core.Map.AddCreature
                     });
             map.AddCreature(creature, 1, 1);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo('G', 0, null, 0, 0),
-                new CellInfo('G', 0, null, 0, 1),
-                new CellInfo('G', 0, null, 0, 2),
-                new CellInfo('G', 0, null, 1, 0),
-                new CellInfo('G', 0, null, 1, 1),
-                new CellInfo('G', 0, null, 1, 2),
-                new CellInfo('G', 0, null, 2, 0),
-                new CellInfo('G', 0, null, 2, 1),
-                new CellInfo('G', 0, null, 2, 2),
+            var expected = new List<int>() {
+                (0 << 6) + 0,
+                (0 << 6) + 1,
+                (0 << 6) + 2,
+
+                (1 << 6) + 0,
+                (1 << 6) + 1,
+                (1 << 6) + 2,
+
+                (2 << 6) + 0,
+                (2 << 6) + 1,
+                (2 << 6) + 2
             };
             Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }
@@ -63,36 +65,36 @@ namespace Tests.Core.Map.AddCreature
                     });
             map.AddCreature(creature, 1, 1);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo(' ', 0, null, -1, -1),
-                new CellInfo(' ', 0, null, -1, 0),
-                new CellInfo(' ', 0, null, -1, 1),
-                new CellInfo(' ', 0, null, -1, 2),
-                new CellInfo(' ', 0, null, -1, 3),
+            var expected = new List<int>() {
+                (-1 << 6) + -1,
+                (-1 << 6) + 0,
+                (-1 << 6) + 1,
+                (-1 << 6) + 2,
+                (-1 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 0, -1),
-                new CellInfo('G', 0, null, 0, 0),
-                new CellInfo('G', 0, null, 0, 1),
-                new CellInfo('G', 0, null, 0, 2),
-                new CellInfo('G', 0, null, 0, 3),
+                (0 << 6) + -1,
+                (0 << 6) + 0,
+                (0 << 6) + 1,
+                (0 << 6) + 2,
+                (0 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 1, -1),
-                new CellInfo('G', 0, null, 1, 0),
-                new CellInfo('G', 0, null, 1, 1),
-                new CellInfo('G', 0, null, 1, 2),
-                new CellInfo('G', 0, null, 1, 3),
+                (1 << 6) + -1,
+                (1 << 6) + 0,
+                (1 << 6) + 1,
+                (1 << 6) + 2,
+                (1 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 2, -1),
-                new CellInfo('G', 0, null, 2, 0),
-                new CellInfo('G', 0, null, 2, 1),
-                new CellInfo('G', 0, null, 2, 2),
-                new CellInfo('G', 0, null, 2, 3),
+                (2 << 6) + -1,
+                (2 << 6) + 0,
+                (2 << 6) + 1,
+                (2 << 6) + 2,
+                (2 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 3, -1),
-                new CellInfo('G', 0, null, 3, 0),
-                new CellInfo('G', 0, null, 3, 1),
-                new CellInfo('G', 0, null, 3, 2),
-                new CellInfo('G', 0, null, 3, 3),
+                (3 << 6) + -1,
+                (3 << 6) + 0,
+                (3 << 6) + 1,
+                (3 << 6) + 2,
+                (3 << 6) + 3
             };
             Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }
@@ -114,36 +116,36 @@ namespace Tests.Core.Map.AddCreature
                     });
             map.AddCreature(creature, 0, 0);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo(' ', 0, null, -1, -1),
-                new CellInfo(' ', 0, null, -1, 0),
-                new CellInfo(' ', 0, null, -1, 1),
-                new CellInfo(' ', 0, null, -1, 2),
-                new CellInfo(' ', 0, null, -1, 3),
+            var expected = new List<int>() {
+                (-1 << 6) + -1,
+                (-1 << 6) + 0,
+                (-1 << 6) + 1,
+                (-1 << 6) + 2,
+                (-1 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 0, -1),
-                new CellInfo('G', 0, null, 0, 0),
-                new CellInfo('G', 0, null, 0, 1),
-                new CellInfo('G', 0, null, 0, 2),
-                new CellInfo('G', 0, null, 0, 3),
+                (0 << 6) + -1,
+                (0 << 6) + 0,
+                (0 << 6) + 1,
+                (0 << 6) + 2,
+                (0 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 1, -1),
-                new CellInfo('G', 0, null, 1, 0),
-                new CellInfo('G', 0, null, 1, 1),
-                new CellInfo('G', 0, null, 1, 2),
-                new CellInfo('G', 0, null, 1, 3),
+                (1 << 6) + -1,
+                (1 << 6) + 0,
+                (1 << 6) + 1,
+                (1 << 6) + 2,
+                (1 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 2, -1),
-                new CellInfo('G', 0, null, 2, 0),
-                new CellInfo('G', 0, null, 2, 1),
-                new CellInfo('G', 0, null, 2, 2),
-                new CellInfo('G', 0, null, 2, 3),
+                (2 << 6) + -1,
+                (2 << 6) + 0,
+                (2 << 6) + 1,
+                (2 << 6) + 2,
+                (2 << 6) + 3,
 
-                new CellInfo(' ', 0, null, 3, -1),
-                new CellInfo('G', 0, null, 3, 0),
-                new CellInfo('G', 0, null, 3, 1),
-                new CellInfo('G', 0, null, 3, 2),
-                new CellInfo('G', 0, null, 3, 3),
+                (3 << 6) + -1,
+                (3 << 6) + 0,
+                (3 << 6) + 1,
+                (3 << 6) + 2,
+                (3 << 6) + 3
             };
             Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }
@@ -165,62 +167,63 @@ namespace Tests.Core.Map.AddCreature
                     });
             map.AddCreature(creature, 0, 0);
 
-            var expected = new List<CellInfo>() {
-                new CellInfo(' ', 0, null, -2, -2),
-                new CellInfo(' ', 0, null, -2, -1),
-                new CellInfo(' ', 0, null, -2, 0),
-                new CellInfo(' ', 0, null, -2, 1),
-                new CellInfo(' ', 0, null, -2, 2),
-                new CellInfo(' ', 0, null, -2, 3),
-                new CellInfo(' ', 0, null, -2, 4),
+            var expected = new List<int>() {
 
-                new CellInfo(' ', 0, null, -1, -2),
-                new CellInfo(' ', 0, null, -1, -1),
-                new CellInfo(' ', 0, null, -1, 0),
-                new CellInfo(' ', 0, null, -1, 1),
-                new CellInfo(' ', 0, null, -1, 2),
-                new CellInfo(' ', 0, null, -1, 3),
-                new CellInfo(' ', 0, null, -1, 4),
+                (-2 << 6) + -2,
+                (-2 << 6) + -1,
+                (-2 << 6) + 0,
+                (-2 << 6) + 1,
+                (-2 << 6) + 2,
+                (-2 << 6) + 3,
+                (-2 << 6) + 4,
 
-                new CellInfo(' ', 0, null, 0, -2),
-                new CellInfo(' ', 0, null, 0, -1),
-                new CellInfo('G', 0, null, 0, 0),
-                new CellInfo('G', 0, null, 0, 1),
-                new CellInfo('G', 0, null, 0, 2),
-                new CellInfo('G', 0, null, 0, 3),
-                new CellInfo('G', 0, null, 0, 4),
+                (-1 << 6) + -2,
+                (-1 << 6) + -1,
+                (-1 << 6) + 0,
+                (-1 << 6) + 1,
+                (-1 << 6) + 2,
+                (-1 << 6) + 3,
+                (-1 << 6) + 4,
 
-                new CellInfo(' ', 0, null, 1, -2),
-                new CellInfo(' ', 0, null, 1, -1),
-                new CellInfo('G', 0, null, 1, 0),
-                new CellInfo('G', 0, null, 1, 1),
-                new CellInfo('G', 0, null, 1, 2),
-                new CellInfo('G', 0, null, 1, 3),
-                new CellInfo('G', 0, null, 1, 4),
+                (0 << 6) + -2,
+                (0 << 6) + -1,
+                (0 << 6) + 0,
+                (0 << 6) + 1,
+                (0 << 6) + 2,
+                (0 << 6) + 3,
+                (0 << 6) + 4,
 
-                new CellInfo(' ', 0, null, 2, -2),
-                new CellInfo(' ', 0, null, 2, -1),
-                new CellInfo('G', 0, null, 2, 0),
-                new CellInfo('G', 0, null, 2, 1),
-                new CellInfo('G', 0, null, 2, 2),
-                new CellInfo('G', 0, null, 2, 3),
-                new CellInfo('G', 0, null, 2, 4),
+                (1 << 6) + -2,
+                (1 << 6) + -1,
+                (1 << 6) + 0,
+                (1 << 6) + 1,
+                (1 << 6) + 2,
+                (1 << 6) + 3,
+                (1 << 6) + 4,
 
-                new CellInfo(' ', 0, null, 3, -2),
-                new CellInfo(' ', 0, null, 3, -1),
-                new CellInfo('G', 0, null, 3, 0),
-                new CellInfo('G', 0, null, 3, 1),
-                new CellInfo('G', 0, null, 3, 2),
-                new CellInfo('G', 0, null, 3, 3),
-                new CellInfo('G', 0, null, 3, 4),
+                (2 << 6) + -2,
+                (2 << 6) + -1,
+                (2 << 6) + 0,
+                (2 << 6) + 1,
+                (2 << 6) + 2,
+                (2 << 6) + 3,
+                (2 << 6) + 4,
 
-                new CellInfo(' ', 0, null, 4, -2),
-                new CellInfo(' ', 0, null, 4, -1),
-                new CellInfo('G', 0, null, 4, 0),
-                new CellInfo('G', 0, null, 4, 1),
-                new CellInfo('G', 0, null, 4, 2),
-                new CellInfo('G', 0, null, 4, 3),
-                new CellInfo('G', 0, null, 4, 4),
+                (3 << 6) + -2,
+                (3 << 6) + -1,
+                (3 << 6) + 0,
+                (3 << 6) + 1,
+                (3 << 6) + 2,
+                (3 << 6) + 3,
+                (3 << 6) + 4,
+
+                (4 << 6) + -2,
+                (4 << 6) + -1,
+                (4 << 6) + 0,
+                (4 << 6) + 1,
+                (4 << 6) + 2,
+                (4 << 6) + 3,
+                (4 << 6) + 4,
             };
             Assert.AreEqual(expected, map.threateningAreas.FirstOrDefault(x => x.Item1 == creature.Id).Item2);
         }

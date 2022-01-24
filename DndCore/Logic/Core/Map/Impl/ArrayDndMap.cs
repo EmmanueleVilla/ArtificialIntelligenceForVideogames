@@ -13,7 +13,7 @@ namespace Logic.Core.Map.Impl
         public int Height;
         public CellInfo[,] cells;
         public Dictionary<int,int> occupiedCellsDictionary = new Dictionary<int, int>();
-        public List<Tuple<int, List<CellInfo>>> threateningAreas = new List<Tuple<int, List<CellInfo>>>();
+        public List<Tuple<int, List<int>>> threateningAreas = new List<Tuple<int, List<int>>>();
 
         int IMap.Width => Width;
         int IMap.Height => Height;
@@ -33,15 +33,15 @@ namespace Logic.Core.Map.Impl
                 }
             }
             newMap.occupiedCellsDictionary = new Dictionary<int, int>(occupiedCellsDictionary);
-            newMap.threateningAreas = new List<Tuple<int, List<CellInfo>>>();
+            newMap.threateningAreas = new List<Tuple<int, List<int>>>();
             foreach(var area in threateningAreas)
             {
-                var cells = new List<CellInfo>();
+                var cells = new List<int>();
                 foreach(var cell in area.Item2)
                 {
-                    cells.Add(newMap.GetCellInfo(cell.X, cell.Y));
+                    cells.Add(cell);
                 }
-                newMap.threateningAreas.Add(new Tuple<int, List<CellInfo>>(area.Item1, cells));
+                newMap.threateningAreas.Add(new Tuple<int, List<int>>(area.Item1, cells));
             }
             return newMap;
         }
@@ -170,7 +170,7 @@ namespace Logic.Core.Map.Impl
 
             if (reach > 0)
             {
-                var cells = new List<CellInfo>();
+                var cells = new List<int>();
                 var startI = x - reach;
                 var endI = x + creature.Size + reach;
                 var startJ = y - reach;
@@ -179,10 +179,10 @@ namespace Logic.Core.Map.Impl
                 {
                     for (int j = startJ; j < endJ; j++)
                     {
-                        cells.Add(GetCellInfo(i, j));
+                        cells.Add((i << 6) + j);
                     }
                 }
-                threateningAreas.Add(new Tuple<int, List<CellInfo>>(creature.Id, cells));
+                threateningAreas.Add(new Tuple<int, List<int>>(creature.Id, cells));
             }
 
             SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
@@ -211,12 +211,15 @@ namespace Logic.Core.Map.Impl
                 {
                     continue;
                 }
-                var areaContainsStart = area.Item2.Any(x => x.X == start.X && x.Y == start.Y);
+
+                var startValue = (start.X << 6) + start.Y;
+                var areaContainsStart = area.Item2.Any(x => x == startValue);
                 if(!areaContainsStart)
                 {
                     continue;
                 }
-                var areaContainsEnd = !area.Item2.Any(x => x.X == end.X && x.Y == end.Y);
+                var endValue = (end.X << 6) + end.Y;
+                var areaContainsEnd = !area.Item2.Any(x => x == endValue);
                 if (areaContainsEnd)
                 {
                     creatures.Add(creature);

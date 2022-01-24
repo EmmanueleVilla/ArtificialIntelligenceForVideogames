@@ -144,6 +144,7 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 nextAction
                             };
+                            result.Clear();
                             result.Add(new ActionList()
                             {
                                 creatureId = current.battle.GetCreatureInTurn().Id,
