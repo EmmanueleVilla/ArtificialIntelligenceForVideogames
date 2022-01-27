@@ -57,11 +57,13 @@ namespace Logic.Core.GOAP.Actions
                 var current = queue.Pop();
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions().Where(x => x.ReachableCells.Count > 0);
-
+                
                 if(current.actions.Any(x => x is ConfirmMovementAction))
                 {
                     nextActions = nextActions.Where(x => !(x is RequestMovementAction));
                 }
+                var maxPriority = nextActions.Max(x => x.Priority);
+                nextActions = nextActions.Where(x => x.Priority == maxPriority || x is EndTurnAction);
                 foreach (var nextAction in nextActions)
                 {
                     var temp = new List<ActionList>();
@@ -184,6 +186,7 @@ namespace Logic.Core.GOAP.Actions
                     }
                     if (temp.Count > 0)
                     {
+                        /*
                         var temp2 = temp
                             .GroupBy(x => {
                                 var actions = x.battle.GetAvailableActions();
@@ -197,6 +200,11 @@ namespace Logic.Core.GOAP.Actions
                         {
                             var best = t.OrderByDescending(n => current.battle.GetCreatureInTurn().EvaluateFullfillment(battleArg, n.actions, current.battle)).First();
                             queue.Push(best);
+                        }
+                        */
+                        foreach(var v in temp)
+                        {
+                            queue.Push(v);
                         }
                     }
                 }

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class DwarfMaleWarrior : ACreature, IFightingSpirit, ISecondWind
+    public class DwarfMaleWarrior : AMeleeCreature, IFightingSpirit, ISecondWind
     {
         public override Loyalties Loyalty => Loyalties.Ally;
 

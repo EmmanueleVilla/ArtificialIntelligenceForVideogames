@@ -19,19 +19,23 @@ namespace Logic.Core.GOAP.Goals
             var myNewPos = newState.Map.GetCellOccupiedBy(oldState.GetCreatureInTurn());
             var oldNearestEnemy = enemiesPositions.Select(x =>
             {
-                var diffX = Math.Abs(x.X - myOldPos.X);
-                var diffy = Math.Abs(x.Y - myOldPos.Y);
+                var diffX = Math.Pow(x.X - myOldPos.X, 2);
+                var diffy = Math.Pow(x.Y - myOldPos.Y, 2);
                 return diffX + diffy;
             }).Min();
             var newNearestEnemy = enemiesPositions.Select(x =>
             {
-                var diffX = Math.Abs(x.X - myNewPos.X);
-                var diffy = Math.Abs(x.Y - myNewPos.Y);
+                var diffX = Math.Pow(x.X - myNewPos.X, 2);
+                var diffy = Math.Pow(x.Y - myNewPos.Y, 2);
                 return diffX + diffy;
             }).Min();
             var fullfillment = newNearestEnemy - oldNearestEnemy;
+            if(oldNearestEnemy > 100 && newNearestEnemy > 100)
+            {
+                fullfillment = 0;
+            }
             //File.AppendAllText("log.txt", "Ranged position: " + fullfillment + "\n");
-            return fullfillment;
+            return (int)fullfillment;
         }
     }
 }

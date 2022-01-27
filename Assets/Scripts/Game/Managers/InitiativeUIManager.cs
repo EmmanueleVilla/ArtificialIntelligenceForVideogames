@@ -28,9 +28,10 @@ public class InitiativeUIManager : MonoBehaviour
             var creatureInTurn = battle.GetCreatureInTurn();
 
             var builder = new StringBuilder();
-            try
+            
+            foreach (var creatureId in _initiatives)
             {
-                foreach (var creatureId in _initiatives)
+                try
                 {
                     if (creatureInTurn.Id == creatureId)
                     {
@@ -40,7 +41,11 @@ public class InitiativeUIManager : MonoBehaviour
                     builder.Append(creature.GetType().ToString().Split('.').Last());
                     builder.AppendLine(string.Format(" {0}/{1} + {2}", creature.CurrentHitPoints, creature.HitPoints, creature.TemporaryHitPoints));
                 }
-            } catch(Exception e) { }
+                catch (Exception e)
+                {
+                    Debug.Log(e.ToString());
+                }
+            }
 
             InitiativeText.text = builder.ToString();
         }
