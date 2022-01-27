@@ -37,6 +37,8 @@ namespace Logic.Core.GOAP.Actions
         }
         public List<ActionList> GetAvailableActions(IDndBattle battleArg)
         {
+            //File.AppendAllText("log.txt", "*********************************************************\n");
+            //File.AppendAllText("log.txt", "CREATURE " + battleArg.GetCreatureInTurn().GetType().Name + "\n");
             var result = new List<ActionList>();
             var queue = new Stack<ActionList>();
             queue.Push(new ActionList() {
@@ -61,9 +63,10 @@ namespace Logic.Core.GOAP.Actions
                 }
                 foreach (var nextAction in nextActions)
                 {
+                    var temp = new List<ActionList>();
                     foreach (var target in nextAction.ReachableCells)
                     {
-                        if(nextAction is RequestMovementAction)
+                        if (nextAction is RequestMovementAction)
                         {
                             var memoryEdges = current.battle.GetReachableCells().Where(x => x.Destination.X == target.X && x.Destination.Y == target.Y).ToList();
                             foreach(var memoryEdge in memoryEdges)
@@ -81,7 +84,7 @@ namespace Logic.Core.GOAP.Actions
                                     Speed = memoryEdge.Speed,
                                     Damage = memoryEdge.Damage
                                 }) ;
-                                queue.Push(new ActionList()
+                                temp.Add(new ActionList()
                                 {
                                     creatureId = creature.Id,
                                     actions = newActions,
@@ -100,7 +103,7 @@ namespace Logic.Core.GOAP.Actions
                                 TargetCreature = attacked.Id,
                                 Attack = attackAction.Attack
                             };
-                            var events = newBattle.Attack(confirmAttack);
+                            var events = newBattle.Attack(confirmAttack, true);
 
                             var updatedActions = new List<IAvailableAction>(current.actions)
                             {
@@ -119,7 +122,10 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 nextAction
                             };
+                            var actions = string.Join(",", updatedActions.Select(x => x.ActionType));
+                            //File.AppendAllText("log.txt", "--- Evaluating " + actions + "\n");
                             var fullfillment = current.battle.GetCreatureInTurn().EvaluateFullfillment(battleArg, updatedActions, current.battle);
+                            //File.AppendAllText("log.txt", "Result is " + fullfillment + "\n");
                             evaluated++;
                             if (fullfillment > maxFullfillment)
                             {
@@ -132,6 +138,8 @@ namespace Logic.Core.GOAP.Actions
                                     actions = new List<IAvailableAction>(updatedActions),
                                     battle = current.battle
                                 });
+                                
+                                Console.WriteLine(string.Format("{0}), {1} points: {2}", evaluated, fullfillment, actions));
                             }
                         }
                         else if (nextAction is RequestSpellAction)
@@ -171,6 +179,23 @@ namespace Logic.Core.GOAP.Actions
                                 actions = new List<IAvailableAction>(updatedActions),
                                 battle = newBattle
                             });
+                        }
+                    }
+                    if (temp.Count > 0)
+                    {
+                        var temp2 = temp
+                            .GroupBy(x => {
+                                var actions = x.battle.GetAvailableActions();
+                                if(actions.Count > 0)
+                                {
+                                    return actions.Max(action => action.Priority);
+                                }
+                                return 0;
+                            }).ToList();
+                        foreach (var t in temp)
+                        {
+                            //var best = t.OrderByDescending(n => current.battle.GetCreatureInTurn().EvaluateFullfillment(battleArg, n.actions, current.battle)).First();
+                            queue.Push(t);
                         }
                     }
                 }

@@ -14,7 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Dice\" />
-    <Folder Include="Core\Creatures\Bestiary\Ratmans\" />
     <Folder Include="Core\Creatures\Bestiary\Minotaurs\" />
     <Folder Include="Core\Creatures\Bestiary\Characters\" />
     <Folder Include="Core\Creatures\Scores\" />

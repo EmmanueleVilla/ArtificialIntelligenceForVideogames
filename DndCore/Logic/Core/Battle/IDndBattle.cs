@@ -22,7 +22,7 @@ namespace Logic.Core.Battle
         List<MemoryEdge> GetReachableCells();
         void CalculateReachableCells(ICreature creature = null);
         List<GameEvent> MoveTo(MemoryEdge end);
-        List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction);
+        List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction, bool forceHit = false);
         List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction);
         List<GameEvent> UseAbility(IAvailableAction availableAction);
         IDndBattle Copy();

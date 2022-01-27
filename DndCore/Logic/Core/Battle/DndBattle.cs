@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Core.DI;
 using Core.Map;
@@ -66,6 +67,7 @@ namespace Logic.Core
 
         public List<int> Init(IMap map)
         {
+            File.WriteAllText("log.txt", "");
             this.map = map;
             var temp = new List<ICreature>();
             foreach (var creature in map.Creatures.Values)
@@ -249,7 +251,7 @@ namespace Logic.Core
             return list;
         }
 
-        public List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction)
+        public List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction, bool forceHit = false)
         {
             var targetCreature = GetCreatureById(confirmAttackAction.TargetCreature);
             var attackingCreature = GetCreatureById(confirmAttackAction.AttackingCreature);
@@ -284,12 +286,28 @@ namespace Logic.Core
             Logger.WriteLine(string.Format("Roll Type {0}, rolled {1} to hit", rollType, toHit));
 
             var isCritical = (toHit - confirmAttackAction.Attack.ToHit) >= attackingCreature.CriticalThreshold;
-            if(toHit >= targetCreature.ArmorClass || isCritical)
+            if(forceHit || toHit >= targetCreature.ArmorClass || isCritical)
             {
                 var totalDamage = 0;
                 foreach(var damage in confirmAttackAction.Attack.Damage)
                 {
-                    totalDamage += Roller.Roll(RollTypes.Normal, isCritical ? 2 : 1 * damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
+                    if (forceHit)
+                    {
+                        var multiplier = 1f;
+                        if (hasAdvantage)
+                        {
+                            multiplier = 1.2f;
+                        }
+                        if (hasDisadvantage)
+                        {
+                            multiplier = 0.8f;
+                        }
+                        totalDamage += (int)Math.Round(((damage.NumberOfDice * damage.DiceFaces) + damage.Modifier) * multiplier);
+                    }
+                    else
+                    {
+                        totalDamage += Roller.Roll(RollTypes.Normal, isCritical ? 2 : 1 * damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
+                    }
                 }
                 //TODO apply other damage effects
                 DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.TargetCreature.GetType().ToString().Split('.').Last()));

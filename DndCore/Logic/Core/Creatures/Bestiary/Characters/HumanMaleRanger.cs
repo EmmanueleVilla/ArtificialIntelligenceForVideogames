@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class HumanMaleRanger : ACreature
+    public class HumanMaleRanger : ARangedCreature
     {
 
         public override ICreature Copy()

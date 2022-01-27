@@ -1,6 +1,7 @@
 ﻿using Logic.Core.Actions;
 using Logic.Core.Creatures.Abilities;
 using Logic.Core.Creatures.Abilities.Spells;
+using Logic.Core.Creatures.Bestiary.Ratmans;
 using Logic.Core.Creatures.Scores;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class RatmanWithStaff : ARatman, ISpellCaster
+    public class RatmanWithStaff : ARangedRatman, ISpellCaster
     {
         public override ICreature Copy()
         {

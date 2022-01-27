@@ -1,4 +1,5 @@
 ﻿using Logic.Core.Actions;
+using Logic.Core.Creatures.Bestiary.Ratmans;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class RatmanWithBow : ARatman
+    public class RatmanWithBow : ARangedRatman
     {
         public RatmanWithBow(IDiceRoller roller = null, Random random = null) : base(roller, random)
         {

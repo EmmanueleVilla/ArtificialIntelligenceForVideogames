@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class ElfFemaleWizard : ACreature, ISpellCaster
+    public class ElfFemaleWizard : ARangedCreature, ISpellCaster
     {
 
         public override ICreature Copy()

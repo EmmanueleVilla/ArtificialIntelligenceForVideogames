@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public class RatmanWithDagger : ARatman
+    public class RatmanWithDagger : AMeleeRatman
     {
         public override ICreature Copy()
         {

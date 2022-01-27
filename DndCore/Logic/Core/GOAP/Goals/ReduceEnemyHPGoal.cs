@@ -3,6 +3,7 @@ using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -17,7 +18,9 @@ namespace Logic.Core.GOAP.Goals
             var oldHp = enemies.Sum(x => x.Value.CurrentHitPoints + x.Value.TemporaryHitPoints);
             var newEnemies = newState.Map.Creatures.Where(x => x.Value.Loyalty != team);
             var newHp = newEnemies.Sum(x => x.Value.CurrentHitPoints + x.Value.TemporaryHitPoints);
-            return oldHp - newHp;
+            var fullfillment = oldHp - newHp;
+            //File.AppendAllText("log.txt", "Reduce enemy hp: " + fullfillment + "\n");
+            return fullfillment;
         }
     }
 }

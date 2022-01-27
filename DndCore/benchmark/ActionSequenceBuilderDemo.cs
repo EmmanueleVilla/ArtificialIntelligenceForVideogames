@@ -2,6 +2,7 @@
 using Core.Map;
 using Core.Utils.Log;
 using Logic.Core;
+using Logic.Core.Battle;
 using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
@@ -20,15 +21,10 @@ using Tests.Core.DndBattles.Mock;
 
 namespace Benchmark
 {
-    public class ActionSequenceBuilderDemo
+    public class MapProvider
     {
-        public ActionSequenceBuilderDemo()
+        public List<String> Maps = new List<string>()
         {
-            DndModule.RegisterRules(false, null, 0);
-            var battle = new DndBattle(new AlwaysHitRoller(), new UniformCostSearch(
-                new SpeedCalculator(), new NoLogger()), new ActionBuildersWrapper(), new ActionSequenceBuilder(), new NoLogger());
-
-            var mapCsv = "" +
                 "G9,G9,G6,G6,G6,G7,G6,G6,G7,G9,R0,R0,G7,G7,G7,G9,G9,G9,G9,G9\n" +
                 "G9,G9,G6,G6,G6,G6,G6,G6,G7,G9,R0,R0,G4,G7,G7,G6,G6,G6,G9,G9\n" +
                 "G9,G9,G6,G6,G6,G4,G4,G6,G7,G9,R0,R0,G4,G4,G4,G6,G6,G6,G9,G9\n" +
@@ -43,13 +39,30 @@ namespace Benchmark
                 "G1,G3,G3,G3,G3,G3,G3,R0,G1,G1,G1,G1,R0,R0,R0,S2,G1,G1,G1,G1\n" +
                 "G1,G2,G2,R0,R0,R0,R0,R0,G1,G1,G1,G1,G1,G1,G1,S2,G1,G1,G1,G1\n" +
                 "G1,G2,G2,R0,R0,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1\n" +
-                "G1,G1,G1,R0,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1";
+                "G1,G1,G1,R0,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1,G1"
+        };
+
+        public IMap BuildMap()
+        {
+            var mapIndex = DndModule.Get<Random>().Next(0, Maps.Count);
+            var map = DndModule.Get<IMapBuilder>().FromCsv(Maps[mapIndex]);
+            return map;
+        }
+    }
+
+    public class ActionSequenceBuilderDemo
+    {
+        private List<char> validTerrains = new List<char>() { 'G' };
+
+        public ActionSequenceBuilderDemo()
+        {
+            DndModule.RegisterRules(false, null, 0);
+            var battle = DndModule.Get<IDndBattle>();
 
             var creatures = new EncounterProvider().BuildEncounter();
-            var map = new CsvFullMapBuilder().FromCsv(mapCsv);
 
+            var map = new MapProvider().BuildMap();
             var random = DndModule.Get<System.Random>();
-            List<char> validTerrains = new List<char>() { 'G' };
             foreach (var creature in creatures)
             {
                 bool fit = false;

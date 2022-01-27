@@ -1,15 +1,14 @@
-﻿using Logic.Core.Actions;
-using Logic.Core.Dice;
+﻿using Logic.Core.Dice;
 using Logic.Core.Movements;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logic.Core.Creatures.Bestiary
+namespace Logic.Core.Creatures.Bestiary.Ratmans
 {
-    public abstract class ARatman : AMeleeCreature
+    public abstract class ARangedRatman : ARangedCreature
     {
-        protected ARatman(IDiceRoller roller = null, Random random = null) : base(roller, random)
+        protected ARangedRatman(IDiceRoller roller = null, Random random = null) : base(roller, random)
         {
 
         }

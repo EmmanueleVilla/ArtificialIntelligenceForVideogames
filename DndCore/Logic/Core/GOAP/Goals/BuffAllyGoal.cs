@@ -4,6 +4,7 @@ using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Creatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -23,6 +24,7 @@ namespace Logic.Core.GOAP.Goals
             {
                 fullfillment.ToString();
             }
+            //File.AppendAllText("log.txt", "Buffy ally: " + fullfillment + "\n");
             return fullfillment;
         }
     }

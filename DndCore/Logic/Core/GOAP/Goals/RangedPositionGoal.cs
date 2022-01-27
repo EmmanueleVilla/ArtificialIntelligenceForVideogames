@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Logic.Core.GOAP.Goals
 {
-    class MeleePositionGoals : AGoal
+    class RangedPositionGoal : AGoal
     {
         public override float EvaluateGoal(ICreature creature, IDndBattle oldState, List<IAvailableAction> actions, IDndBattle newState)
         {
@@ -29,8 +29,8 @@ namespace Logic.Core.GOAP.Goals
                 var diffy = Math.Abs(x.Y - myNewPos.Y);
                 return diffX + diffy;
             }).Min();
-            var fullfillment = (newNearestEnemy - oldNearestEnemy) * -1;
-            //File.AppendAllText("log.txt", "Melee position: " + fullfillment + "\n");
+            var fullfillment = newNearestEnemy - oldNearestEnemy;
+            //File.AppendAllText("log.txt", "Ranged position: " + fullfillment + "\n");
             return fullfillment;
         }
     }
