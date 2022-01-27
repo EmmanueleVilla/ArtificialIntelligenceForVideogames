@@ -17,6 +17,7 @@ namespace Logic.Core.Battle
         ICreature GetCreatureInTurn();
         ICreature GetCreatureById(int id);
         void NextTurn();
+        void ClearCache();
         void BuildAvailableActions(ICreature creature = null);
         List<IAvailableAction> GetAvailableActions();
         List<MemoryEdge> GetReachableCells();

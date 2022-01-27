@@ -1,5 +1,6 @@
 ﻿using Core.Map;
 using Logic.Core.Creatures;
+using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
 using System;
 using System.Collections.Generic;
@@ -124,8 +125,13 @@ namespace Logic.Core.Map.Impl
         
         public bool AddCreature(ICreature creature, int x, int y)
         {
+            if(creature is LargeMinotaur && x == 16 && y == 4)
+            {
+                creature.ToString();
+            }
             var cell = GetCellInfo(x, y);
-            if (cell.Terrain == ' ' || GetOccupantCreature(x, y) != null) 
+            var occ = GetOccupantCreature(x, y);
+            if (cell.Terrain == ' ' || (occ != null && occ != creature)) 
             {
                 return false;
             }
@@ -137,7 +143,8 @@ namespace Logic.Core.Map.Impl
                 for (int j = y; j < creature.Size + y; j++)
                 {
                     var occupiedCell = GetCellInfo(i, j);
-                    if(Math.Abs(cell.Height - occupiedCell.Height) > 1 || GetOccupantCreature(i, j) != null)
+                    var occupantCreature = GetOccupantCreature(i, j);
+                    if (Math.Abs(cell.Height - occupiedCell.Height) > 1 || (occupantCreature != null && occupantCreature != creature))
                     {
                         fit = false;
                     }

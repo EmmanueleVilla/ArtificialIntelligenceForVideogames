@@ -145,6 +145,22 @@ namespace Logic.Core.Graph
                 return Edge.Empty();
             }
 
+            //Can I end movement there?
+            for (int i = to.X; i < creature.Size + to.X; i++)
+            {
+                for (int j = to.Y; j < creature.Size + to.Y; j++)
+                {
+                    var occupiedCell = map.GetCellInfo(i, j);
+                    var occupantCreature = map.GetOccupantCreature(i, j);
+                    if (Math.Abs(to.Height - occupiedCell.Height) > 1 || (occupantCreature != null && occupantCreature != creature))
+                    {
+                        canEndMovementHere = false;
+                    }
+                    occupiedCell.Creature = creature;
+                }
+            }
+
+
             //return an edge with the worst case of every cell
             return new Edge(
                 from,

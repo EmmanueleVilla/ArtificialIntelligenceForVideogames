@@ -39,6 +39,7 @@ namespace Logic.Core.GOAP.Actions
         {
             //File.AppendAllText("log.txt", "*********************************************************\n");
             //File.AppendAllText("log.txt", "CREATURE " + battleArg.GetCreatureInTurn().GetType().Name + "\n");
+            battleArg.ClearCache();
             var result = new List<ActionList>();
             var queue = new Stack<ActionList>();
             queue.Push(new ActionList() {
@@ -192,10 +193,10 @@ namespace Logic.Core.GOAP.Actions
                                 }
                                 return 0;
                             }).ToList();
-                        foreach (var t in temp)
+                        foreach (var t in temp2)
                         {
-                            //var best = t.OrderByDescending(n => current.battle.GetCreatureInTurn().EvaluateFullfillment(battleArg, n.actions, current.battle)).First();
-                            queue.Push(t);
+                            var best = t.OrderByDescending(n => current.battle.GetCreatureInTurn().EvaluateFullfillment(battleArg, n.actions, current.battle)).First();
+                            queue.Push(best);
                         }
                     }
                 }

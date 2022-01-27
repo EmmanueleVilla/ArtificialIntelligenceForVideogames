@@ -511,5 +511,11 @@ namespace Logic.Core
         {
             return Map.GetCellInfo(x, y);
         }
+
+        public void ClearCache()
+        {
+            _reachableCellCache = null;
+            _cachedActions.Clear();
+        }
     }
 }
