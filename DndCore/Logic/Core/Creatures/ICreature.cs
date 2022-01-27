@@ -1,4 +1,6 @@
 ﻿using Logic.Core.Actions;
+using Logic.Core.Battle;
+using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Movements;
 using System;
@@ -82,5 +84,6 @@ namespace Logic.Core.Creatures
 
         // Init ---------------------------------------------------------------------------------
         ICreature Init();
+        float EvaluateFullfillment(IDndBattle battleArg, List<IAvailableAction> updatedActions, IDndBattle battle);
     }
 }

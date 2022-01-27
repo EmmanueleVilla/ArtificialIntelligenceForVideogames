@@ -148,12 +148,11 @@ public class UIManager : MonoBehaviour
     {
         foreach (var eve in events)
         {
-            DndModule.Get<ILogger>().WriteLine(eve.Type + ", " + eve.GetType().Name);
+            DndModule.Get<ILogger>().WriteLine(eve.Type + ", " + eve.Ability);
             if (eve.Type == GameEvent.Types.Movement)
             {
                 var tile = tiles.First(tile => tile.X == eve.Destination.Y && tile.Y == eve.Destination.X);
                 var target = tile.transform.localPosition;
-                DndModule.Get<ILogger>().WriteLine(string.Format("Moving to {0}-{1}", eve.Destination.X, eve.Destination.Y));
                 yield return StartCoroutine(MoveToIterator(creatureInTurn,
                     creatureInTurn.transform.localPosition,
                     target,

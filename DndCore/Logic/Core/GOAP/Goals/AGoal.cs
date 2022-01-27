@@ -1,4 +1,5 @@
 ﻿using Logic.Core.Battle;
+using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Logic.Core.GOAP.Goals
     {
         public float Modifier { get; set; } = 1.0f;
 
-        public abstract float EvaluateGoal(ICreature creature, IDndBattle oldState, IDndBattle newState);
+        public abstract float EvaluateGoal(ICreature creature, IDndBattle oldState, List<IAvailableAction> actions, IDndBattle newState);
     }
 }

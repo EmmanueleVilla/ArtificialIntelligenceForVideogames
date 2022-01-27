@@ -55,6 +55,11 @@ namespace Tests.Core.DndBattles.Mock
             throw new NotImplementedException();
         }
 
+        public List<CellInfo> GetCellsOccupiedBy(Loyalties loyalty)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICreature GetOccupantCreature(int x, int y)
         {
             throw new NotImplementedException();

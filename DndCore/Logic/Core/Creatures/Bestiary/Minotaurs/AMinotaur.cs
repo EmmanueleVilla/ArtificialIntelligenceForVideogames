@@ -7,7 +7,7 @@ using Logic.Core.Movements;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public abstract class AMinotaur : ACreature
+    public abstract class AMinotaur : AMeleeCreature
     {
 
         public override Loyalties Loyalty => Loyalties.Enemy;

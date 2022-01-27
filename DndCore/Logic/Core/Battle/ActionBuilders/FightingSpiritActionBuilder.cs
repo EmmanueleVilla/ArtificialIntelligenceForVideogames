@@ -14,7 +14,11 @@ namespace Logic.Core.Battle.ActionBuilders
         {
             var actions = new List<IAvailableAction>();
             var fightningSpirit = creature as IFightingSpirit;
-            if (fightningSpirit != null && fightningSpirit.FightingSpiritRemaining > 0 && !creature.BonusActionUsedNotToAttack && !creature.BonusActionUsedToAttack)
+            if (
+                fightningSpirit != null
+                && fightningSpirit.FightingSpiritRemaining > 0
+                && !creature.BonusActionUsedNotToAttack
+                && !creature.BonusActionUsedToAttack)
             {
                 actions.Add(new FightingSpiritAction() { ActionEconomy = BattleActions.BonusAction });
             }

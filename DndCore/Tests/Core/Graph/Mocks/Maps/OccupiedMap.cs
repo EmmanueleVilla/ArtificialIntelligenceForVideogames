@@ -54,6 +54,11 @@ namespace Tests.Core.Graph.Mocks
             throw new NotImplementedException();
         }
 
+        public List<CellInfo> GetCellsOccupiedBy(Loyalties loyalty)
+        {
+            throw new NotImplementedException();
+        }
+
         public ICreature GetOccupantCreature(int x, int y)
         {
             return MockedCreature.Build(Size, Loyalty);

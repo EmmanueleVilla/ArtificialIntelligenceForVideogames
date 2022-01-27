@@ -10,6 +10,7 @@ namespace Core.Map
     {
         CellInfo GetCellInfo(int x, int y);
         CellInfo GetCellOccupiedBy(ICreature creature);
+        List<CellInfo> GetCellsOccupiedBy(Loyalties loyalty);
         int Width { get; }
         int Height { get; }
         bool AddCreature(ICreature creature, int x, int y);

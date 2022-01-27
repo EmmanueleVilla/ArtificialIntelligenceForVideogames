@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Logic.Core.Creatures.Bestiary
 {
-    public abstract class ARatman : ACreature
+    public abstract class ARatman : AMeleeCreature
     {
         protected ARatman(IDiceRoller roller = null, Random random = null) : base(roller, random)
         {

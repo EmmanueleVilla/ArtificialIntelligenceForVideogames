@@ -2,6 +2,7 @@
 using Core.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
+using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Battle.Actions.Spells;
@@ -36,10 +37,6 @@ namespace Logic.Core.GOAP.Actions
         }
         public List<ActionList> GetAvailableActions(IDndBattle battleArg)
         {
-            var goals = new List<IGoal>() {
-                new IncreaseAllyHPGoal(),
-                new ReduceEnemyHPGoal()
-            };
             var result = new List<ActionList>();
             var queue = new Stack<ActionList>();
             queue.Push(new ActionList() {
@@ -47,38 +44,27 @@ namespace Logic.Core.GOAP.Actions
                 actions = new List<IAvailableAction>(),
                 battle = battleArg
             });
-            int loop = 0;
+            int cutout = 0;
+            int maxCutout = 0;
+            int evaluated = 1;
             float maxFullfillment = float.MinValue;
             while(queue.Count > 0)
             {
-                loop++;
-
+                cutout++;
                 var current = queue.Pop();
-                //if (loop % 100 == 0)
-                {
-                    //DndModule.Get<ILogger>().WriteLine(loop.ToString());
-                    //DndModule.Get<ILogger>().WriteLine(string.Join("-", current.actions.Select(x => x.GetType().Name)));
-                }
                 current.battle.BuildAvailableActions();
                 var nextActions = current.battle.GetAvailableActions().Where(x => x.ReachableCells.Count > 0);
+
                 if(current.actions.Any(x => x is ConfirmMovementAction))
                 {
                     nextActions = nextActions.Where(x => !(x is RequestMovementAction));
                 }
-                //DndModule.Get<ILogger>().WriteLine("Next actions count: " + nextActions.Count());
-                var maxPriority = nextActions.Max(x => x.Priority);
-                nextActions = nextActions.Where(x => x.Priority == maxPriority || x is EndTurnAction).ToList();
-                //DndModule.Get<ILogger>().WriteLine("After filter count: " + nextActions.Count());
-
                 foreach (var nextAction in nextActions)
                 {
-                    //DndModule.Get<ILogger>().WriteLine(nextAction.GetType().Name + ": " + nextAction.Description + ", " + nextAction.ReachableCells.Count() + " targets");
-
                     foreach (var target in nextAction.ReachableCells)
                     {
                         if(nextAction is RequestMovementAction)
                         {
-                            var temp = new List<ActionList>();
                             var memoryEdges = current.battle.GetReachableCells().Where(x => x.Destination.X == target.X && x.Destination.Y == target.Y).ToList();
                             foreach(var memoryEdge in memoryEdges)
                             {
@@ -95,27 +81,15 @@ namespace Logic.Core.GOAP.Actions
                                     Speed = memoryEdge.Speed,
                                     Damage = memoryEdge.Damage
                                 }) ;
-                                temp.Add(new ActionList()
+                                queue.Push(new ActionList()
                                 {
                                     creatureId = creature.Id,
                                     actions = newActions,
                                     battle = newBattle
                                 });
                             }
-                            for (int i = 0; i < temp.Count; i++)
-                            {
-                                ActionList next = temp[i];
-                                next.battle.BuildAvailableActions();
-                                var nextTurn = next.battle.GetAvailableActions().Where(y => y.ReachableCells.Count > 0);
-                                next.MaxPriorityNextTurn = nextTurn.Select(x => x.Priority).Max();
-                            }
-                            foreach(var action in temp.OrderByDescending(x => x.MaxPriorityNextTurn))
-                            {
-                                queue.Push(action);
-                            }
                         } else  if(nextAction is RequestAttackAction)
                         {
-                            //DndModule.Get<ILogger>().WriteLine("2) Map battle instance: " + current.battle.Map.GetHashCode());
                             var attackAction = nextAction as RequestAttackAction;
                             var newBattle = current.battle.Copy();
                             var attacked = newBattle.Map.GetOccupantCreature(target.X, target.Y);
@@ -145,8 +119,12 @@ namespace Logic.Core.GOAP.Actions
                             {
                                 nextAction
                             };
-                            if(goals.Sum(x => x.EvaluateGoal(battleArg.GetCreatureInTurn(), battleArg, current.battle)) > maxFullfillment)
+                            var fullfillment = current.battle.GetCreatureInTurn().EvaluateFullfillment(battleArg, updatedActions, current.battle);
+                            evaluated++;
+                            if (fullfillment > maxFullfillment)
                             {
+                                cutout = 0;
+                                maxFullfillment = fullfillment;
                                 result.Clear();
                                 result.Add(new ActionList()
                                 {
@@ -198,8 +176,7 @@ namespace Logic.Core.GOAP.Actions
                 }
             }
 
-            //DndModule.Get<ILogger>().WriteLine("Completed building actions " + result.Count());
-
+            Console.WriteLine("Evaluated: " + evaluated);
             return result;
         }
     }

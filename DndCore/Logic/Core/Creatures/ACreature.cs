@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.DI;
 using Logic.Core.Actions;
+using Logic.Core.Battle;
+using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures.Scores;
 using Logic.Core.Dice;
+using Logic.Core.GOAP.Goals;
 using Logic.Core.Movements;
 
 namespace Logic.Core.Creatures
@@ -32,7 +35,7 @@ namespace Logic.Core.Creatures
             RollInitiative();
             return this;
         }
-        
+
         public virtual void ResetTurn()
         {
             remainingMovement = new List<Speed>(Movements);
@@ -100,7 +103,7 @@ namespace Logic.Core.Creatures
 
         public override bool Equals(object obj)
         {
-            if(obj as ICreature == null)
+            if (obj as ICreature == null)
             {
                 return false;
             }
@@ -113,5 +116,17 @@ namespace Logic.Core.Creatures
         }
 
         public abstract ICreature Copy();
+
+        public virtual List<IGoal> goals { get; } = new List<IGoal>() {
+                new IncreaseAllyHPGoal(),
+                new ReduceEnemyHPGoal(),
+                new BuffAllyGoal(),
+                new DontWasteResourcesGoal()
+            };
+
+        public float EvaluateFullfillment(IDndBattle battleArg, List<IAvailableAction> updatedActions, IDndBattle battle)
+        {
+            return goals.Sum(x => x.EvaluateGoal(this, battleArg, updatedActions, battle));
+        }
     }
 }

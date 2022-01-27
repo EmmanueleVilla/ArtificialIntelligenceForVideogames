@@ -15,7 +15,6 @@ namespace Logic.Core.Battle.ActionBuilders
             var actions = new List<IAvailableAction>();
             var movementAction = new RequestMovementAction() { RemainingMovement = creature.RemainingMovement };
 
-            battle.CalculateReachableCells();
             if (movementAction.RemainingMovement.Any(x => x.Square > 0))
             {
                 movementAction.ReachableCells = battle.GetReachableCells().Select(x => x.Destination).ToList();

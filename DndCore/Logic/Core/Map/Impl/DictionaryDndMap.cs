@@ -85,5 +85,10 @@ namespace Logic.Core.Map
         {
             throw new System.NotImplementedException();
         }
+
+        public List<CellInfo> GetCellsOccupiedBy(Loyalties loyalty)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

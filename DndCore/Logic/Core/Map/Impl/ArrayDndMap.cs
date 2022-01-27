@@ -244,6 +244,23 @@ namespace Logic.Core.Map.Impl
             return occupied.Select(c => GetCellInfo(c.Key)).ToList();
         }
 
+        public List<CellInfo> GetCellsOccupiedBy(Loyalties loyalty)
+        {
+            var result = new List<CellInfo>();
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    var cell = GetCellInfo(i, j);
+                    if (cell.Creature != null && cell.Creature.Loyalty == loyalty)
+                    {
+                        result.Add(cell);
+                    }
+                }
+            }
+            return result;
+        }
+
         public CellInfo GetCellOccupiedBy(ICreature creature)
         {
             for (int i = 0; i < Width; i++)

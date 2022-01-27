@@ -37,7 +37,7 @@ namespace Logic.Core
         public IActionSequenceBuilder ActionSequenceBuilder;
 
         public List<IAvailableAction> _cachedActions = new List<IAvailableAction>();
-        public List<MemoryEdge> _reachableCellCache = new List<MemoryEdge>();
+        public List<MemoryEdge> _reachableCellCache = null;
 
         public IMap Map => map;
 
@@ -47,6 +47,7 @@ namespace Logic.Core
             battle.initiativeOrder = new List<int>(initiativeOrder);
             battle.turnIndex = turnIndex;
             battle.map = map.Copy();
+            battle._reachableCellCache = new List<MemoryEdge>(_reachableCellCache);
             return battle;
         }
 
@@ -147,11 +148,11 @@ namespace Logic.Core
 
         public void NextTurn()
         {
-            _reachableCellCache.Clear();
+            _reachableCellCache = null;
             _cachedActions.Clear();
 
             turnIndex++;
-            if(turnIndex >= map.Creatures.Count)
+            if(turnIndex >= initiativeOrder.Count)
             {
                 foreach (var creature in map.Creatures)
                 {
@@ -203,6 +204,10 @@ namespace Logic.Core
 
         public List<MemoryEdge> GetReachableCells()
         {
+            if(_reachableCellCache == null)
+            {
+                CalculateReachableCells();
+            }
             return _reachableCellCache;
         }
 
@@ -347,6 +352,7 @@ namespace Logic.Core
                     DndModule.Get<ILogger>().WriteLine(string.Format("Used Flurry of Blows, +1 attack in the bonus action, -1 Ki Point"));
                     break;
                 case ActionsTypes.Dash:
+                    _reachableCellCache = null;
                     var action = availableAction as DashAction;
                     creature.RemainingMovement = creature.RemainingMovement.Select(mov =>
                     {

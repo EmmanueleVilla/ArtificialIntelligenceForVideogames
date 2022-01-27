@@ -85,6 +85,10 @@ namespace Benchmark
                 Console.WriteLine("Start turn of " + battle.GetCreatureInTurn().GetType().Name);
                 battle.PlayTurn();
                 battle.NextTurn();
+                if (battle.Map.Creatures.All(c => c.Value.Loyalty == first.Loyalty))
+                {
+                    Console.WriteLine("Game end! " + first.Loyalty + " won");
+                }
             }
         }
     }
