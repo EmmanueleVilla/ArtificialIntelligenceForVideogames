@@ -12,7 +12,8 @@ namespace Logic.Core.Battle
             Falling,
             Attacks,
             AttackMissed,
-            SelfAbility
+            SelfAbility,
+            Spell
         }
 
         public string Ability;
@@ -23,6 +24,7 @@ namespace Logic.Core.Battle
         public int Attacker;
         public int Attacked;
         public int Damage;
+        public string LogDescription;
         public override string ToString()
         {
             return string.Format("type:{0}, destination:{1}, attack:{2}, falling:{3}", 

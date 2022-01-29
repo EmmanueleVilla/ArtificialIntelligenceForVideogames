@@ -44,7 +44,6 @@ namespace Logic.Core.Creatures.Bestiary
         public override void ResetTurn()
         {
             base.ResetTurn();
-            RemainingKiPoints = KiPoints;
             FlurryOfBlowsUsed = false;
             BonusAttackTriggered = false;
             RemainingAttacksPerBonusAction = 0;

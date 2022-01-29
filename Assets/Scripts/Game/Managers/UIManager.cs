@@ -28,18 +28,17 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         Miss.SetActive(false);
-        GameManager.TurnStarted += GameManager_TurnStarted;
     }
 
-    private void GameManager_TurnStarted(object sender, ICreature e)
+    void Update()
     {
         foreach (var indicator in initiativeIndicators)
         {
-            if(!GameManager.Battle.Map.Creatures.ContainsKey(indicator.Item1))
+            if (!GameManager.Battle.Map.Creatures.ContainsKey(indicator.Item1))
             {
                 indicator.Item2.gameObject.SetActive(false);
             }
-            if (indicator.Item1 == e.Id)
+            if (indicator.Item1 == GameManager.Battle.GetCreatureInTurn().Id)
             {
                 indicator.Item2.Show();
                 creatureInTurn = indicator.Item2.gameObject;
@@ -153,6 +152,7 @@ public class UIManager : MonoBehaviour
             {
                 var tile = tiles.First(tile => tile.X == eve.Destination.Y && tile.Y == eve.Destination.X);
                 var target = tile.transform.localPosition;
+                DndModule.Get<ILogger>().WriteLine(string.Format("Moving to {0}-{1}", eve.Destination.X, eve.Destination.Y));
                 yield return StartCoroutine(MoveToIterator(creatureInTurn,
                     creatureInTurn.transform.localPosition,
                     target,
@@ -175,7 +175,7 @@ public class UIManager : MonoBehaviour
 
             if(eve.Type == GameEvent.Types.AttackMissed)
             {
-                DndModule.Get<ILogger>().WriteLine(string.Format("Missed {0}", GameManager.Battle.GetCreatureById(eve.Attacked).GetType().Name));
+                DndModule.Get<ILogger>().WriteLine(string.Format(eve.LogDescription));
                 GameObject target = null;
                 foreach (var indicator in initiativeIndicators)
                 {
@@ -191,9 +191,14 @@ public class UIManager : MonoBehaviour
                 Miss.SetActive(false);
             }
 
+            if(eve.Type == GameEvent.Types.Spell)
+            {
+                DndModule.Get<ILogger>().WriteLine(eve.LogDescription);
+            }
+
             if (eve.Type == GameEvent.Types.Attacks)
             {
-                DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", GameManager.Battle.GetCreatureById(eve.Attacked).GetType().Name));
+                DndModule.Get<ILogger>().WriteLine(eve.LogDescription);
                 GameObject target = null;
                 foreach (var indicator in initiativeIndicators)
                 {

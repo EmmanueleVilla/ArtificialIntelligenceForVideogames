@@ -281,7 +281,6 @@ namespace Logic.Core
                 rollType = RollTypes.Advantage;
             }
             var toHit = Roller.Roll(rollType, 1, 20, confirmAttackAction.Attack.ToHit);
-            Logger.WriteLine(string.Format("Roll Type {0}, rolled {1} to hit", rollType, toHit));
 
             var isCritical = (toHit - confirmAttackAction.Attack.ToHit) >= attackingCreature.CriticalThreshold;
             if(forceHit || toHit >= targetCreature.ArmorClass || isCritical)
@@ -307,8 +306,6 @@ namespace Logic.Core
                         totalDamage += Roller.Roll(RollTypes.Normal, isCritical ? 2 : 1 * damage.NumberOfDice, damage.DiceFaces, damage.Modifier);
                     }
                 }
-                //TODO apply other damage effects
-                DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1}", totalDamage, confirmAttackAction.TargetCreature.GetType().ToString().Split('.').Last()));
 
                 targetCreature.TemporaryHitPoints -= totalDamage;
 
@@ -323,8 +320,9 @@ namespace Logic.Core
                     Type = GameEvent.Types.Attacks,
                     Attacker = attackingCreature.Id,
                     Attacked = targetCreature.Id,
-                    Attack = confirmAttackAction.Attack
-                });
+                    Attack = confirmAttackAction.Attack,
+                    LogDescription = string.Format("\nAttacked {0}\nAttack: {1}\nDamage: {2}", GetCreatureById(confirmAttackAction.TargetCreature).GetType().Name, confirmAttackAction.Attack.Name, totalDamage)
+                }); ;
 
             } else
             {
@@ -334,7 +332,8 @@ namespace Logic.Core
                     Type = GameEvent.Types.AttackMissed,
                     Attacker = attackingCreature.Id,
                     Attacked = targetCreature.Id,
-                    Attack = confirmAttackAction.Attack
+                    Attack = confirmAttackAction.Attack,
+                    LogDescription = string.Format("\nAttacked {0}\nAttack: {1}\nDamage: {2}", GetCreatureById(confirmAttackAction.TargetCreature).GetType().Name, confirmAttackAction.Attack.Name, "Missed")
                 });
             }
 
@@ -471,7 +470,11 @@ namespace Logic.Core
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.TemporaryHitPoints += temporary;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
-                DndModule.Get<ILogger>().WriteLine(string.Format("Obtained {0} temp hit points", temporary));
+                list.Add(new GameEvent
+                {
+                    Type = GameEvent.Types.Spell,
+                    LogDescription = "False Life (+" + temporary + " temp pf)"
+                });
             }
 
             if (confirmSpellAction.Spell is MagicMissile)
@@ -480,7 +483,11 @@ namespace Logic.Core
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.CurrentHitPoints -= damage;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
-                DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1}", damage, creature.GetType().ToString().Split('.').Last()));
+                list.Add(new GameEvent
+                {
+                    Type = GameEvent.Types.Spell,
+                    LogDescription = "Magic Missile (" + damage + " dmg) to " + creature.GetType().Name
+                });
             }
 
             if (confirmSpellAction.Spell is RayOfFrost)
@@ -494,7 +501,11 @@ namespace Logic.Core
                     TemporaryEffects.SpeedReducedByTwo
                     ));
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
-                DndModule.Get<ILogger>().WriteLine(string.Format("Inflicted {0} damage to {1} and reduced their speed by 2 squares", damage, creature.GetType().ToString().Split('.').Last()));
+                list.Add(new GameEvent
+                {
+                    Type = GameEvent.Types.Spell,
+                    LogDescription = "Ray of frost (" + damage + " dmg) to " + creature.GetType().Name
+                });
             }
 
             return list;

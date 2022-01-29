@@ -17,7 +17,6 @@ namespace Logic.Core.Creatures
                     new RatmanWithDagger(),
                     new RatmanWithStaff(),
                     new LargeMinotaur(),
-                    new LargeMinotaur(),
                     new HumanMaleRanger(),
                     new HumanFemaleMonk(),
                     new DwarfMaleWarrior(),

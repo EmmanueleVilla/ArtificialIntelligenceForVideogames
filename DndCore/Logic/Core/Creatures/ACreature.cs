@@ -40,7 +40,6 @@ namespace Logic.Core.Creatures
         {
             remainingMovement = new List<Speed>(Movements);
             RemainingAttacksPerAction = AttacksPerAction;
-            CurrentHitPoints = HitPoints;
             LastAttackUsed = null;
             RemainingAttacksPerBonusAction = 0;
             ActionUsedNotToAttack = false;

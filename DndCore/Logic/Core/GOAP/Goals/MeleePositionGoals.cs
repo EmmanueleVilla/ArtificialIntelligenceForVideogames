@@ -31,7 +31,7 @@ namespace Logic.Core.GOAP.Goals
             }).Min();
             var fullfillment = (newNearestEnemy - oldNearestEnemy) * -1;
             //File.AppendAllText("log.txt", "Melee position: " + fullfillment + "\n");
-            return fullfillment;
+            return fullfillment * 0.2f;
         }
     }
 }

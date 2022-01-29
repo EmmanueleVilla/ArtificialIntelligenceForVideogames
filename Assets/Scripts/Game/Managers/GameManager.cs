@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Physics.queriesHitTriggers = true;
-        DndModule.RegisterRules(enableLogs: true, logger: TextLogger, seed: 0, writeToFile: true);
+        DndModule.RegisterRules(enableLogs: true, logger: TextLogger, seed: 0, writeToFile: false);
     }
 
     void Start()

@@ -35,7 +35,7 @@ namespace Logic.Core.GOAP.Goals
                 fullfillment = 0;
             }
             //File.AppendAllText("log.txt", "Ranged position: " + fullfillment + "\n");
-            return (int)fullfillment;
+            return (float)fullfillment * 0.2f;
         }
     }
 }
