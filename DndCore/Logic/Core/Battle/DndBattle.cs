@@ -258,6 +258,7 @@ namespace Logic.Core
             var hasDisadvantage = false;
             if (targetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
             {
+                //TODO: also if too near
                 hasDisadvantage = true;
             }
             if (targetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.AdvantageToAttacks))
@@ -460,13 +461,17 @@ namespace Logic.Core
             };
         }
 
-        public List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction)
+        public List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction, bool forceHit = false)
         {
             var list = new List<GameEvent>();
 
             if(confirmSpellAction.Spell is FalseLife)
             {
                 var temporary = Roller.Roll(RollTypes.Normal, 1, 4, 4);
+                if (forceHit)
+                {
+                    temporary = 4 + 4;
+                }
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.TemporaryHitPoints += temporary;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
@@ -480,6 +485,10 @@ namespace Logic.Core
             if (confirmSpellAction.Spell is MagicMissile)
             {
                 var damage = Roller.Roll(RollTypes.Normal, 1, 4, 1) * 3;
+                if (forceHit)
+                {
+                    damage = 5 * 3;
+                }
                 var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
                 creature.CurrentHitPoints -= damage;
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
@@ -492,20 +501,91 @@ namespace Logic.Core
 
             if (confirmSpellAction.Spell is RayOfFrost)
             {
-                var damage = Roller.Roll(RollTypes.Normal, 1, 8, 0);
-                var creature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
-                creature.CurrentHitPoints -= damage;
-                creature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
-                    confirmSpellAction.Caster,
-                    1,
-                    TemporaryEffects.SpeedReducedByTwo
-                    ));
-                GetCreatureInTurn().ActionUsedNotToAttack = true;
-                list.Add(new GameEvent
+                var hasAdvantage = false;
+                var hasDisadvantage = false;
+                var targetCreature = map.GetOccupantCreature(confirmSpellAction.Target.X, confirmSpellAction.Target.Y);
+                var attackingCreature = GetCreatureById(confirmSpellAction.Caster);
+                if (targetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.DisadvantageToSufferedAttacks))
                 {
-                    Type = GameEvent.Types.Spell,
-                    LogDescription = "Ray of frost (" + damage + " dmg) to " + creature.GetType().Name
-                });
+                    hasDisadvantage = true;
+                    //TODO: also if too near
+                }
+                if (targetCreature.TemporaryEffectsList.Any(x => x.Item3 == TemporaryEffects.AdvantageToAttacks))
+                {
+                    hasAdvantage = true;
+                }
+
+                if (hasDisadvantage && hasAdvantage)
+                {
+                    hasAdvantage = false;
+                    hasDisadvantage = false;
+                }
+
+                var rollType = RollTypes.Normal;
+                if (hasDisadvantage)
+                {
+                    rollType = RollTypes.Disadvantage;
+                }
+                if (hasAdvantage)
+                {
+                    rollType = RollTypes.Advantage;
+                }
+                var toHit = Roller.Roll(rollType, 1, 20, confirmSpellAction.Spell.ToHit);
+
+                var isCritical = (toHit - confirmSpellAction.Spell.ToHit) >= attackingCreature.CriticalThreshold;
+                if (forceHit || toHit >= targetCreature.ArmorClass || isCritical)
+                {
+                    var totalDamage = 0;
+                    if (forceHit)
+                    {
+                        var multiplier = 1f;
+                        if (hasAdvantage)
+                        {
+                            multiplier = 1.2f;
+                        }
+                        if (hasDisadvantage)
+                        {
+                            multiplier = 0.8f;
+                        }
+                        totalDamage += (int)Math.Round(8 * multiplier);
+                    }
+                    else
+                    {
+                        totalDamage += Roller.Roll(RollTypes.Normal, isCritical ? 2 : 1 * 1, 8, 0);
+                    }
+
+                    targetCreature.TemporaryHitPoints -= totalDamage;
+
+                    if (targetCreature.TemporaryHitPoints < 0)
+                    {
+                        targetCreature.CurrentHitPoints += targetCreature.TemporaryHitPoints;
+                        targetCreature.TemporaryHitPoints = 0;
+                    }
+                    list.Add(new GameEvent
+                    {
+                        Type = GameEvent.Types.Spell,
+                        LogDescription = "Ray of frost (" + totalDamage + " dmg) to " + targetCreature.GetType().Name
+                    });
+
+                    targetCreature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
+                        confirmSpellAction.Caster,
+                        1,
+                        TemporaryEffects.SpeedReducedByTwo
+                    ));
+                }
+                else
+                {
+                    Logger.WriteLine("Not hit");
+                    list.Add(new GameEvent
+                    {
+                        Type = GameEvent.Types.AttackMissed,
+                        Attacker = attackingCreature.Id,
+                        Attacked = targetCreature.Id,
+                        LogDescription = string.Format("\nRay of frost to {0}\nDamage: {1}", GetCreatureById(targetCreature.Id).GetType().Name, "Missed")
+                    });
+                }
+                
+                GetCreatureInTurn().ActionUsedNotToAttack = true;
             }
 
             return list;

@@ -9,6 +9,9 @@ namespace Logic.Core.Creatures.Abilities.Spells
 {
     class MagicMissile : ASpell, IAlwaysHit
     {
+        public MagicMissile() : base(0)
+        {
+        }
         public override string Name => "Magic Missile";
 
         public override int Level => 1;

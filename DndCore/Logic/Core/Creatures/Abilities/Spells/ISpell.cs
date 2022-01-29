@@ -10,6 +10,8 @@ namespace Logic.Core.Creatures.Abilities.Spells
     {
         string Name { get; }
         int Level { get; }
+        
+        int ToHit { get; }
         BattleActions CastingTime { get; }
         int Range { get; }
         int Area { get; }

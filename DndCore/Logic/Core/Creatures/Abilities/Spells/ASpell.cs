@@ -8,6 +8,12 @@ namespace Logic.Core.Creatures.Abilities.Spells
 {
     public abstract class ASpell : ISpell
     {
+        public int ToHit { get; set; }
+
+        protected ASpell(int toHit)
+        {
+            ToHit = toHit;
+        }
         public abstract string Name { get; }
         public abstract int Level { get; }
         public abstract BattleActions CastingTime { get; }

@@ -8,6 +8,9 @@ namespace Logic.Core.Creatures.Abilities.Spells
 {
     public class FalseLife : ASpell, ITemporaryHitPointsEffect
     {
+        public FalseLife() : base(0)
+        {
+        }
         public override string Name => "False Life";
 
         public override int Level => 1;

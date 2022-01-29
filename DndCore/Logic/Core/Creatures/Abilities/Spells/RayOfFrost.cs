@@ -7,6 +7,10 @@ namespace Logic.Core.Creatures.Abilities.Spells
 {
     public class RayOfFrost : ASpell
     {
+
+        public RayOfFrost(int toHit) : base(toHit)
+        {
+        }
         public override string Name => "Ray of Frost";
 
         public override int Level => 0;

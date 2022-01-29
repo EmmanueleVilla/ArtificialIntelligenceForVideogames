@@ -72,7 +72,7 @@ namespace Logic.Core.Creatures.Bestiary
         public Dictionary<int, int> RemainingSpellSlots { get; set; } = new Dictionary<int, int>() { { 0, int.MaxValue }, { 1, 4 }, { 2, 3 }, { 3, 2 } };
 
         public List<ISpell> Spells => new List<ISpell> { 
-            new RayOfFrost(),
+            new RayOfFrost(15),
             new FalseLife(),
             new MagicMissile()
         };

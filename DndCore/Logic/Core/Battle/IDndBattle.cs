@@ -24,7 +24,7 @@ namespace Logic.Core.Battle
         void CalculateReachableCells(ICreature creature = null);
         List<GameEvent> MoveTo(MemoryEdge end);
         List<GameEvent> Attack(ConfirmAttackAction confirmAttackAction, bool forceHit = false);
-        List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction);
+        List<GameEvent> Spell(ConfirmSpellAction confirmSpellAction, bool forceHit = false);
         List<GameEvent> UseAbility(IAvailableAction availableAction);
         IDndBattle Copy();
         void PlayTurn();
