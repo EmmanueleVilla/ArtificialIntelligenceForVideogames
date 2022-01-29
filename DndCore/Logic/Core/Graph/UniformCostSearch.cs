@@ -4,6 +4,7 @@ using Core.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Movements;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,14 +54,15 @@ namespace Logic.Core.Graph
                 return result;
             }
             var visited = new HashSet<int>();
-            var queue = new SortedList<ReachedCell, ReachedCell>(new ReachedCellComparer());
+            var queue = new SortedList();
             var startingPoint = new ReachedCell(from);
             queue.Add(startingPoint, startingPoint);
-            while (queue.Count > 0)
+            var index = 0;
+            while (queue.Count > index)
             {
-                var best = queue.First().Value;
+                var best = (ReachedCell)queue.GetByIndex(index);
+                index++;
                 visited.Add((best.Cell.X << 6) + best.Cell.Y);
-                queue.RemoveAt(0);
                 var remainingMovement = movements.Select(x => new Speed(x.Movement, x.Square - best.UsedMovement)).ToList();
                 foreach(var delta in deltas) { 
                     var newX = best.Cell.X + delta.DeltaX;

@@ -37,12 +37,7 @@ namespace Logic.Core.Map.Impl
             newMap.threateningAreas = new List<Tuple<int, HashSet<int>>>();
             foreach(var area in threateningAreas)
             {
-                var cells = new HashSet<int>();
-                foreach(var cell in area.Item2)
-                {
-                    cells.Add(cell);
-                }
-                newMap.threateningAreas.Add(new Tuple<int, HashSet<int>>(area.Item1, cells));
+                newMap.threateningAreas.Add(new Tuple<int, HashSet<int>>(area.Item1, new HashSet<int>(area.Item2)));
             }
             return newMap;
         }

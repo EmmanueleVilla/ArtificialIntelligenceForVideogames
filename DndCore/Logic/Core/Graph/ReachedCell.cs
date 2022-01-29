@@ -5,7 +5,7 @@ using Logic.Core.Battle;
 
 namespace Logic.Core.Graph
 {
-    class ReachedCell
+    class ReachedCell: IComparable
     {
         public readonly CellInfo Cell;
 
@@ -17,6 +17,27 @@ namespace Logic.Core.Graph
         public ReachedCell(CellInfo cell)
         {
             Cell = cell;
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = (ReachedCell)obj;
+            if (DamageTaken == other.DamageTaken && UsedMovement != other.UsedMovement)
+            {
+                return UsedMovement.CompareTo(other.UsedMovement);
+            }
+            var result = DamageTaken.CompareTo(other.DamageTaken);
+            if (result == 0)
+            {
+                // HACK
+                // This breaks get(key), but we won't use it
+                // and it lets us have multiple items with the same key
+                return -1;
+            }
+            else
+            {
+                return result;
+            }
         }
 
         public override string ToString()
