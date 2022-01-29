@@ -16,7 +16,6 @@ namespace Logic.Core.Creatures
                 new IncreaseAllyHPGoal(),
                 new ReduceEnemyHPGoal(),
                 new BuffAllyGoal(),
-                new DontWasteResourcesGoal(),
                 new RangedPositionGoal()
             };
     }

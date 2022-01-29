@@ -16,10 +16,13 @@ namespace Core.DI
 {
     public static class DndModule
     {
+        public class WriteToFileBool
+        {
+            public bool ShouldWrite { get; set; }
+        }
         private static Dictionary<Type, Func<object>> factories = new Dictionary<Type, Func<object>>();
         private static Dictionary<Type, Func<object>> singletonsFactories = new Dictionary<Type, Func<object>>();
         private static Dictionary<Type, object> singletons = new Dictionary<Type, object>();
-
         public static void RegisterRulesForTest()
         {
             singletons.Clear();
@@ -27,7 +30,7 @@ namespace Core.DI
             factories.Add(typeof(ILogger), () => new MultiLogger(new List<ILogger> { new ConsoleLogger(), new FileLogger() }));
         }
 
-        public static void RegisterRules(bool enableLogs = true, ILogger logger = null, int? seed = null)
+        public static void RegisterRules(bool enableLogs = true, ILogger logger = null, int? seed = null, bool writeToFile = false)
         {
             singletons.Clear();
             factories.Clear();
@@ -41,13 +44,14 @@ namespace Core.DI
             }
             singletonsFactories.Add(typeof(IDndBattle), () => new DndBattle());
 
+            factories.Add(typeof(WriteToFileBool), () => new WriteToFileBool { ShouldWrite = writeToFile });
             factories.Add(typeof(IMapBuilder), () => new CsvFullMapBuilder());
             factories.Add(typeof(IDiceRoller), () => new DiceRoller());
             factories.Add(typeof(UniformCostSearch), () => new UniformCostSearch());
             factories.Add(typeof(ISpeedCalculator), () => new SpeedCalculator());
             factories.Add(typeof(IActionBuildersWrapper), () => new ActionBuildersWrapper());
             factories.Add(typeof(IActionSequenceBuilder), () => new ActionSequenceBuilder());
-
+            factories.Add(typeof(IActionBuildersCleanup), () => new ActionBuildersCleanup());
             if(enableLogs)
             {
                 if (logger != null)

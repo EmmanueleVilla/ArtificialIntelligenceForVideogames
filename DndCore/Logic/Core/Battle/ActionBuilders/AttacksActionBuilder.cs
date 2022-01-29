@@ -37,8 +37,10 @@ namespace Logic.Core.Battle
                             }
                         }
                     }
-
-                    actions.Add(new RequestAttackAction() { Attack = attack, ReachableCells = cells });
+                    if (cells.Count > 0)
+                    {
+                        actions.Add(new RequestAttackAction() { Attack = attack, ReachableCells = cells });
+                    }
                 }
             }
             return actions;

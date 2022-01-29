@@ -120,8 +120,7 @@ namespace Logic.Core.Creatures
         public virtual List<IGoal> goals { get; } = new List<IGoal>() {
                 new IncreaseAllyHPGoal(),
                 new ReduceEnemyHPGoal(),
-                new BuffAllyGoal(),
-                new DontWasteResourcesGoal()
+                new BuffAllyGoal()
             };
 
         public float EvaluateFullfillment(IDndBattle battleArg, List<IAvailableAction> updatedActions, IDndBattle battle)

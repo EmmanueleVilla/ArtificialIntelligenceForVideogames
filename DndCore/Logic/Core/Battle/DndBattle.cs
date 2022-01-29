@@ -35,6 +35,7 @@ namespace Logic.Core
         public IDiceRoller Roller;
         public ILogger Logger;
         public IActionBuildersWrapper ActionBuildersWrapper;
+        public IActionBuildersCleanup ActionBuildersCleanup;
         public IActionSequenceBuilder ActionSequenceBuilder;
 
         public List<IAvailableAction> _cachedActions = new List<IAvailableAction>();
@@ -44,7 +45,7 @@ namespace Logic.Core
 
         public IDndBattle Copy()
         {
-            var battle = new DndBattle(Roller, Search, ActionBuildersWrapper, ActionSequenceBuilder, Logger);
+            var battle = new DndBattle(Roller, Search, ActionBuildersWrapper, ActionSequenceBuilder, ActionBuildersCleanup, Logger);
             battle.initiativeOrder = new List<int>(initiativeOrder);
             battle.turnIndex = turnIndex;
             battle.map = map.Copy();
@@ -57,10 +58,12 @@ namespace Logic.Core
             UniformCostSearch search = null,
             IActionBuildersWrapper actionBuildersWrapper = null,
             IActionSequenceBuilder actionSequenceBuilder = null,
+            IActionBuildersCleanup actionBuildersCleanup = null,
             ILogger logger = null) {
             Search = search ?? DndModule.Get<UniformCostSearch>();
             Roller = roller ?? DndModule.Get<IDiceRoller>();
             Logger = logger ?? DndModule.Get<ILogger>();
+            ActionBuildersCleanup = actionBuildersCleanup ?? DndModule.Get<IActionBuildersCleanup>();
             ActionSequenceBuilder = actionSequenceBuilder ?? DndModule.Get<IActionSequenceBuilder>();
             ActionBuildersWrapper = actionBuildersWrapper ?? DndModule.Get<IActionBuildersWrapper>();
         }
@@ -91,13 +94,18 @@ namespace Logic.Core
             }
         }
 
-        public void BuildAvailableActions(ICreature creature = null)
+        public void BuildAvailableActions(ICreature creature = null, bool isAI = false)
         {
             creature = creature ?? GetCreatureInTurn();
 
             _cachedActions = new List<IAvailableAction>();
 
             ActionBuildersWrapper.ActionBuilders.ForEach(x => _cachedActions.AddRange(x.Build(this, creature)));
+
+            if(isAI)
+            {
+                _cachedActions = ActionBuildersCleanup.Cleanup(creature, _cachedActions);
+            }
 
             _cachedActions.Add(new EndTurnAction());
         }
@@ -110,20 +118,10 @@ namespace Logic.Core
         public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
         public void PlayTurn()
         {
-            DndModule.Get<ILogger>().WriteLine("***** HANDLE TURN *****");
-
-            var actions = ActionSequenceBuilder.GetAvailableActions(this);
-            var chosenActions = actions.LastOrDefault(x => x.actions.Any(a => a is ConfirmAttackAction || a is ConfirmSpellAction));
-            if(chosenActions.actions == null)
-            {
-                chosenActions = actions.Last();
-            }
-            DndModule.Get<ILogger>().WriteLine("Action chosen: " + string.Join(",", chosenActions.actions.Select(x => x.Description)));
+            var actions = ActionSequenceBuilder.GetBestActions(this);
             Events = new List<GameEvent>();
 
-            DndModule.Get<ILogger>().WriteLine("***** PLAY TURN *****");
-
-            foreach (var v in chosenActions.actions)
+            foreach (var v in actions.actions)
             {
                 DndModule.Get<ILogger>().WriteLine("Executing action " + v.GetType().Name);
                 var temp = new List<GameEvent>();

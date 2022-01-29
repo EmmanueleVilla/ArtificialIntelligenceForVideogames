@@ -148,7 +148,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (var eve in events)
         {
-            DndModule.Get<ILogger>().WriteLine(eve.Type + ", " + eve.Ability);
+            //DndModule.Get<ILogger>().WriteLine(eve.Type + ", " + eve.Ability);
             if (eve.Type == GameEvent.Types.Movement)
             {
                 var tile = tiles.First(tile => tile.X == eve.Destination.Y && tile.Y == eve.Destination.X);
@@ -175,7 +175,7 @@ public class UIManager : MonoBehaviour
 
             if(eve.Type == GameEvent.Types.AttackMissed)
             {
-                DndModule.Get<ILogger>().WriteLine(string.Format("Missed {0}", eve.Attacked));
+                DndModule.Get<ILogger>().WriteLine(string.Format("Missed {0}", GameManager.Battle.GetCreatureById(eve.Attacked).GetType().Name));
                 GameObject target = null;
                 foreach (var indicator in initiativeIndicators)
                 {
@@ -193,7 +193,7 @@ public class UIManager : MonoBehaviour
 
             if (eve.Type == GameEvent.Types.Attacks)
             {
-                DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", eve.Attacked));
+                DndModule.Get<ILogger>().WriteLine(string.Format("Attacking {0}", GameManager.Battle.GetCreatureById(eve.Attacked).GetType().Name));
                 GameObject target = null;
                 foreach (var indicator in initiativeIndicators)
                 {
