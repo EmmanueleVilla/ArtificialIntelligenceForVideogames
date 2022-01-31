@@ -19,6 +19,10 @@ namespace Logic.Core.GOAP.Goals
             var newAllies = newState.Map.Creatures.Where(x => x.Value.Loyalty == team);
             var newHp = newAllies.Sum(x => x.Value.CurrentHitPoints);
             var fullfillment = newHp - oldHp;
+            if(fullfillment < 0)
+            {
+                fullfillment *= 2;
+            }
             //File.AppendAllText("log.txt", "Increase ally hp: " + fullfillment + "\n");
             return fullfillment;
         }

@@ -25,6 +25,8 @@ public class UIManager : MonoBehaviour
     public static GameObject creatureInTurn;
     List<Tuple<int, InitiativeIndicator>> initiativeIndicators = new List<Tuple<int, InitiativeIndicator>>();
 
+    public GameObject Ball;
+
     void Start()
     {
         Miss.SetActive(false);
@@ -177,15 +179,24 @@ public class UIManager : MonoBehaviour
             {
                 DndModule.Get<ILogger>().WriteLine(string.Format(eve.LogDescription));
                 GameObject target = null;
+                GameObject start = null;
+                GameObject ball = Instantiate(Ball);
                 foreach (var indicator in initiativeIndicators)
                 {
+                    if (indicator.Item1 == eve.Attacker)
+                    {
+                        start = indicator.Item2.gameObject;
+                    }
                     if (indicator.Item1 == eve.Attacked)
                     {
                         target = indicator.Item2.gameObject;
                     }
                 }
+                ball.transform.parent = start.transform.parent;
                 Miss.transform.position = target.transform.position;
                 Miss.transform.position += Vector3.up * 8;
+                yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
+                Destroy(ball);
                 Miss.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
                 Miss.SetActive(false);
@@ -194,22 +205,64 @@ public class UIManager : MonoBehaviour
             if(eve.Type == GameEvent.Types.Spell)
             {
                 DndModule.Get<ILogger>().WriteLine(eve.LogDescription);
+                GameObject target = null;
+                GameObject start = null;
+                GameObject ball = Instantiate(Ball);
+                foreach (var indicator in initiativeIndicators)
+                {
+                    if (indicator.Item1 == eve.Attacker)
+                    {
+                        start = indicator.Item2.gameObject;
+                    }
+                    if (indicator.Item1 == eve.Attacked)
+                    {
+                        target = indicator.Item2.gameObject;
+                    }
+                }
+                if (start != null && target != null)
+                {
+                    ball.transform.parent = start.transform.parent;
+                    yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
+                    var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
+                    yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
+                }
+                Destroy(ball);
             }
 
             if (eve.Type == GameEvent.Types.Attacks)
             {
                 DndModule.Get<ILogger>().WriteLine(eve.LogDescription);
                 GameObject target = null;
+                GameObject start = null;
+                GameObject ball = Instantiate(Ball);
                 foreach (var indicator in initiativeIndicators)
                 {
+                    if(indicator.Item1 == eve.Attacker)
+                    {
+                        start = indicator.Item2.gameObject;
+                    }
                     if (indicator.Item1 == eve.Attacked)
                     {
                         target = indicator.Item2.gameObject;
                     }
                 }
+                ball.transform.parent = start.transform.parent;
+                yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
+                Destroy(ball);
                 var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
                 yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
             }
+            yield return null;
+        }
+    }
+
+    private IEnumerator Move(GameObject go, Vector3 start, Vector3 end, float time)
+    {
+        var now = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - now < time)
+        {
+            var newPos = Vector3.Lerp(start, end, (Time.realtimeSinceStartup - now) / time);
+            go.transform.localPosition = newPos;
             yield return null;
         }
     }

@@ -253,7 +253,12 @@ namespace Logic.Core.Graph
                     if(!enemy.ReactionUsed)
                     {
                         var attack = enemy.Attacks.FirstOrDefault(x => x.Range <= 2);
-                        movementEvents.Add(new GameEvent() { Type = GameEvent.Types.Attacks, Attack = attack } );
+                        movementEvents.Add(new GameEvent() {
+                            Type = GameEvent.Types.Attacks,
+                            Attack = attack,
+                            Attacked = creature.Id,
+                            Attacker = enemy.Id
+                        } );
                         damage += enemy.Attacks
                             .Where(x => x.Range <= 2)
                             .OrderByDescending(x => x.Damage.Select(xx => xx.AverageDamage).Sum())

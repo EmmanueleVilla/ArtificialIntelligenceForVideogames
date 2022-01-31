@@ -118,9 +118,12 @@ namespace Logic.Core
         public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
         public void PlayTurn()
         {
-            var actions = ActionSequenceBuilder.GetBestActions(this);
             Events = new List<GameEvent>();
-
+            var actions = ActionSequenceBuilder.GetBestActions(this);
+            PlayTurnInternal(actions);
+        }
+        private void PlayTurnInternal(ActionList actions)
+        {
             foreach (var v in actions.actions)
             {
                 DndModule.Get<ILogger>().WriteLine("Executing action " + v.GetType().Name);
@@ -129,21 +132,40 @@ namespace Logic.Core
                 {
                     var moveAction = v as ConfirmMovementAction;
                     temp.AddRange(MoveTo(moveAction.MemoryEdge));
-                } else if(v is ConfirmAttackAction)
+                }
+                else if (v is ConfirmAttackAction)
                 {
                     var attackAction = v as ConfirmAttackAction;
                     temp.AddRange(Attack(attackAction));
-                } else if(v is ConfirmSpellAction)
+                }
+                else if (v is ConfirmSpellAction)
                 {
                     var spellAction = v as ConfirmSpellAction;
                     temp.AddRange(Spell(spellAction));
-                } else
+                }
+                else
                 {
                     temp.AddRange(UseAbility(v));
                 }
                 DndModule.Get<ILogger>().WriteLine("-- Added events:\n" + string.Join("\n", temp));
                 Events.AddRange(temp);
+                if(RemoveDeaths())
+                {
+                    actions = ActionSequenceBuilder.GetBestActions(this);
+                    PlayTurnInternal(actions);
+                    break;
+                }
             }
+        }
+
+        private bool RemoveDeaths()
+        {
+            var deads = map.Creatures.Where(x => x.Value.CurrentHitPoints <= 0).Select(x => x.Key).ToList();
+            foreach (var dead in deads)
+            {
+                map.RemoveCreature(GetCreatureById(dead));
+            }
+            return deads.Count > 0;
         }
 
         public void NextTurn()
@@ -183,12 +205,7 @@ namespace Logic.Core
                     return newTuple;
                 }).Where(x => x.Item2 > 0).ToList();
             }
-
-            var deads = map.Creatures.Where(x => x.Value.CurrentHitPoints <= 0).Select(x => x.Key).ToList();
-            foreach (var dead in deads)
-            {
-                map.RemoveCreature(GetCreatureById(dead));
-            }
+            RemoveDeaths();
 
             if (!map.Creatures.ContainsKey(creatureInTurn.Id))
             {
@@ -353,6 +370,11 @@ namespace Logic.Core
 
             attackingCreature.LastAttackUsed += confirmAttackAction.Attack.Name;
 
+            if(!forceHit)
+            {
+                RemoveDeaths();
+            }
+
             return list;
         }
 
@@ -478,7 +500,9 @@ namespace Logic.Core
                 list.Add(new GameEvent
                 {
                     Type = GameEvent.Types.Spell,
-                    LogDescription = "False Life (+" + temporary + " temp pf)"
+                    LogDescription = "False Life (+" + temporary + " temp pf)",
+                    Attacker = GetCreatureInTurn().Id,
+                    Attacked = creature.Id
                 });
             }
 
@@ -495,7 +519,9 @@ namespace Logic.Core
                 list.Add(new GameEvent
                 {
                     Type = GameEvent.Types.Spell,
-                    LogDescription = "Magic Missile (" + damage + " dmg) to " + creature.GetType().Name
+                    LogDescription = "Magic Missile (" + damage + " dmg) to " + creature.GetType().Name,
+                    Attacker = GetCreatureInTurn().Id,
+                    Attacked = creature.Id
                 });
             }
 
@@ -564,7 +590,9 @@ namespace Logic.Core
                     list.Add(new GameEvent
                     {
                         Type = GameEvent.Types.Spell,
-                        LogDescription = "Ray of frost (" + totalDamage + " dmg) to " + targetCreature.GetType().Name
+                        LogDescription = "Ray of frost (" + totalDamage + " dmg) to " + targetCreature.GetType().Name,
+                        Attacker = GetCreatureInTurn().Id,
+                        Attacked = targetCreature.Id
                     });
 
                     targetCreature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
@@ -586,6 +614,11 @@ namespace Logic.Core
                 }
                 
                 GetCreatureInTurn().ActionUsedNotToAttack = true;
+            }
+
+            if (!forceHit)
+            {
+                RemoveDeaths();
             }
 
             return list;
