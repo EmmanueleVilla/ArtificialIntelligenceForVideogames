@@ -1,4 +1,5 @@
-﻿using Logic.Core.Battle;
+﻿using Core.DI;
+using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static Core.DI.DndModule;
 
 namespace Logic.Core.GOAP.Goals
 {
@@ -19,7 +21,11 @@ namespace Logic.Core.GOAP.Goals
             var newEnemies = newState.Map.Creatures.Where(x => x.Value.Loyalty != team);
             var newHp = newEnemies.Sum(x => x.Value.CurrentHitPoints + x.Value.TemporaryHitPoints);
             var fullfillment = oldHp - newHp;
-            //File.AppendAllText("log.txt", "Reduce enemy hp: " + fullfillment + "\n");
+            var writeToFile = DndModule.Get<WriteToFileBool>();
+            if (writeToFile.ShouldWrite)
+            {
+                File.AppendAllText("log.txt", "Reduce enemy hp: " + fullfillment + "\n");
+            }
             return fullfillment;
         }
     }

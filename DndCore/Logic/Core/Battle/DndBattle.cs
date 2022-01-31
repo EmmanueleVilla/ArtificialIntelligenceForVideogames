@@ -308,16 +308,18 @@ namespace Logic.Core
                 {
                     if (forceHit)
                     {
-                        var multiplier = 1f;
+                        var neededNumber = targetCreature.ArmorClass - confirmAttackAction.Attack.ToHit;
+                        
                         if (hasAdvantage)
                         {
-                            multiplier = 1.2f;
+                            neededNumber -= 4;
                         }
                         if (hasDisadvantage)
                         {
-                            multiplier = 0.8f;
+                            neededNumber += 4;
                         }
-                        totalDamage += (int)Math.Round(((damage.NumberOfDice * damage.DiceFaces) + damage.Modifier) * multiplier);
+                        var probability = neededNumber / 20.0f;
+                        totalDamage += (int)Math.Round(((damage.NumberOfDice * damage.DiceFaces) + damage.Modifier) * probability);
                     }
                     else
                     {
@@ -564,16 +566,18 @@ namespace Logic.Core
                     var totalDamage = 0;
                     if (forceHit)
                     {
-                        var multiplier = 1f;
+                        var neededNumber = targetCreature.ArmorClass - confirmSpellAction.Spell.ToHit;
+
                         if (hasAdvantage)
                         {
-                            multiplier = 1.2f;
+                            neededNumber -= 4;
                         }
                         if (hasDisadvantage)
                         {
-                            multiplier = 0.8f;
+                            neededNumber += 4;
                         }
-                        totalDamage += (int)Math.Round(8 * multiplier);
+                        var probability = neededNumber / 20.0f;
+                        totalDamage += (int)Math.Round(8 * probability);
                     }
                     else
                     {

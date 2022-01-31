@@ -1,4 +1,5 @@
-﻿using Logic.Core.Battle;
+﻿using Core.DI;
+using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static Core.DI.DndModule;
 
 namespace Logic.Core.GOAP.Goals
 {
@@ -30,7 +32,11 @@ namespace Logic.Core.GOAP.Goals
                 return diffX + diffy;
             }).Min();
             var fullfillment = (newNearestEnemy - oldNearestEnemy) * -1;
-            //File.AppendAllText("log.txt", "Melee position: " + fullfillment + "\n");
+            var writeToFile = DndModule.Get<WriteToFileBool>();
+            if (writeToFile.ShouldWrite)
+            {
+                File.AppendAllText("log.txt", "Melee position: " + fullfillment + "\n");
+            }
             return fullfillment * 0.2f;
         }
     }

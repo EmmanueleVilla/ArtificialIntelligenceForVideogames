@@ -1,4 +1,5 @@
-﻿using Logic.Core.Battle;
+﻿using Core.DI;
+using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static Core.DI.DndModule;
 
 namespace Logic.Core.GOAP.Goals
 {
@@ -34,8 +36,13 @@ namespace Logic.Core.GOAP.Goals
             {
                 fullfillment = 0;
             }
-            //File.AppendAllText("log.txt", "Ranged position: " + fullfillment + "\n");
-            return (float)fullfillment * 0.2f;
+            fullfillment *= 0.2;
+            var writeToFile = DndModule.Get<WriteToFileBool>();
+            if (writeToFile.ShouldWrite)
+            {
+                File.AppendAllText("log.txt", "Ranged position: " + fullfillment + "\n");
+            }
+            return (float)fullfillment;
         }
     }
 }

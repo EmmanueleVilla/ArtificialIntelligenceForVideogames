@@ -1,4 +1,5 @@
-﻿using Logic.Core.Battle;
+﻿using Core.DI;
+using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Creatures;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static Core.DI.DndModule;
 
 namespace Logic.Core.GOAP.Goals
 {
@@ -24,7 +26,11 @@ namespace Logic.Core.GOAP.Goals
             {
                 fullfillment.ToString();
             }
-            //File.AppendAllText("log.txt", "Buffy ally: " + fullfillment + "\n");
+            var writeToFile = DndModule.Get<WriteToFileBool>();
+            if (writeToFile.ShouldWrite)
+            {
+                File.AppendAllText("log.txt", "Buffy ally: " + fullfillment + "\n");
+            }
             return fullfillment;
         }
     }
