@@ -223,10 +223,14 @@ public class UIManager : MonoBehaviour
                 {
                     ball.transform.parent = start.transform.parent;
                     yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
+                    Destroy(ball); 
                     var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
                     yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
+                } else
+                {
+                    Destroy(ball);
                 }
-                Destroy(ball);
+                
             }
 
             if (eve.Type == GameEvent.Types.Attacks)
