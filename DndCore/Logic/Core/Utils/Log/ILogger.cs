@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Utils.Log
+namespace DndCore.Utils.Log
 {
     public interface ILogger
     {

@@ -1,4 +1,4 @@
-﻿using Core.Map;
+﻿using DndCore.Map;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Creatures;
 using System;

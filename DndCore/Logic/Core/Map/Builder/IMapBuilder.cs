@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Map
+namespace DndCore.Map
 {
     public interface IMapBuilder
     {

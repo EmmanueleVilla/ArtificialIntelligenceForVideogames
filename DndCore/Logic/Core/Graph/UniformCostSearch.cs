@@ -1,6 +1,6 @@
-﻿using Core.DI;
-using Core.Map;
-using Core.Utils.Log;
+﻿using DndCore.DI;
+using DndCore.Map;
+using DndCore.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Movements;
 using System;

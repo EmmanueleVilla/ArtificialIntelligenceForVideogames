@@ -1,5 +1,5 @@
 ﻿
-using Core.Map;
+using DndCore.Map;
 using System.Collections.Generic;
 
 namespace Logic.Core.Battle.Actions

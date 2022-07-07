@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Core.DI;
-using Core.Map;
-using Core.Utils.Log;
+using DndCore.DI;
+using DndCore.Map;
+using DndCore.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Battle.ActionBuilders;
 using Logic.Core.Battle.Actions;
@@ -70,7 +70,6 @@ namespace Logic.Core
 
         public List<int> Init(IMap map)
         {
-            File.WriteAllText("log.txt", "");
             this.map = map;
             var temp = new List<ICreature>();
             foreach (var creature in map.Creatures.Values)

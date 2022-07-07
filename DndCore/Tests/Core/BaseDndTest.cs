@@ -1,4 +1,4 @@
-﻿using Core.DI;
+﻿using DndCore.DI;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

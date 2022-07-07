@@ -1,4 +1,4 @@
-﻿using Core.Map;
+﻿using DndCore.Map;
 using Logic.Core.Map.Impl;
 using NUnit.Framework;
 using System;

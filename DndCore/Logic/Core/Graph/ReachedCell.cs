@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Core.Map;
+using DndCore.Map;
 using Logic.Core.Battle;
 
 namespace Logic.Core.Graph

@@ -1,5 +1,5 @@
-﻿using Core.DI;
-using Core.Utils.Log;
+﻿using DndCore.DI;
+using DndCore.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Abilities;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using static Core.DI.DndModule;
+using static DndCore.DI.DndModule;
 
 namespace Logic.Core.GOAP.Actions
 {

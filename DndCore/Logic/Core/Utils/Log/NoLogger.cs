@@ -1,4 +1,4 @@
-﻿using Core.Utils.Log;
+﻿using DndCore.Utils.Log;
 using System;
 using System.Collections.Generic;
 using System.Text;

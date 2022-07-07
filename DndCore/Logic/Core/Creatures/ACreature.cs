@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.DI;
+using DndCore.DI;
 using Logic.Core.Actions;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;

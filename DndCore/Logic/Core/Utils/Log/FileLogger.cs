@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Core.Utils.Log
+namespace DndCore.Utils.Log
 {
     public class FileLogger : ILogger
     {

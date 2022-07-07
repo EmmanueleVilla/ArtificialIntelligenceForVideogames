@@ -1,6 +1,6 @@
-﻿using Core.DI;
-using Core.Map;
-using Core.Utils.Log;
+﻿using DndCore.DI;
+using DndCore.Map;
+using DndCore.Utils.Log;
 using Logic.Core.Battle;
 using Logic.Core.Creatures;
 using Logic.Core.Movements;
@@ -236,10 +236,14 @@ namespace Logic.Core.Graph
                     var swimmingMovement = movements.FirstOrDefault(x => x.Movement == SpeedTypes.Swimming);
                     amount += swimmingMovement != null && swimmingMovement.Square > 0 ? 0 : 1;
                     break;
+                // Difficult terrain
+                case 'D':
+                    amount++;
+                    break;
             }
 
-            // Cell is occupied, I need 1 more speed and I can't stop here
-            var occupied = occupant != null;
+            // Cell is occupied or marked as "can't stop", I need 1 more speed and I can't stop here
+            var occupied = occupant != null || to.Terrain == 'X';
             if (occupied)
             {
                 amount++;

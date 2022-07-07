@@ -1,5 +1,5 @@
-﻿using Core.DI;
-using Core.Utils.Log;
+﻿using DndCore.DI;
+using DndCore.Utils.Log;
 using Logic.Core;
 using Logic.Core.Graph;
 using NUnit.Framework;

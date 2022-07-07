@@ -1,4 +1,4 @@
-﻿using Core.DI;
+﻿using DndCore.DI;
 using Logic.Core.Creatures.Bestiary;
 using System;
 using System.Collections.Generic;

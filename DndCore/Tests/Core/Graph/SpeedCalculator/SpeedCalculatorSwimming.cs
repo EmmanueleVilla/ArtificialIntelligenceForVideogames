@@ -1,4 +1,4 @@
-﻿using Core.Map;
+﻿using DndCore.Map;
 using NUnit.Framework;
 using Tests.Core.Graph.Mocks;
 using Tests.Core.Graph.Mocks.Creatures;

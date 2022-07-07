@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Map
+namespace DndCore.Map
 {
     public struct CellInfo
     {

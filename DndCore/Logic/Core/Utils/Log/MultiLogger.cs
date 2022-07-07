@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Utils.Log
+namespace DndCore.Utils.Log
 {
     class MultiLogger : ILogger
     {

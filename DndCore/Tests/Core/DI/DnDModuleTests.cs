@@ -1,4 +1,4 @@
-﻿using Core.DI;
+﻿using DndCore.DI;
 using Logic.Core.Battle;
 using NUnit.Framework;
 using System;

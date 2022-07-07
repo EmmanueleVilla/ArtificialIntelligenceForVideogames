@@ -1,5 +1,5 @@
-﻿using Core.Map;
-using Core.Utils.Log;
+﻿using DndCore.Map;
+using DndCore.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle.Actions.Abilities;
 using Logic.Core.Creatures;

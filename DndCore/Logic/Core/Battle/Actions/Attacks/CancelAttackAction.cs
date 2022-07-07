@@ -1,4 +1,4 @@
-﻿using Core.Map;
+﻿using DndCore.Map;
 using System;
 using System.Collections.Generic;
 using System.Text;

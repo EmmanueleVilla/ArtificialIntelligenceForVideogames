@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using Core.Map;
+using DndCore.Map;
 using Logic.Core.Map;
 using Logic.Core.Map.Impl;
 using System;

@@ -1,4 +1,4 @@
-﻿using Core.Map;
+﻿using DndCore.Map;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
@@ -120,78 +120,80 @@ namespace Logic.Core.Map.Impl
         
         public bool AddCreature(ICreature creature, int x, int y)
         {
-            if(creature is LargeMinotaur && x == 16 && y == 4)
+            try
             {
-                creature.ToString();
-            }
-            var cell = GetCellInfo(x, y);
-            var occ = GetOccupantCreature(x, y);
-            if (cell.Terrain == ' ' || (occ != null && occ != creature)) 
+                var cell = GetCellInfo(x, y);
+                var occ = GetOccupantCreature(x, y);
+                if (cell.Terrain == ' ' || (occ != null && occ != creature))
+                {
+                    return false;
+                }
+
+                var tempOccupiedCells = new List<int>();
+                var fit = true;
+                for (int i = x; i < creature.Size + x; i++)
+                {
+                    for (int j = y; j < creature.Size + y; j++)
+                    {
+                        var occupiedCell = GetCellInfo(i, j);
+                        var occupantCreature = GetOccupantCreature(i, j);
+                        if (Math.Abs(cell.Height - occupiedCell.Height) > 1 || (occupantCreature != null && occupantCreature != creature))
+                        {
+                            fit = false;
+                        }
+                        occupiedCell.Creature = creature;
+                        tempOccupiedCells.Add((i << 6) + j);
+                    }
+                }
+
+                if (!fit)
+                {
+                    return false;
+                }
+
+                tempOccupiedCells.ForEach(temp =>
+                {
+                    occupiedCellsDictionary.Add(temp, creature.Id);
+                });
+
+                var reach = 0;
+
+                if (creature.Attacks != null && creature.Attacks.Any(a => a.Range == 1))
+                {
+                    reach = 1;
+                }
+
+                if (creature.Attacks != null && creature.Attacks.Any(a => a.Range == 2))
+                {
+                    reach = 2;
+                }
+
+                if (reach > 0)
+                {
+                    var cells = new HashSet<int>();
+                    var startI = x - reach;
+                    var endI = x + creature.Size + reach;
+                    var startJ = y - reach;
+                    var endJ = y + creature.Size + reach;
+                    for (int i = startI; i < endI; i++)
+                    {
+                        for (int j = startJ; j < endJ; j++)
+                        {
+                            cells.Add((i << 6) + j);
+                        }
+                    }
+                    threateningAreas.Add(new Tuple<int, HashSet<int>>(creature.Id, cells));
+                }
+
+                SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
+
+                creatures = null;
+
+                return true;
+            } catch(Exception e)
             {
                 return false;
             }
-
-            var tempOccupiedCells = new List<int>();
-            var fit = true;
-            for (int i = x; i < creature.Size + x; i++)
-            {
-                for (int j = y; j < creature.Size + y; j++)
-                {
-                    var occupiedCell = GetCellInfo(i, j);
-                    var occupantCreature = GetOccupantCreature(i, j);
-                    if (Math.Abs(cell.Height - occupiedCell.Height) > 1 || (occupantCreature != null && occupantCreature != creature))
-                    {
-                        fit = false;
-                    }
-                    occupiedCell.Creature = creature;
-                    tempOccupiedCells.Add((i << 6) + j);
-                }
-            }
-
-            if (!fit)
-            {
-                return false;
-            }
-
-            tempOccupiedCells.ForEach(temp =>
-            {
-                occupiedCellsDictionary.Add(temp, creature.Id);
-            });
-
-            var reach = 0;
-
-            if (creature.Attacks != null && creature.Attacks.Any(a => a.Range == 1))
-            {
-                reach = 1;
-            }
-
-            if (creature.Attacks != null && creature.Attacks.Any(a => a.Range == 2))
-            {
-                reach = 2;
-            }
-
-            if (reach > 0)
-            {
-                var cells = new HashSet<int>();
-                var startI = x - reach;
-                var endI = x + creature.Size + reach;
-                var startJ = y - reach;
-                var endJ = y + creature.Size + reach;
-                for (int i = startI; i < endI; i++)
-                {
-                    for (int j = startJ; j < endJ; j++)
-                    {
-                        cells.Add((i << 6) + j);
-                    }
-                }
-                threateningAreas.Add(new Tuple<int, HashSet<int>>(creature.Id, cells));
-            }
-
-            SetCell(cell.X, cell.Y, new CellInfo(cell.Terrain, cell.Height, creature, cell.X, cell.Y));
-
-            creatures = null;
-
-            return true;
         }
 
         public ICreature GetOccupantCreature(int x, int y)

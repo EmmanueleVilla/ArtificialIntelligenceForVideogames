@@ -1,5 +1,5 @@
-﻿using Core.DI;
-using Core.Map;
+﻿using DndCore.DI;
+using DndCore.Map;
 using Logic.Core.Actions;
 using Logic.Core.Creatures;
 using Logic.Core.Map.Impl;

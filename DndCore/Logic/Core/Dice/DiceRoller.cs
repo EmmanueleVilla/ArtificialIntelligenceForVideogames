@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.DI;
+using DndCore.DI;
 
 namespace Logic.Core.Dice
 {

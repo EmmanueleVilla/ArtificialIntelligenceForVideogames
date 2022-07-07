@@ -1,4 +1,4 @@
-﻿using Core.DI;
+﻿using DndCore.DI;
 using Logic.Core.Graph;
 using Logic.Core.Map;
 using NUnit.Framework;

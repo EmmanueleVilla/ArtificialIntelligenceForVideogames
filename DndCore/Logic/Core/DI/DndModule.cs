@@ -1,5 +1,5 @@
-﻿using Core.Map;
-using Core.Utils.Log;
+﻿using DndCore.Map;
+using DndCore.Utils.Log;
 using Logic.Core;
 using Logic.Core.Battle;
 using Logic.Core.Battle.ActionBuilders;
@@ -9,10 +9,10 @@ using Logic.Core.Graph;
 using Logic.Core.Map;
 using System;
 using System.Collections.Generic;
-using ConsoleLogger = Core.Utils.Log.ConsoleLogger;
-using ILogger = Core.Utils.Log.ILogger;
+using ConsoleLogger = DndCore.Utils.Log.ConsoleLogger;
+using ILogger = DndCore.Utils.Log.ILogger;
 
-namespace Core.DI
+namespace DndCore.DI
 {
     public static class DndModule
     {

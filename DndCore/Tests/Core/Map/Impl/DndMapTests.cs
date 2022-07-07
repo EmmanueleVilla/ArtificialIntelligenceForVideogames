@@ -1,10 +1,10 @@
-﻿using Core.DI;
+﻿using DndCore.DI;
 using Logic.Core.Map;
 using Logic.Core.Map.Impl;
 using NUnit.Framework;
 using Tests.Core;
 
-namespace Core.Map
+namespace DndCore.Map
 {
     [TestFixture]
     class DndMapTests: BaseDndTest

@@ -1,9 +1,9 @@
-﻿using Core.DI;
+﻿using DndCore.DI;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Utils.Log
+namespace DndCore.Utils.Log
 {
     public class ConsoleLogger : ILogger
     {

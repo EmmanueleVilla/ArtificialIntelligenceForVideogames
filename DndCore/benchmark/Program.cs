@@ -2,8 +2,8 @@
 using Benchmark.Core.Map.Impl;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
-using Core.DI;
-using Core.Utils.Log;
+using DndCore.DI;
+using DndCore.Utils.Log;
 using System;
 using System.Collections.Generic;
 
