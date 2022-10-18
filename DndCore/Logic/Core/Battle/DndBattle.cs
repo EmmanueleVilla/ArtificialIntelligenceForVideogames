@@ -258,6 +258,7 @@ namespace Logic.Core
                     e.Attacked = GetCreatureInTurn().Id;
                     //check advantage
                     var damage = e.Attack.Damage.Sum(x => Roller.Roll(RollTypes.Normal, x.NumberOfDice, x.DiceFaces, x.Modifier));
+                    e.Damage = damage;
                     GetCreatureInTurn().CurrentHitPoints -= damage;
                 }
                 list.Add(e);
@@ -337,6 +338,7 @@ namespace Logic.Core
                 list.Add(new GameEvent
                 {
                     Type = GameEvent.Types.Attacks,
+                    Damage = totalDamage,
                     Attacker = attackingCreature.Id,
                     Attacked = targetCreature.Id,
                     Attack = confirmAttackAction.Attack,
@@ -522,7 +524,8 @@ namespace Logic.Core
                     Type = GameEvent.Types.Spell,
                     LogDescription = "Magic Missile (" + damage + " dmg) to " + creature.GetType().Name,
                     Attacker = GetCreatureInTurn().Id,
-                    Attacked = creature.Id
+                    Attacked = creature.Id,
+                    Damage = damage
                 });
             }
 
@@ -595,7 +598,8 @@ namespace Logic.Core
                         Type = GameEvent.Types.Spell,
                         LogDescription = "Ray of frost (" + totalDamage + " dmg) to " + targetCreature.GetType().Name,
                         Attacker = GetCreatureInTurn().Id,
-                        Attacked = targetCreature.Id
+                        Attacked = targetCreature.Id,
+                        Damage = totalDamage
                     });
 
                     targetCreature.TemporaryEffectsList.Add(new Tuple<int, int, TemporaryEffects>(
